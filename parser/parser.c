@@ -6,7 +6,7 @@
 /*   By: gdanis <gdanis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/10 09:37:21 by gdanis            #+#    #+#             */
-/*   Updated: 2023/12/13 20:06:58 by gdanis           ###   ########.fr       */
+/*   Updated: 2023/12/13 21:59:00 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ t_parsed	*parser(t_token *list)
 					free(old_str);
 					list = list->next;
 				}
-				if(list->str[0] == p_lstlast(plist)->str[0])
+				if(list && list->str && list->str[0] == p_lstlast(plist)->str[0])
 				{
 					old_str = p_lstlast(plist)->str;
 					p_lstlast(plist)->str = ft_strjoin(p_lstlast(plist)->str, list->str);
@@ -81,7 +81,7 @@ t_parsed	*parser(t_token *list)
 				}
 				else
 				{
-					printf("error: unclosed quote");
+					printf("error: unclosed quote\n");
 					exit (1);
 				}
 			}
@@ -113,7 +113,20 @@ t_parsed	*parser(t_token *list)
 
 void	expand_quote(t_parsed *node)
 {
-	tmp->expand = 
+	if (node->str[0] == '"')
+		node->expand = ft_strtrim(node->str, "\"");
+	if (node->str[0] == 39)
+		node->expand = ft_strtrim(node->str, "\'");
+	if (ft_strchr(node->expand, '$'))
+	{
+		if (ft_strlen(node->expand) == 1
+		       || (node->expand[0] != '$' && *(ft_strchr(node->expand, '$') - 1) != ' ')
+		       || *(ft_strchr(node->expand, '$') + 1) == ' '
+		       || *(ft_strchr(node->expand, '$') + 1) == '\0')
+			return ;
+		printf("have to expand var\n");
+	}
+
 }
 
 t_parsed	*info_parsed_list(t_parsed *list)
@@ -123,8 +136,6 @@ t_parsed	*info_parsed_list(t_parsed *list)
 
 	tmp = list;
 	i = 0;
-	if (!(tmp->type >= 4 && tmp->type <= 8))
-		tmp->type = 11;
 	while (tmp)
 	{
 		tmp->idx = i;	
@@ -204,10 +215,11 @@ void	print_parsed_list(t_parsed *list)
 	while (list)
 	{
 		printf("type: %s\t:  ", token_type(list->type));
-		printf("%s", list->str);
+		if (list->str)
+			printf("%s", list->str);
+		if (list->expand)
+			printf("  ->%s", list->expand);
 		printf("\n");
-		if (list->type == 3)
-			printf("var = %s\n", list->expand);
 		if (list->eof)
 			printf("EOF\n");
 		list = list->next;

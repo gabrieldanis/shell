@@ -6,7 +6,7 @@
 /*   By: gdanis <gdanis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 08:08:33 by gdanis            #+#    #+#             */
-/*   Updated: 2023/12/13 08:15:48 by gdanis           ###   ########.fr       */
+/*   Updated: 2023/12/13 20:21:31 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	execute_parsed_list(t_parsed *list)
 	if (!ft_strncmp(list->str, "echo\0", 5))
 	{
 		printf("echo recognized\n");
-		ft_echo(list);
+		//ft_echo(list);
 	}
 	else
 	{
