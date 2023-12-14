@@ -6,7 +6,7 @@
 /*   By: gdanis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/08 09:51:30 by gdanis            #+#    #+#             */
-/*   Updated: 2023/12/13 22:04:49 by gdanis           ###   ########.fr       */
+/*   Updated: 2023/12/14 10:19:29 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "../header/minishell.h"
@@ -59,17 +59,24 @@ void	char_to_token(t_token **list, int *flag, int *i, char *str)
 void	space_to_token(t_token **list, int *flag, int *i, char *str)
 {
 	t_token	*tmp;
+	int	j;
 
+	j = 0;
+	while (str[*i] == ' ')
+	{
+		(*i)++;
+		j++;
+	}
 	tmp = (t_token *)malloc(sizeof(t_token));
 	*tmp = (t_token){0};
 	if (!(*list))
 		*list = tmp;
 	else
 		last_token(*list)->next = tmp;
-	ft_charjoin(&(last_token(*list)->str), str[*i]);
+	last_token(*list)->str = (char *) malloc (sizeof(char) * (j + 1));
+	ft_memset(last_token((*list))->str, ' ', j);
+	last_token((*list))->str[j] = '\0';
 	*flag = 0;
-	while (str[*i] == ' ')
-		(*i)++;
 }
 
 t_token	*tokenizer(char *str)

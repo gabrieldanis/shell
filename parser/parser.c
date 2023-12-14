@@ -6,7 +6,7 @@
 /*   By: gdanis <gdanis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/10 09:37:21 by gdanis            #+#    #+#             */
-/*   Updated: 2023/12/13 21:59:00 by gdanis           ###   ########.fr       */
+/*   Updated: 2023/12/14 10:35:49 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,6 +111,15 @@ t_parsed	*parser(t_token *list)
 	return (plist);
 }
 
+void	expand_var_in_quote(char *str)
+{
+	char	*tmp;
+	int	i;
+	int	j;
+
+	  w
+}
+
 void	expand_quote(t_parsed *node)
 {
 	if (node->str[0] == '"')
@@ -124,6 +133,7 @@ void	expand_quote(t_parsed *node)
 		       || *(ft_strchr(node->expand, '$') + 1) == ' '
 		       || *(ft_strchr(node->expand, '$') + 1) == '\0')
 			return ;
+		expand_var_in_quote(node->expand);
 		printf("have to expand var\n");
 	}
 
@@ -218,7 +228,7 @@ void	print_parsed_list(t_parsed *list)
 		if (list->str)
 			printf("%s", list->str);
 		if (list->expand)
-			printf("  ->%s", list->expand);
+			printf(" -> %s", list->expand);
 		printf("\n");
 		if (list->eof)
 			printf("EOF\n");
