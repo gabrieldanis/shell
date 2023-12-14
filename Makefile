@@ -3,7 +3,7 @@ NAME=minishell
 
 # list of folders where C files are stored
 # could NOT BE current folder "." must be subfolder "subfolder"
-CODEDIRS=parser lexer sources # folder_with_c_files
+CODEDIRS=builtin parser lexer sources # folder_with_c_files
 
 # list of directories that could have includes in it. meaning .h files
 INCDIRS=header #./folder_with_h_files/
