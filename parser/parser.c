@@ -6,7 +6,7 @@
 /*   By: gdanis <gdanis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/10 09:37:21 by gdanis            #+#    #+#             */
-/*   Updated: 2023/12/14 10:35:49 by gdanis           ###   ########.fr       */
+/*   Updated: 2023/12/14 13:45:14 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,30 +111,77 @@ t_parsed	*parser(t_token *list)
 	return (plist);
 }
 
-void	expand_var_in_quote(char *str)
+char	*expand_var_in_quote(char *str)
 {
 	char	*tmp;
+	char	*var_name;
+	char	*var;
 	int	i;
 	int	j;
+	int	k;
 
-	  w
+	i = 0;
+	j = 0;
+	k = 0;
+	while (str[i] != '$')
+		i++;		
+	while (str[i + j] && str[i + j] != ' ')
+		j++;
+	var_name = (char *) malloc (sizeof(char) * (j + 1));
+	while (k < j)
+	{
+		var_name[k] = str[i + k];
+		k++;
+	}
+	var_name[k] = '\0';
+	while (str[i + j])
+		i++;
+	var = getenv(var_name + 1);
+	tmp = (char *) malloc (sizeof(char) * (i + ft_strlen(var) + 1));
+	k = 0;
+	j = 0;
+	while (str[k] != '$')
+	{
+		tmp[k] = str[k];
+		k++;
+	}
+	while (j < (int)ft_strlen(var))
+	{
+		tmp[k + j]= var[j];
+		j++;
+	}
+	while (str[k + ft_strlen(var_name)])
+	{
+		tmp[k + j] = str[k + ft_strlen(var_name)];
+		k++;
+	}
+	free (var_name);
+	tmp[k + j] = '\0';
+	free (str);
+	str = tmp;
+	return (str);
 }
 
 void	expand_quote(t_parsed *node)
 {
+	int	dquote;
+
+	dquote = 0;
 	if (node->str[0] == '"')
+	{
 		node->expand = ft_strtrim(node->str, "\"");
+		dquote = 1;
+	}
 	if (node->str[0] == 39)
 		node->expand = ft_strtrim(node->str, "\'");
-	if (ft_strchr(node->expand, '$'))
+	if (ft_strchr(node->expand, '$') && dquote && !node->eof)
 	{
 		if (ft_strlen(node->expand) == 1
 		       || (node->expand[0] != '$' && *(ft_strchr(node->expand, '$') - 1) != ' ')
 		       || *(ft_strchr(node->expand, '$') + 1) == ' '
 		       || *(ft_strchr(node->expand, '$') + 1) == '\0')
 			return ;
-		expand_var_in_quote(node->expand);
-		printf("have to expand var\n");
+		node->expand = expand_var_in_quote(node->expand);
 	}
 
 }
@@ -158,6 +205,7 @@ t_parsed	*info_parsed_list(t_parsed *list)
 			expand_quote(tmp);
 		tmp = tmp->next;
 	}
+	list->type = 11;
 	return (list);
 }
 
