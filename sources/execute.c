@@ -6,20 +6,26 @@
 /*   By: gdanis <gdanis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 08:08:33 by gdanis            #+#    #+#             */
-/*   Updated: 2023/12/14 15:48:38 by gdanis           ###   ########.fr       */
+/*   Updated: 2023/12/15 11:30:25 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../header/minishell.h"
 
-void	execute_parsed_list(t_parsed *list)
+void	execute_parsed_list(t_parsed *list, char **envp)
 {
 	if (!ft_strncmp(list->str, "echo\0", 5))
 		ft_echo(list->next);
-	if (!ft_strncmp(list->str, "exit\0", 5))
+	else if (!ft_strncmp(list->str, "exit\0", 5))
 		ft_exit(list->next);
-	if (!ft_strncmp(list->str, "pwd\0", 4))
+	else if (!ft_strncmp(list->str, "pwd\0", 4))
 		ft_pwd();
+	else if (!ft_strncmp(list->str, "cd\0", 3))
+		ft_chdir(list);
+	else if (!ft_strncmp(list->str, "env\0", 4))
+		ft_env(envp);
+	else if (!ft_strncmp(list->str, "export\0", 7))
+		ft_export(envp);
 	else
 	{
 		printf("command unknown\n");

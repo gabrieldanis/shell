@@ -1,28 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   echo.c                                             :+:      :+:    :+:   */
+/*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gdanis <gdanis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/13 08:19:56 by gdanis            #+#    #+#             */
-/*   Updated: 2023/12/15 10:12:05 by gdanis           ###   ########.fr       */
+/*   Created: 2023/12/15 10:14:54 by gdanis            #+#    #+#             */
+/*   Updated: 2023/12/15 11:28:04 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../header/minishell.h"
 
-void	ft_echo(t_parsed *list)
+int	ft_env(char **envp)
 {
-	while (list)
+	int	i;
+
+	i = 0;
+	while (envp[i])
 	{
-		if (list->expand)
-			printf("%s", list->expand);
-		else
-			printf("%s", list->str);
-		list = list->next;
-		if (list)
-			printf(" ");
+		printf("%s\n", envp[i]);
+		i++;;
 	}
-	printf("\n");
+	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: gdanis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 16:49:31 by gdanis            #+#    #+#             */
-/*   Updated: 2023/12/14 15:48:51 by gdanis           ###   ########.fr       */
+/*   Updated: 2023/12/15 11:29:23 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,9 +68,12 @@ void		idx_tokens(t_token *list);
 void		print_parsed_tokens(t_token *list);
 void		type_tokens(t_token *list);
 void		block_tokens(t_token *list);
-void		execute_parsed_list(t_parsed *list);
+void		execute_parsed_list(t_parsed *list, char **envp);
 void		ft_echo(t_parsed *list);
 void		ft_exit(t_parsed *list);
 void		ft_pwd(void);
 char		*token_type(int i);
+int		ft_chdir(t_parsed *list);
+int		ft_env(char **envp);
+int		ft_export(char **envp);
 #endif
