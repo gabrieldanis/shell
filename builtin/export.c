@@ -6,47 +6,53 @@
 /*   By: gdanis <gdanis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/15 11:28:20 by gdanis            #+#    #+#             */
-/*   Updated: 2023/12/16 15:49:58 by gdanis           ###   ########.fr       */
+/*   Updated: 2023/12/16 17:41:43 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../header/minishell.h"
 
-int	alpha_smlr(char *i, char *j)
+char	*expand_envp_str(char *str)
 {
-	while (*i == *j && *i != '=' && *j != '=')
-	{
-		i++;
-		j++;
-	}
-	if (*j == '=' || *j < *i)
-		return (1);
+	char	*expanded;
+	char	**split_str;
+	int	i;
+
+	expanded = NULL;
+	i = 0;
+	if (!ft_strchr(str, '=')) 
+		expanded = expand_var(str);
 	else
-		return (0);
+	{
+		split_str = ft_split(str, '=');
+		expanded = ft_strjoin(expanded, split_str[i]);
+		expanded = ft_strjoin(expanded, "=");
+		i++;
+		while (split_str[i])
+			expanded = ft_strjoin(expanded, split_str[i++]);
+	}
+	return (expanded);
 }
 
-void	sort_var_list(char **dup)
+int	ft_export(char **envp, t_parsed *list, int env)
 {
-	char	*swap;
-	int	i;
-	int	j;	
+	static char	**s_envp;
+	char		*expanded_str;
 
-	i = 0;
-	while (dup[i] && dup[i + 1])
+	if (!s_envp)
+		s_envp = dup_envp(envp);
+	if (env)
+		return (ft_env(s_envp), 0);
+	if (!list->next || list->next->type != 0)
+		return (ft_print_export(s_envp), 0);
+	list = list->next;
+	while (list && list->type == 0)
 	{
-		j = i + 1;
-		while (dup[j])
-		{
-			if (alpha_smlr(dup[i], dup[j]))	
-			{
-				swap = dup[i];
-				dup[i] = dup[j];
-				dup[j] = swap;
-			}
-			j++;
-		}
-		i++;
+		expanded_str = expand_envp_str(list->str);
+		ft_setenv(&s_envp, expanded_str);
+		list = list->next;
 	}
+	return (0);
 }
 
 void	ft_setenv(char ***envp, char *str)
@@ -66,32 +72,14 @@ void	ft_setenv(char ***envp, char *str)
 		i++;
 	}
 	(*envp)[i] = str;
-//	printf("new var in envp = %s\n", (*envp)[i]);
 	i++;
 	(*envp)[i] = tmp[i - 1];
 	i++;
 	(*envp)[i] = NULL;
-	//free(tmp);
+	free(tmp);
 }
 
-int	ft_export(char **envp, t_parsed *list)
-{
-	static char	**s_envp;
-
-	if (!s_envp)
-		s_envp = envp;
-	if (!list->next || list->next->type != 0)
-		return (ft_print_export(s_envp), 0);
-	list = list->next;
-	while (list && list->type == 0)
-	{
-		ft_setenv(&s_envp, list->str);
-		list = list->next;
-	}
-	return (0);
-}
-
-int	ft_print_export(char **envp)
+int	ft_print_export(char **s_envp)
 {
 	char	**dup;
 	int	i;
@@ -99,46 +87,9 @@ int	ft_print_export(char **envp)
 
 	i = 0;
 	j = 0;
-	while (envp[i])
-		i++;
-	dup = (char **)malloc(sizeof(char *) * i);
-	i = 0;
-	while (envp[j])
-	{
-		if (strncmp(envp[j], "_=", 2))
-		{
-			dup[i] = envp[j];
-			i++;
-			j++;
-		}
-		else
-			j++;
-	}
-	dup[i] = NULL;
+	dup = dup_envp(s_envp);
 	sort_var_list(dup);
-	i = 0;
-	while (dup[i])
-	{
-		write(1, "declare -x ", 11);
-		j = 0;
-		while (dup[i][j] != '=' && dup[i][j])
-		{
-			write(1, &(dup[i][j]), 1);	
-			j++;
-		}
-		if (dup[i][j] == '=')
-		{
-			write(1, "=\"", 2);
-			j++;
-			while(dup[i][j])
-			{
-				write(1, &(dup[i][j]), 1);	
-				j++;
-			}
-			write(1, "\"\n", 2);
-		}
-		i++;
-	}
+	ft_print_export_lines(dup, i, j);
 	free(dup);
 	return (0);
 }
