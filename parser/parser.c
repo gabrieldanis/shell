@@ -6,7 +6,7 @@
 /*   By: gdanis <gdanis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/10 09:37:21 by gdanis            #+#    #+#             */
-/*   Updated: 2023/12/14 13:45:14 by gdanis           ###   ########.fr       */
+/*   Updated: 2023/12/16 12:33:06 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,7 +136,7 @@ char	*expand_var_in_quote(char *str)
 	var_name[k] = '\0';
 	while (str[i + j])
 		i++;
-	var = getenv(var_name + 1);
+	var = expand_var(var_name);
 	tmp = (char *) malloc (sizeof(char) * (i + ft_strlen(var) + 1));
 	k = 0;
 	j = 0;
@@ -176,14 +176,35 @@ void	expand_quote(t_parsed *node)
 		node->expand = ft_strtrim(node->str, "\'");
 	if (ft_strchr(node->expand, '$') && dquote && !node->eof)
 	{
-		if (ft_strlen(node->expand) == 1
-		       || (node->expand[0] != '$' && *(ft_strchr(node->expand, '$') - 1) != ' ')
-		       || *(ft_strchr(node->expand, '$') + 1) == ' '
-		       || *(ft_strchr(node->expand, '$') + 1) == '\0')
+		if (!ft_strchr(node->expand, '$'))
 			return ;
 		node->expand = expand_var_in_quote(node->expand);
 	}
 
+}
+
+char	*expand_var(char *str)
+{
+	char	**split_str;
+	char	*final_str;
+	int	i;
+
+	final_str = NULL;
+	i = 0;
+	split_str = ft_split(str, '$');
+	if (!split_str)
+		return (NULL);
+	if (str[0] != '$')
+		final_str = ft_strjoin(final_str, split_str[i++]);
+	while (split_str[i])
+		final_str = ft_strjoin(final_str, getenv(split_str[i++]));
+	i = 0;
+	while (split_str[i])
+		free(split_str[i++]);
+	free(split_str);
+	if (*(strrchr(str, '$') + 1) == '\0')
+		final_str = ft_strjoin(final_str, "$");
+	return (final_str);
 }
 
 t_parsed	*info_parsed_list(t_parsed *list)
@@ -199,8 +220,8 @@ t_parsed	*info_parsed_list(t_parsed *list)
 		i++;
 		if (tmp->type == 7 && tmp->next)
 			tmp->next->eof = 1;
-		if (tmp->type == 3 && getenv(tmp->str + 1))
-			tmp->expand = ft_strdup(getenv(tmp->str + 1));
+		if (tmp->type == 3)
+			tmp->expand = expand_var(tmp->str);
 		if (tmp->type == 9 || tmp->type == 10)
 			expand_quote(tmp);
 		tmp = tmp->next;
@@ -230,7 +251,7 @@ t_parsed	*type_parsed_list(t_parsed *list)
 			tmp->type = 2;
 		if (ft_strchr(tmp->str, '/') || ft_strchr(tmp->str, '.'))	
 			tmp->type = 1;
-		if (!ft_strncmp(tmp->str, "$", 1))	
+		if (ft_strchr(tmp->str, '$'))	
 			tmp->type = 3;
 		if (!ft_strncmp(tmp->str, "\'", 1))	
 			tmp->type = 9;

@@ -6,7 +6,7 @@
 /*   By: gdanis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 16:49:31 by gdanis            #+#    #+#             */
-/*   Updated: 2023/12/15 11:29:23 by gdanis           ###   ########.fr       */
+/*   Updated: 2023/12/16 15:35:21 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,9 @@ void		ft_echo(t_parsed *list);
 void		ft_exit(t_parsed *list);
 void		ft_pwd(void);
 char		*token_type(int i);
+char		*expand_var(char *str);
 int		ft_chdir(t_parsed *list);
 int		ft_env(char **envp);
-int		ft_export(char **envp);
+int		ft_export(char **envp, t_parsed *list);
+int		ft_print_export(char **envp);
 #endif

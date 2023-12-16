@@ -6,7 +6,7 @@
 /*   By: gdanis <gdanis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 08:08:33 by gdanis            #+#    #+#             */
-/*   Updated: 2023/12/15 11:30:25 by gdanis           ###   ########.fr       */
+/*   Updated: 2023/12/16 15:35:15 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,12 +25,10 @@ void	execute_parsed_list(t_parsed *list, char **envp)
 	else if (!ft_strncmp(list->str, "env\0", 4))
 		ft_env(envp);
 	else if (!ft_strncmp(list->str, "export\0", 7))
-		ft_export(envp);
+		ft_export(envp, list);
 	else
 	{
 		printf("command unknown\n");
 		print_parsed_list(list);
 	}
-	
-
 }
