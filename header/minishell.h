@@ -6,7 +6,7 @@
 /*   By: gdanis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 16:49:31 by gdanis            #+#    #+#             */
-/*   Updated: 2023/12/16 17:16:16 by gdanis           ###   ########.fr       */
+/*   Updated: 2023/12/17 08:50:07 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,7 @@ void		ft_pwd(void);
 void		ft_setenv(char ***envp, char *str);
 void		sort_var_list(char **dup);
 void		ft_print_export_lines(char **dup, int i, int j);
+void		free_2d_array(void **ptr);
 char		**dup_envp(char **envp);
 char		*token_type(int i);
 char		*expand_var(char *str);

@@ -1,0 +1,26 @@
+
+
+
+
+
+* delimiters are
+	<
+	>
+	<<
+	>>
+	|
+	space -> if not inside quote
+
+if quote opened
+	space is not a delimiter anymore
+	the other quote-type is taken only literally
+	the next quote of same type closes quote but does not start new node
+	it does not seem to be possible to nest quotes
+	inside single quote Variable not expanded
+	quotes are not part of final string
+
+Variable
+	delimited by anything not alnum and '_'
+	variables can be right after each other
+	
+

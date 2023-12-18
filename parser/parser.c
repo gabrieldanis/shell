@@ -6,7 +6,7 @@
 /*   By: gdanis <gdanis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/10 09:37:21 by gdanis            #+#    #+#             */
-/*   Updated: 2023/12/16 12:33:06 by gdanis           ###   ########.fr       */
+/*   Updated: 2023/12/17 09:57:33 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -198,11 +198,8 @@ char	*expand_var(char *str)
 		final_str = ft_strjoin(final_str, split_str[i++]);
 	while (split_str[i])
 		final_str = ft_strjoin(final_str, getenv(split_str[i++]));
-	i = 0;
-	while (split_str[i])
-		free(split_str[i++]);
-	free(split_str);
-	if (*(strrchr(str, '$') + 1) == '\0')
+	free_2d_array((void **)split_str);
+	if (strrchr(str, '$') && *(strrchr(str, '$') + 1) == '\0')
 		final_str = ft_strjoin(final_str, "$");
 	return (final_str);
 }
@@ -220,10 +217,10 @@ t_parsed	*info_parsed_list(t_parsed *list)
 		i++;
 		if (tmp->type == 7 && tmp->next)
 			tmp->next->eof = 1;
-		if (tmp->type == 3)
-			tmp->expand = expand_var(tmp->str);
 		if (tmp->type == 9 || tmp->type == 10)
 			expand_quote(tmp);
+		else if (ft_strchr(tmp->str, '$'))
+			tmp->expand = expand_var(tmp->str);
 		tmp = tmp->next;
 	}
 	list->type = 11;
@@ -251,8 +248,10 @@ t_parsed	*type_parsed_list(t_parsed *list)
 			tmp->type = 2;
 		if (ft_strchr(tmp->str, '/') || ft_strchr(tmp->str, '.'))	
 			tmp->type = 1;
+		/*
 		if (ft_strchr(tmp->str, '$'))	
 			tmp->type = 3;
+			*/
 		if (!ft_strncmp(tmp->str, "\'", 1))	
 			tmp->type = 9;
 		if (!ft_strncmp(tmp->str, "\"", 1))	
