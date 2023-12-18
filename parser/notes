@@ -22,5 +22,11 @@ if quote opened
 Variable
 	delimited by anything not alnum and '_'
 	variables can be right after each other
+
+
+"hello there"'hi'"a$var1$var2=hi"
+
+content = Date_today_is=$var1$var2$var3
+expand = Date_today_is=2023/12/18
 	
 

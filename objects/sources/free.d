@@ -1,4 +1,4 @@
-objects/sources/main.o: sources/main.c sources/../header/minishell.h \
+objects/sources/free.o: sources/free.c sources/../header/minishell.h \
   /usr/include/stdio.h \
   /usr/include/x86_64-linux-gnu/bits/libc-header-start.h \
   /usr/include/features.h /usr/include/features-time64.h \

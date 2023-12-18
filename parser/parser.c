@@ -6,7 +6,7 @@
 /*   By: gdanis <gdanis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/10 09:37:21 by gdanis            #+#    #+#             */
-/*   Updated: 2023/12/17 09:57:33 by gdanis           ###   ########.fr       */
+/*   Updated: 2023/12/18 17:12:51 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 int	delimiter_char(char c)
 {
 	if (c == ' ' || c == '\0' || c == '|' || c == '<' 
-		|| c == '>' || c == '"' || c == 39)
+		|| c == '>')
 		return (1);
 	return (0);
 }
@@ -34,6 +34,154 @@ t_parsed	*p_lstlast(t_parsed *list)
 	return (list);
 }
 
+t_parsed	*op_char_node(t_token *list, t_parsed *plist)	
+{
+	t_parsed	*tmp;
+
+	tmp = (t_parsed *) malloc (sizeof(t_parsed));
+	if (!tmp)
+			free_and_exit();
+	*tmp = (t_parsed){0};
+	tmp->str = ft_strdup(list->str);
+	if (!plist) 
+		plist = tmp;
+	else
+		p_lstlast(plist)->next = tmp;
+	return (plist);
+}
+
+void	set_q_flag(t_token *list, int *q_flag)
+{
+	if (list)
+	{
+		if (list->str[0] == 39)
+				*q_flag = 1;
+		if (list->str[0] == '"')
+				*q_flag = 2;
+	}
+}
+
+
+t_parsed	*word_node(t_token **list, t_parsed *plist)	
+{
+	t_parsed	*tmp;
+	int	q_flag;
+	char	*old_str;
+	char	*quotes;
+
+	quotes = " '\"";
+	q_flag = 0;
+	tmp = (t_parsed *) malloc (sizeof(t_parsed));
+	if (!tmp)
+			free_and_exit();
+	*tmp = (t_parsed){0};
+	if (!plist) 
+		plist = tmp;
+	else
+		p_lstlast(plist)->next = tmp;
+	set_q_flag(*list, &q_flag);
+	while (*list && !delimiter_char((*list)->str[0]))
+	{
+		if (*list && !delimiter_char((*list)->str[0]) && !q_flag)
+		{
+			p_lstlast(plist)->str = ft_strdup((*list)->str);
+			*list = (*list)->next;
+			set_q_flag(*list, &q_flag);
+		}
+		if (*list && !delimiter_char((*list)->str[0]) && q_flag)
+		{
+			*list = (*list)->next;
+			while (*list && quotes[q_flag] != (*list)->str[0])	
+			{
+				old_str = p_lstlast(plist)->str;
+				p_lstlast(plist)->str = ft_strjoin(p_lstlast(plist)->str, (*list)->str); 
+				if (old_str)
+					free(old_str);
+				*list = (*list)->next;
+			}
+			*list = (*list)->next;
+			set_q_flag(*list, &q_flag);
+		}
+	}
+	return (plist);
+}
+
+
+/*
+t_parsed	*word_node(t_token **list, t_parsed *plist)	
+{
+	t_parsed	*tmp;
+	int	q_flag;
+	char	*old_str;
+	char	*quotes;
+
+	quotes = " '\"";
+	q_flag = 0;
+	tmp = (t_parsed *) malloc (sizeof(t_parsed));
+	if (!tmp)
+			free_and_exit();
+	*tmp = (t_parsed){0};
+	set_q_flag(*list, &q_flag);
+	if (!q_flag)
+		tmp->str = ft_strdup((*list)->str);
+	*list = (*list)->next;
+	set_q_flag(*list, &q_flag);
+	if (!plist) 
+		plist = tmp;
+	else
+		p_lstlast(plist)->next = tmp;
+	while (*list)
+	{
+		if (!q_flag && delimiter_char((*list)->str[0]))
+			break ;
+		old_str = p_lstlast(plist)->str;
+		if (q_flag && (*list)->str[0] != quotes[q_flag])
+		{
+			if (p_lstlast(plist)->str)
+				p_lstlast(plist)->str = ft_strjoin(p_lstlast(plist)->str, (*list)->str);
+			else
+				p_lstlast(plist)->str = ft_strdup((*list)->str);
+		}
+		if (!p_lstlast(plist)->str)
+				free_and_exit();
+		if (quotes[q_flag] == (*list)->str[0])
+			break ;
+		if (old_str)
+			free(old_str);
+		*list = (*list)->next;
+		set_q_flag(*list, &q_flag);
+	}
+	if (q_flag && quotes[q_flag] != (*list)->str[0])
+	{
+		printf("error: unclosed quote\n");
+		exit (1);
+	}
+	return (plist);
+}
+*/
+
+t_parsed	*parser(t_token *list)
+{
+	t_parsed *plist;
+
+	plist = NULL;
+	while (list)
+	{
+		while (list && list->str[0] != ' ')
+		{
+			if (op_char(list->str[0]))
+					plist = op_char_node(list, plist);
+			else
+					plist = word_node(&list, plist);
+			if (list)
+				list = list->next;
+		}
+		if (list)
+			list = list->next;
+	}
+	return (plist);
+}
+/*
 t_parsed	*parser(t_token *list)
 {
 	t_parsed *plist;
@@ -110,6 +258,7 @@ t_parsed	*parser(t_token *list)
 	}
 	return (plist);
 }
+*/
 
 char	*expand_var_in_quote(char *str)
 {
