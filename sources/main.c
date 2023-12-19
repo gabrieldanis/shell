@@ -6,7 +6,7 @@
 /*   By: gdanis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 16:48:10 by gdanis            #+#    #+#             */
-/*   Updated: 2023/12/18 16:02:52 by gdanis           ###   ########.fr       */
+/*   Updated: 2023/12/19 15:02:21 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "../header/minishell.h"
@@ -25,8 +25,8 @@ int	main(int argc, char **argv, char **envp)
 		str = readline("💻 minishell > ");
 		add_history(str);
 		list = tokenizer(str);
-		print_tokens(list);
 		plist = parser(list);
+		plist = expander(plist);
 		print_parsed_list(plist);
 		/*
 		plist = type_parsed_list(plist);
