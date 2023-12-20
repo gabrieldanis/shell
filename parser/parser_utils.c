@@ -6,7 +6,7 @@
 /*   By: gdanis <gdanis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 14:40:55 by gdanis            #+#    #+#             */
-/*   Updated: 2023/12/20 10:00:21 by gdanis           ###   ########.fr       */
+/*   Updated: 2023/12/20 11:05:31 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,6 @@ void	set_q_flag(t_token *list, int *q_flag, char *quotes)
 	}
 	else if (list && *q_flag && list->str[0] == quotes[*q_flag])
 		*q_flag = 0;
-
 }
 
 void	plist_strjoin(t_parsed *plist, t_token **list, int *q_flag, char *quotes)

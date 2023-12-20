@@ -6,11 +6,35 @@
 /*   By: gdanis <gdanis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 15:04:02 by gdanis            #+#    #+#             */
-/*   Updated: 2023/12/20 10:29:19 by gdanis           ###   ########.fr       */
+/*   Updated: 2023/12/20 11:06:55 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../header/minishell.h"
+
+void	remove_quotes(t_parsed *plist)
+{
+	char	*quotes;
+	char	*tmp;
+	int	q_flag;
+	int	i;
+
+	quotes = " '\"";
+	q_flag = 0;
+	tmp = NULL;
+	i = 0;
+	while (plist->str[i])	
+	{
+		set_q_flag_ex(plist, &q_flag, quotes, &i);
+		if (plist->str[i])
+		{
+			ft_charjoin(&tmp, plist->str[i]);
+			i++;
+		}
+	}
+	free(plist->str);
+	plist->str = tmp;
+}
 
 void	expand_sublist_var (t_parsed *plist, int *i)
 {
@@ -23,13 +47,31 @@ void	expand_sublist_var (t_parsed *plist, int *i)
 			}
 }
 
-void	expand_sublist_nonvar(t_parsed *plist, int *i, int *sq_flag)
+void	set_q_flag_plist(t_parsed *list, int *q_flag, char *quotes)
 {
+	if (list && !*q_flag)
+	{
+		if (list->str[0] == 39)
+				*q_flag = 1;
+		if (list->str[0] == '"')
+				*q_flag = 2;
+	}
+	else if (list && *q_flag && list->str[0] == quotes[*q_flag])
+		*q_flag = 0;
+}
+
+void	expand_sublist_nonvar(t_parsed *plist, int *i)
+{
+	char	*quotes;
+	int	q_flag;
+
+	quotes = " '\"";
+	q_flag = 0;
 	while (plist->str[*i])
 	{
-		if (plist->str[*i] == '$' && !(*sq_flag))
+		if (plist->str[*i] == '$' && q_flag != 1)
 			break ;
-		set_sq_flag(sq_flag, plist->str[*i]);
+		set_q_flag_plist(plist, &q_flag, quotes);
 		ft_charjoin(&(p_lstlast(plist->ex)->str), plist->str[*i]);
 		(*i)++;
 	}
@@ -38,10 +80,8 @@ void	expand_sublist_nonvar(t_parsed *plist, int *i, int *sq_flag)
 void	expand_sublist(t_parsed *plist)
 {
 	t_parsed	*tmp;
-	int	sq_flag;
 	int	i;
 
-	sq_flag = 0;
 	i =0;
 	while (plist->str[i])
 	{
@@ -51,7 +91,7 @@ void	expand_sublist(t_parsed *plist)
 		*tmp = (t_parsed){0};
 		plist_add_to_last_ex(&tmp, &plist);
 		if (plist->str[i] != '$')
-			expand_sublist_nonvar(plist, &i, &sq_flag);
+			expand_sublist_nonvar(plist, &i);
 		else
 			expand_sublist_var(plist, &i);
 	}
@@ -97,30 +137,6 @@ void	strjoin_expanded_str(t_parsed *plist)
 	plist->ex = start;
 }
 
-void	remove_quotes(t_parsed *plist)
-{
-	char	*quotes;
-	char	*tmp;
-	int	q_flag;
-	int	i;
-
-	quotes = " '\"";
-	q_flag = 0;
-	tmp = NULL;
-	i = 0;
-	while (plist->str[i])	
-	{
-		set_q_flag_ex(plist, &q_flag, quotes, &i);
-		if (plist->str[i])
-		{
-			ft_charjoin(&tmp, plist->str[i]);
-			i++;
-		}
-	}
-	free(plist->str);
-	plist->str = tmp;
-}
-
 t_parsed *expander(t_parsed *plist)
 {
 	t_parsed	*start;
@@ -132,7 +148,8 @@ t_parsed *expander(t_parsed *plist)
 			expand_sublist(plist);
 		if (plist->ex)
 			strjoin_expanded_str(plist);
-		remove_quotes(plist);
+		if (ft_strchr(plist->str, '"') || ft_strchr(plist->str, 39))
+			remove_quotes(plist);
 		plist = plist->next;
 	}
 	return (start);
