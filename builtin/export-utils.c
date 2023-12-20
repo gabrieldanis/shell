@@ -6,7 +6,7 @@
 /*   By: gdanis <gdanis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/16 17:13:51 by gdanis            #+#    #+#             */
-/*   Updated: 2023/12/16 17:14:38 by gdanis           ###   ########.fr       */
+/*   Updated: 2023/12/20 14:56:25 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ char	**dup_envp(char **envp)
 	i = 0;
 	while (envp[i])
 	{
-		dup[i] = envp[i];
+		dup[i] = ft_strdup(envp[i]);
 		i++;
 	}
 	dup[i] = NULL;
@@ -93,4 +93,20 @@ void	ft_print_export_lines(char **dup, int i, int j)
 		}
 		i++;
 	}
+}
+
+int	is_varname(char *str)
+{
+	int	i;
+
+	i = 0;	
+	if (!ft_isalpha(str[i]))
+		return (0);
+	while (str[i] && str[i] != '+' && str[i] != '=')
+	{
+		if (!check_is_var(str[i]))
+			return (0);
+		i++;
+	}
+	return (1);
 }

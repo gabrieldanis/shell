@@ -6,7 +6,7 @@
 /*   By: gdanis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 16:49:31 by gdanis            #+#    #+#             */
-/*   Updated: 2023/12/20 09:52:47 by gdanis           ###   ########.fr       */
+/*   Updated: 2023/12/20 14:16:11 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@
 
 # define MALLOC_ERROR 1
 # define QUOTE_ERROR 2
-
+# define IDENT_ERROR 3
 
 
 
@@ -94,7 +94,6 @@ void		execute_parsed_list(t_parsed *list, char **envp);
 void		ft_echo(t_parsed *list);
 void		ft_exit(t_parsed *list);
 void		ft_pwd(void);
-void		ft_setenv(char ***envp, char *str);
 void		sort_var_list(char **dup);
 void		ft_print_export_lines(char **dup, int i, int j);
 void		free_2d_array(void **ptr);
@@ -105,9 +104,14 @@ void		plist_add_to_last(t_parsed **tmp, t_parsed **plist);
 void		plist_add_to_last_ex(t_parsed **tmp, t_parsed **plist);
 void		set_q_flag_ex(t_parsed *list, int *q_flag, char *quotes, int *i);
 void		set_sq_flag(int *sq_flag, char c);
+void		set_q_flag_plist(t_parsed *list, int *q_flag, char *quotes);
+void		remove_quotes(t_parsed *plist);
+void		error_message(int n, char *exe_name, char *str);
 char		**dup_envp(char **envp);
 char		*token_type(int i);
 char		*expand_var(char *str);
+int		ft_setenv(char ***envp, char *str);
+int		is_varname(char *str);
 int		ft_chdir(t_parsed *list);
 int		ft_env(char **envp);
 int		ft_export(char **envp, t_parsed *list, int env);

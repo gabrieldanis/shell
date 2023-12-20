@@ -6,35 +6,11 @@
 /*   By: gdanis <gdanis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 15:04:02 by gdanis            #+#    #+#             */
-/*   Updated: 2023/12/20 11:06:55 by gdanis           ###   ########.fr       */
+/*   Updated: 2023/12/20 11:11:02 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../header/minishell.h"
-
-void	remove_quotes(t_parsed *plist)
-{
-	char	*quotes;
-	char	*tmp;
-	int	q_flag;
-	int	i;
-
-	quotes = " '\"";
-	q_flag = 0;
-	tmp = NULL;
-	i = 0;
-	while (plist->str[i])	
-	{
-		set_q_flag_ex(plist, &q_flag, quotes, &i);
-		if (plist->str[i])
-		{
-			ft_charjoin(&tmp, plist->str[i]);
-			i++;
-		}
-	}
-	free(plist->str);
-	plist->str = tmp;
-}
 
 void	expand_sublist_var (t_parsed *plist, int *i)
 {
@@ -45,19 +21,6 @@ void	expand_sublist_var (t_parsed *plist, int *i)
 				if (!check_is_var(plist->str[*i]))
 					break ;
 			}
-}
-
-void	set_q_flag_plist(t_parsed *list, int *q_flag, char *quotes)
-{
-	if (list && !*q_flag)
-	{
-		if (list->str[0] == 39)
-				*q_flag = 1;
-		if (list->str[0] == '"')
-				*q_flag = 2;
-	}
-	else if (list && *q_flag && list->str[0] == quotes[*q_flag])
-		*q_flag = 0;
 }
 
 void	expand_sublist_nonvar(t_parsed *plist, int *i)
