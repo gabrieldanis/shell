@@ -6,7 +6,7 @@
 /*   By: gdanis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 16:49:31 by gdanis            #+#    #+#             */
-/*   Updated: 2023/12/19 16:43:29 by gdanis           ###   ########.fr       */
+/*   Updated: 2023/12/20 09:52:47 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,6 +103,8 @@ void		free_and_exit(int n);
 void		plist_strjoin(t_parsed *plist, t_token **list, int *q_flag, char *quotes);
 void		plist_add_to_last(t_parsed **tmp, t_parsed **plist);
 void		plist_add_to_last_ex(t_parsed **tmp, t_parsed **plist);
+void		set_q_flag_ex(t_parsed *list, int *q_flag, char *quotes, int *i);
+void		set_sq_flag(int *sq_flag, char c);
 char		**dup_envp(char **envp);
 char		*token_type(int i);
 char		*expand_var(char *str);

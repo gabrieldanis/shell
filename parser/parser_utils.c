@@ -6,7 +6,7 @@
 /*   By: gdanis <gdanis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 14:40:55 by gdanis            #+#    #+#             */
-/*   Updated: 2023/12/19 16:29:08 by gdanis           ###   ########.fr       */
+/*   Updated: 2023/12/20 10:00:21 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ void	print_parsed_list(t_parsed *list)
 		{
 			while (list->ex)
 			{
-				printf("\t%s\n", list->ex->str);
+				printf("\t\t\t%s\n", list->ex->str);
 				list->ex = list->ex->next;
 			}
 		}
