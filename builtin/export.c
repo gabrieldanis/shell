@@ -6,7 +6,7 @@
 /*   By: gdanis <gdanis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/15 11:28:20 by gdanis            #+#    #+#             */
-/*   Updated: 2023/12/20 22:36:55 by gdanis           ###   ########.fr       */
+/*   Updated: 2023/12/21 19:39:22 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,7 +125,7 @@ int	ft_setenv(char ***envp, char *str)
 		i++;
 	*envp = (char **)malloc(sizeof(char *) * (i + 2));
 	if (!(*envp))
-		free_and_exit(MALLOC_ERROR);
+		free_and_exit(MALLOC_ERROR, NULL, NULL, NULL);
 	i = 0;
 	while (tmp[i] && ft_strncmp(tmp[i], "_=", 2))
 	{

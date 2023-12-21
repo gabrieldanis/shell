@@ -6,7 +6,7 @@
 /*   By: gdanis <gdanis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/10 09:37:21 by gdanis            #+#    #+#             */
-/*   Updated: 2023/12/19 15:04:12 by gdanis           ###   ########.fr       */
+/*   Updated: 2023/12/21 19:42:01 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,9 @@ t_parsed	*op_char_node(t_token **list, t_parsed *plist)
 {
 	t_parsed	*tmp;
 
-	tmp = (t_parsed *) malloc (sizeof(t_parsed));
+	tmp = (t_parsed *)malloc(sizeof(t_parsed));
 	if (!tmp)
-			free_and_exit(1);
+		free_and_exit(MALLOC_ERROR, NULL, NULL, NULL);
 	*tmp = (t_parsed){0};
 	tmp->str = ft_strdup((*list)->str);
 	plist_add_to_last(&tmp, &plist);
@@ -37,7 +37,7 @@ t_parsed	*word_node(t_token **list, t_parsed *plist)
 	q_flag = 0;
 	tmp = (t_parsed *) malloc (sizeof(t_parsed));
 	if (!tmp)
-			free_and_exit(MALLOC_ERROR);
+		free_and_exit(MALLOC_ERROR, NULL, NULL, NULL);
 	*tmp = (t_parsed){0};
 	plist_add_to_last(&tmp, &plist);
 	while (*list && !delimiter_char((*list)->str[0]))
@@ -47,7 +47,7 @@ t_parsed	*word_node(t_token **list, t_parsed *plist)
 		while (*list && q_flag)
 			plist_strjoin(plist, list, &q_flag, quotes);
 		if (!(*list) && q_flag)
-			free_and_exit(QUOTE_ERROR);
+			free_and_exit(MALLOC_ERROR, NULL, NULL, NULL);
 	}
 	return (plist);
 }

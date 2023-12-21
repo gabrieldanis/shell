@@ -6,7 +6,7 @@
 /*   By: gdanis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 16:49:31 by gdanis            #+#    #+#             */
-/*   Updated: 2023/12/21 14:47:28 by gdanis           ###   ########.fr       */
+/*   Updated: 2023/12/21 19:31:30 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,14 +91,14 @@ void		idx_tokens(t_token *list);
 void		print_parsed_tokens(t_token *list);
 void		type_tokens(t_token *list);
 void		block_tokens(t_token *list);
-void		execute_parsed_list(t_parsed *list, char ***envp);
+void		execute_parsed_list(t_parsed *plist, char ***envp, t_token *list);
 void		ft_echo(t_parsed *list);
 void		ft_exit(t_parsed *list);
 void		sort_var_list(char **dup);
 void		ft_print_export_lines(char **dup, int i, int j);
 void		free_2d_array(void **ptr);
 void		set_q_flag(t_token *list, int *q_flag, char *quotes);
-void		free_and_exit(int n);
+void		free_and_exit(int n, t_token *list, t_parsed *plist, char **envp);
 void		plist_strjoin(t_parsed *plist, t_token **list, int *q_flag, char *quotes);
 void		plist_add_to_last(t_parsed **tmp, t_parsed **plist);
 void		plist_add_to_last_ex(t_parsed **tmp, t_parsed **plist);
@@ -106,6 +106,8 @@ void		set_q_flag_ex(t_parsed *list, int *q_flag, char *quotes, int *i);
 void		set_sq_flag(int *sq_flag, char c);
 void		set_q_flag_plist(t_parsed *list, int *q_flag, char *quotes);
 void		remove_quotes(t_parsed *plist);
+void		free_token_list(t_token *list);
+void		free_parsed_list(t_parsed *list);
 char		**dup_envp(char **envp);
 char		*token_type(int i);
 char		*expand_var(char *str);

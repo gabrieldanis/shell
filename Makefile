@@ -44,15 +44,19 @@ COLOR_PURPLE=\033[37m
 COLOR_END=\033[0m
 
 # RULES BEGIN HERE
+.PHONY: all
 all: $(NAME)
 
-$(NAME): $(OBJECTS) libft/libft.a
-	@echo "$(COLOR_GREEN)+$(COLOR_END)$(COLOR_PURPLE) creating $(NAME) objects and dependencies$(COLOR_END)"
-	@echo "$(COLOR_GREEN)+$(COLOR_END)$(COLOR_PURPLE) creating $(NAME)$(COLOR_END)"
+$(NAME): $(OBJECTS) libft/libft.a 
+	@ echo ""
+	@ echo -n "$(COLOR_PURPLE) creating $(NAME) exe:       $(COLOR_END)"
 	@$(CC) -o $@ $(OBJECTS) $(LIBFT) $(EXTRAFLAGS)
+	@ echo "$(COLOR_GREEN)done$(COLOR_END)"
+
 
 # only want the .c file dependency here, thus $< instead of $^.
-$(OBJDIR)/%.o:%.c
+$(OBJDIR)/%.o:%.c msg
+	@echo -n "$(COLOR_GREEN)+$(COLOR_END)"
 	@mkdir -p $(foreach D,$(CODEDIRS), $(OBJDIR)/$(D))
 	@$(CC) $(CFLAGS) -c -o $@ $<
 
@@ -60,6 +64,10 @@ libft/libft.a:
 	@echo "$(COLOR_GREEN)+$(COLOR_END)$(COLOR_PURPLE) creating libft objects$(COLOR_END)"
 	@echo "$(COLOR_GREEN)+$(COLOR_END)$(COLOR_PURPLE) creating static library libft$(COLOR_END)"
 	@$(MAKE) -C libft all > /dev/null 2>&1
+
+.INTERMEDIATE: msg
+msg:
+	@echo -n "$(COLOR_PURPLE) creating $(NAME) objects:   $(COLOR_END)"
 
 clean:
 	@echo "$(COLOR_RED)-$(COLOR_END)$(COLOR_PURPLE) deleting $(NAME) objects and dependencies$(COLOR_END)"
@@ -90,4 +98,4 @@ diff:
 -include $(DEPFILES)
 
 # add .PHONY so that the non-targetfile - rules work even if a file with the same name exists.
-.PHONY: all clean fclean re distribute diff
+#.PHONY: all clean fclean re distribute diff

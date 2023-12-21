@@ -6,7 +6,7 @@
 /*   By: gdanis <gdanis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 15:04:02 by gdanis            #+#    #+#             */
-/*   Updated: 2023/12/20 11:11:02 by gdanis           ###   ########.fr       */
+/*   Updated: 2023/12/21 19:38:25 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,13 @@
 
 void	expand_sublist_var (t_parsed *plist, int *i)
 {
-			while (plist->str[*i])	
-			{
-				ft_charjoin(&(p_lstlast(plist->ex)->str), plist->str[*i]);
-				(*i)++;
-				if (!check_is_var(plist->str[*i]))
-					break ;
-			}
+	while (plist->str[*i])	
+	{
+		ft_charjoin(&(p_lstlast(plist->ex)->str), plist->str[*i]);
+		(*i)++;
+		if (!check_is_var(plist->str[*i]))
+			break ;
+	}
 }
 
 void	expand_sublist_nonvar(t_parsed *plist, int *i)
@@ -50,7 +50,7 @@ void	expand_sublist(t_parsed *plist)
 	{
 		tmp = (t_parsed *) malloc (sizeof(t_parsed));
 		if (!tmp)
-				free_and_exit(MALLOC_ERROR);
+			free_and_exit(MALLOC_ERROR, NULL, NULL, NULL);
 		*tmp = (t_parsed){0};
 		plist_add_to_last_ex(&tmp, &plist);
 		if (plist->str[i] != '$')

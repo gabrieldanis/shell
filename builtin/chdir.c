@@ -6,7 +6,7 @@
 /*   By: gdanis <gdanis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/15 09:17:56 by gdanis            #+#    #+#             */
-/*   Updated: 2023/12/21 16:00:33 by gdanis           ###   ########.fr       */
+/*   Updated: 2023/12/21 19:38:44 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,13 +19,13 @@ void	update_pwd(char ***envp, char *pwd)
 
 	tmp = ft_strjoin("OLDPWD=", pwd);
 	if (!tmp)
-		free_and_exit(MALLOC_ERROR);
+		free_and_exit(MALLOC_ERROR, NULL, NULL, NULL);
 	ft_setenv(envp, tmp);
 	free(tmp);
 	getcwd(pwd_new, sizeof(pwd_new));
 	tmp = ft_strjoin("PWD=", pwd_new);
 	if (!tmp)
-		free_and_exit(MALLOC_ERROR);
+		free_and_exit(MALLOC_ERROR, NULL, NULL, NULL);
 	ft_setenv(envp, tmp);
 	free(tmp);
 }

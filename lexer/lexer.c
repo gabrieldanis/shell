@@ -6,7 +6,7 @@
 /*   By: gdanis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/08 09:51:30 by gdanis            #+#    #+#             */
-/*   Updated: 2023/12/14 10:19:29 by gdanis           ###   ########.fr       */
+/*   Updated: 2023/12/21 19:40:59 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "../header/minishell.h"
@@ -43,16 +43,24 @@ void	char_to_token(t_token **list, int *flag, int *i, char *str)
 	if (*flag == 0)
 	{
 		tmp = (t_token *)malloc(sizeof(t_token));
+		if (!tmp)
+			free_and_exit(MALLOC_ERROR, NULL, NULL, NULL);
 		*tmp = (t_token){0};
 		if (!(*list))
 			*list = tmp;
 		else
 			last_token(*list)->next = tmp;
 		ft_charjoin(&(last_token(*list)->str), str[*i]);
+		if (!last_token(*list)->str)
+			free_and_exit(MALLOC_ERROR, NULL, NULL, NULL);
 		*flag = 1;
 	}
 	else
+	{
 		ft_charjoin(&(last_token(*list)->str), str[*i]);
+		if (!last_token(*list)->str)
+			free_and_exit(MALLOC_ERROR, NULL, NULL, NULL);
+	}
 	(*i)++;
 }
 
@@ -68,12 +76,16 @@ void	space_to_token(t_token **list, int *flag, int *i, char *str)
 		j++;
 	}
 	tmp = (t_token *)malloc(sizeof(t_token));
+	if (!tmp)
+		free_and_exit(MALLOC_ERROR, NULL, NULL, NULL);
 	*tmp = (t_token){0};
 	if (!(*list))
 		*list = tmp;
 	else
 		last_token(*list)->next = tmp;
 	last_token(*list)->str = (char *) malloc (sizeof(char) * (j + 1));
+	if (!last_token(*list)->str)
+		free_and_exit(MALLOC_ERROR, NULL, NULL, NULL);
 	ft_memset(last_token((*list))->str, ' ', j);
 	last_token((*list))->str[j] = '\0';
 	*flag = 0;

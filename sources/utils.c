@@ -6,7 +6,7 @@
 /*   By: gdanis <gdanis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/17 08:49:36 by gdanis            #+#    #+#             */
-/*   Updated: 2023/12/21 10:34:25 by gdanis           ###   ########.fr       */
+/*   Updated: 2023/12/21 18:30:15 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,12 +32,16 @@ void	free_2d_array(void **ptr)
 	int	i;
 
 	i = 0;
-	while (ptr[i])
+	if (ptr)
 	{
-		free(ptr[i]);
-		i++;
+		while (ptr[i])
+		{
+			if (ptr[i])
+				free(ptr[i]);
+			i++;
+		}
+		free(ptr);
 	}
-	free(ptr);
 }
 
 int	delimiter_char(char c)

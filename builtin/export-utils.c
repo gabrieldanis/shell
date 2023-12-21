@@ -6,7 +6,7 @@
 /*   By: gdanis <gdanis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/16 17:13:51 by gdanis            #+#    #+#             */
-/*   Updated: 2023/12/20 14:56:25 by gdanis           ###   ########.fr       */
+/*   Updated: 2023/12/21 19:39:05 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,8 @@ char	**dup_envp(char **envp)
 	while (envp[i])
 		i++;
 	dup = (char **)malloc(sizeof(char *) * (i + 1));
+	if (!dup)
+		free_and_exit(MALLOC_ERROR, NULL, NULL, NULL);
 	i = 0;
 	while (envp[i])
 	{
