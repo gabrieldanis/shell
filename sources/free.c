@@ -6,7 +6,7 @@
 /*   By: gdanis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 13:17:49 by gdanis            #+#    #+#             */
-/*   Updated: 2023/12/20 14:32:58 by gdanis           ###   ########.fr       */
+/*   Updated: 2023/12/21 10:54:47 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,5 +19,5 @@ void	free_and_exit(int n)
 	 * great code that frees everything
 	 * goes here :
 	 */
-	exit (1);
+	exit (n);
 }

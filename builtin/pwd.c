@@ -6,16 +6,18 @@
 /*   By: gdanis <gdanis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 15:45:08 by gdanis            #+#    #+#             */
-/*   Updated: 2023/12/14 15:47:52 by gdanis           ###   ########.fr       */
+/*   Updated: 2023/12/21 10:55:55 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../header/minishell.h"
 
-void	ft_pwd(void)
+int	ft_pwd(void)
 {
-	char	path[256];
+	char	path[500];
 
-	getcwd(path, 256);
+	if (getcwd(path, sizeof(path)) == NULL)
+		return (error_message(GEN_ERROR, "pwd", NULL));
 	printf("%s\n", path);
+	return (0);
 }
