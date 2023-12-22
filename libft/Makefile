@@ -5,26 +5,43 @@ OBJDIR=objects
 CFILES=$(wildcard *.c)
 OBJECTS=$(addprefix $(OBJDIR)/,$(notdir $(CFILES:.c=.o)))
 
+COLOR_GREEN=\033[0;32m
+COLOR_RED=\033[0;31m
+COLOR_BLUE=\033[0;34m
+COLOR_CYAN=\033[1;33m
+COLOR_MAGENTA=\033[1;35m
+COLOR_END=\033[0m
+COLOR_B_MAGENTA=\033[1;35m
+
+.PHONY: all
 all: $(NAME)
 
 $(NAME): $(OBJECTS) 
-	ar rcs $(NAME) $(OBJECTS) 
+	@echo " ]"
+	@printf " $(COLOR_CYAN)$(NAME)$(COLOR_END) library:\t\t"
+	@ar rcs $(NAME) $(OBJECTS) 
+	@echo "[$(COLOR_GREEN) done $(COLOR_END)]"
 
-$(OBJDIR)/%.o: %.c
-	mkdir -p $(OBJDIR)
-	$(CC) $(CFLAGS) -c -o $@ $^
+$(OBJDIR)/%.o:%.c | msg_start
+	@printf "$(COLOR_GREEN)+$(COLOR_END)"
+	@mkdir -p $(OBJDIR)
+	@$(CC) $(CFLAGS) -c -o $@ $<
+
+.INTERMEDIATE: msg_start
+msg_start:
+	@printf " compiling object files:\t[ "
 # Remove object files
 clean:
-	rm -rf $(OBJDIR)
+	@rm -rf $(OBJDIR)
 
 # Remove object files and libft.a
 fclean: clean
-	rm -f $(NAME)
+	@rm -f $(NAME)
 
 execlean:
-	rm -f $(NAME)
+	@rm -f $(NAME)
 # Rebuild program
 re: fclean all
 
 # These targets are always executed
-.PHONY: all clean fclean re
+#.PHONY: clean fclean re

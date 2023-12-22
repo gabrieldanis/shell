@@ -41,7 +41,7 @@ DEPFILES=$(patsubst %.c,$(OBJDIR)/%.d,$(CFILES))
 COLOR_GREEN=\033[0;32m
 COLOR_RED=\033[0;31m
 COLOR_BLUE=\033[0;34m
-COLOR_CYAN=\033[1;36m
+COLOR_CYAN=\033[1;33m
 COLOR_MAGENTA=\033[1;35m
 COLOR_END=\033[0m
 COLOR_B_MAGENTA=\033[1;35m
@@ -53,11 +53,11 @@ BG_BLACK=\033[40m
 .PHONY: all
 all: $(NAME)
 
-$(NAME): $(OBJECTS) libft/libft.a 
-	@ echo " ]"
-	@ printf " creating $(COLOR_MAGENTA)$(NAME)$(COLOR_END) exe:       "
+$(NAME): libft/libft.a $(OBJECTS)
+	@echo " ]"
+	@printf " $(COLOR_CYAN)$(NAME)$(COLOR_END) executable:\t\t"
 	@$(CC) -o $@ $(OBJECTS) $(LIBFT) $(EXTRAFLAGS)
-	@ echo "[$(COLOR_GREEN) done $(COLOR_END)]"
+	@echo "[$(COLOR_GREEN) done $(COLOR_END)]"
 
 
 # only want the .c file dependency here, thus $< instead of $^.
@@ -67,25 +67,23 @@ $(OBJDIR)/%.o:%.c msg
 	@$(CC) $(CFLAGS) -c -o $@ $<
 
 libft/libft.a:
-	@echo "$(COLOR_GREEN)+$(COLOR_END)$(COLOR_PURPLE) creating libft objects$(COLOR_END)"
-	@echo "$(COLOR_GREEN)+$(COLOR_END)$(COLOR_PURPLE) creating static library libft$(COLOR_END)"
-	@$(MAKE) -C libft all > /dev/null 2>&1
+	@$(MAKE) -s -C libft all
 
 .INTERMEDIATE: msg
 msg:
-	@printf " creating $(COLOR_MAGENTA)$(NAME)$(COLOR_END) objects:   [ "
+	@printf " compiling object files:\t[ "
 
 clean:
-	@echo "$(COLOR_RED)-$(COLOR_END)$(COLOR_PURPLE) deleting $(NAME) objects and dependencies$(COLOR_END)"
-	@echo "$(COLOR_RED)-$(COLOR_END)$(COLOR_PURPLE) deleting libft objects$(COLOR_END)"
+	@echo "$(COLOR_RED)-$(COLOR_END)$(COLOR_PURPLE) $(NAME) objects and dependencies$(COLOR_END)"
+	@echo "$(COLOR_RED)-$(COLOR_END)$(COLOR_PURPLE) libft objects$(COLOR_END)"
 	@rm -rf $(OBJDIR)
-	@$(MAKE) -C libft clean > /dev/null 2>&1
+	@$(MAKE) -s -C libft clean
 
 fclean: clean
-	@echo "$(COLOR_RED)-$(COLOR_END)$(COLOR_PURPLE) deleting executable $(NAME)$(COLOR_END)"
-	@echo "$(COLOR_RED)-$(COLOR_END)$(COLOR_PURPLE) deleting static library libft$(COLOR_END)"
+	@echo "$(COLOR_RED)-$(COLOR_END)$(COLOR_PURPLE) executable $(NAME)$(COLOR_END)"
+	@echo "$(COLOR_RED)-$(COLOR_END)$(COLOR_PURPLE) static library libft$(COLOR_END)"
 	@rm -rf $(NAME)
-	@$(MAKE) -C libft execlean > /dev/null 2>&1
+	@$(MAKE) -s -C libft execlean
 
 re: fclean all
 
