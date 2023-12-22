@@ -42,16 +42,20 @@ COLOR_RED=\033[0;31m
 COLOR_BLUE=\033[0;34m
 COLOR_PURPLE=\033[37m
 COLOR_END=\033[0m
+COLOR_B_MAGENTA=\033[1;35m
+BG_CYAN=\033[48;5;250m
+
+BG_BLACK=\033[40m
 
 # RULES BEGIN HERE
 .PHONY: all
 all: $(NAME)
 
 $(NAME): $(OBJECTS) libft/libft.a 
-	@ echo ""
+	@ echo " ]"
 	@ echo -n "$(COLOR_PURPLE) creating $(NAME) exe:       $(COLOR_END)"
 	@$(CC) -o $@ $(OBJECTS) $(LIBFT) $(EXTRAFLAGS)
-	@ echo "$(COLOR_GREEN)done$(COLOR_END)"
+	@ echo "[$(COLOR_GREEN) done $(COLOR_END)]"
 
 
 # only want the .c file dependency here, thus $< instead of $^.
@@ -67,7 +71,7 @@ libft/libft.a:
 
 .INTERMEDIATE: msg
 msg:
-	@echo -n "$(COLOR_PURPLE) creating $(NAME) objects:   $(COLOR_END)"
+	@echo -n "$(COLOR_PURPLE) creating $(NAME) objects:   $(COLOR_END)[ "
 
 clean:
 	@echo "$(COLOR_RED)-$(COLOR_END)$(COLOR_PURPLE) deleting $(NAME) objects and dependencies$(COLOR_END)"

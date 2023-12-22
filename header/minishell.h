@@ -6,7 +6,7 @@
 /*   By: gdanis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 16:49:31 by gdanis            #+#    #+#             */
-/*   Updated: 2023/12/21 19:31:30 by gdanis           ###   ########.fr       */
+/*   Updated: 2023/12/22 15:56:07 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,6 +108,7 @@ void		set_q_flag_plist(t_parsed *list, int *q_flag, char *quotes);
 void		remove_quotes(t_parsed *plist);
 void		free_token_list(t_token *list);
 void		free_parsed_list(t_parsed *list);
+int		clear_screen(void);
 char		**dup_envp(char **envp);
 char		*token_type(int i);
 char		*expand_var(char *str);

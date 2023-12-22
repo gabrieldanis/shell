@@ -6,7 +6,7 @@
 /*   By: gdanis <gdanis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 08:08:33 by gdanis            #+#    #+#             */
-/*   Updated: 2023/12/21 19:31:51 by gdanis           ###   ########.fr       */
+/*   Updated: 2023/12/22 15:55:44 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,8 @@ void	execute_parsed_list(t_parsed *plist, char ***envp, t_token *list)
 		ft_export(envp, plist, 0);
 	else if (!ft_strncmp(cmd, "unset\0", 6))
 		ft_unset(envp, plist);
+	else if (!ft_strncmp(cmd, "clear\0", 6))
+		clear_screen();
 	else
 	{
 		printf("command unknown\n");

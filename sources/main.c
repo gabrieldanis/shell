@@ -6,7 +6,7 @@
 /*   By: gdanis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 16:48:10 by gdanis            #+#    #+#             */
-/*   Updated: 2023/12/21 21:05:51 by gdanis           ###   ########.fr       */
+/*   Updated: 2023/12/22 16:02:10 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,9 @@ int	main(int argc, char **argv, char **envp)
 	while (1)
 	{
 		str = readline("💻 minishell > ");
-		add_history(str);
+		if (str[0] != '\0')
+		{
+ 		add_history(str);
 		list = tokenizer(str);
 		plist = parser(list);
 		plist = expander(plist);
@@ -36,9 +38,10 @@ int	main(int argc, char **argv, char **envp)
 		plist = info_parsed_list(plist);
 		*/
 		execute_parsed_list(plist, &s_envp, list);
-		free(str);
-		//free_2d_array((void **)s_envp);
 		free_token_list(list);
 		free_parsed_list(plist);
+		}
+		free(str);
+		//free_2d_array((void **)s_envp);
 	}
 }

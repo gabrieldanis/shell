@@ -6,7 +6,7 @@
 /*   By: gdanis <gdanis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 15:04:02 by gdanis            #+#    #+#             */
-/*   Updated: 2023/12/21 19:38:25 by gdanis           ###   ########.fr       */
+/*   Updated: 2023/12/22 10:06:23 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ void	strjoin_expanded_str(t_parsed *plist)
 			while (plist->ex->str[i])	
 			{
 				set_q_flag_ex(plist->ex, &q_flag, quotes, &i);
-				if (plist->ex->str[i])
+				if (plist->ex->str[i] && plist->ex->str[i] != quotes[q_flag])
 				{
 					ft_charjoin(&plist->expand, plist->ex->str[i]);
 					i++;
