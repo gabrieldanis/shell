@@ -37,10 +37,12 @@ OBJECTS=$(patsubst %.c,$(OBJDIR)/%.o,$(CFILES))
 DEPFILES=$(patsubst %.c,$(OBJDIR)/%.d,$(CFILES))
 
 # COLORS
+#COLOR_GREEN=\033[0;32m
 COLOR_GREEN=\033[0;32m
 COLOR_RED=\033[0;31m
 COLOR_BLUE=\033[0;34m
-COLOR_PURPLE=\033[37m
+COLOR_CYAN=\033[1;36m
+COLOR_MAGENTA=\033[1;35m
 COLOR_END=\033[0m
 COLOR_B_MAGENTA=\033[1;35m
 BG_CYAN=\033[48;5;250m
@@ -53,14 +55,14 @@ all: $(NAME)
 
 $(NAME): $(OBJECTS) libft/libft.a 
 	@ echo " ]"
-	@ echo -n "$(COLOR_PURPLE) creating $(NAME) exe:       $(COLOR_END)"
+	@ printf " creating $(COLOR_MAGENTA)$(NAME)$(COLOR_END) exe:       "
 	@$(CC) -o $@ $(OBJECTS) $(LIBFT) $(EXTRAFLAGS)
 	@ echo "[$(COLOR_GREEN) done $(COLOR_END)]"
 
 
 # only want the .c file dependency here, thus $< instead of $^.
 $(OBJDIR)/%.o:%.c msg
-	@echo -n "$(COLOR_GREEN)+$(COLOR_END)"
+	@printf "$(COLOR_GREEN)+$(COLOR_END)"
 	@mkdir -p $(foreach D,$(CODEDIRS), $(OBJDIR)/$(D))
 	@$(CC) $(CFLAGS) -c -o $@ $<
 
@@ -71,7 +73,7 @@ libft/libft.a:
 
 .INTERMEDIATE: msg
 msg:
-	@echo -n "$(COLOR_PURPLE) creating $(NAME) objects:   $(COLOR_END)[ "
+	@printf " creating $(COLOR_MAGENTA)$(NAME)$(COLOR_END) objects:   [ "
 
 clean:
 	@echo "$(COLOR_RED)-$(COLOR_END)$(COLOR_PURPLE) deleting $(NAME) objects and dependencies$(COLOR_END)"
