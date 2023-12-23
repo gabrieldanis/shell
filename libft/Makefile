@@ -18,7 +18,7 @@ all: $(NAME)
 
 $(NAME): $(OBJECTS) 
 	@echo " ]"
-	@printf " $(COLOR_CYAN)$(NAME)$(COLOR_END) library:\t\t"
+	@printf "  $(COLOR_BLUE)$(NAME)$(COLOR_END) library:\t\t\t"
 	@ar rcs $(NAME) $(OBJECTS) 
 	@echo "[$(COLOR_GREEN) done $(COLOR_END)]"
 
@@ -29,7 +29,7 @@ $(OBJDIR)/%.o:%.c | msg_start
 
 .INTERMEDIATE: msg_start
 msg_start:
-	@printf " compiling object files:\t[ "
+	@printf "  compiling $(NAME) object files:\t[ "
 # Remove object files
 clean:
 	@rm -rf $(OBJDIR)

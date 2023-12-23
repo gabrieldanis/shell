@@ -2,16 +2,17 @@
 NAME=minishell
 
 # list of folders where C files are stored
-# could NOT BE current folder "." must be subfolder "subfolder"
-CODEDIRS=expander builtin parser lexer sources # folder_with_c_files
+# can NOT BE same folder as Makefile like:"." must be subfolder
+CODEDIRS=expander builtin parser lexer sources
 
 # list of directories that could have includes in it. meaning .h files
-INCDIRS=header #./folder_with_h_files/
+INCDIRS=header
 
-# folder where O-Files and Dependency files are stored.
+# folder where O-Files and Dependency files will be created in
 OBJDIR=objects
 
-#libft include
+# this will include libft when compoling the executable
+# this looks for a libtft.a file in the libft folder.
 LIBFT=-Llibft/ -lft
 
 # compiler
@@ -37,7 +38,6 @@ OBJECTS=$(patsubst %.c,$(OBJDIR)/%.o,$(CFILES))
 DEPFILES=$(patsubst %.c,$(OBJDIR)/%.d,$(CFILES))
 
 # COLORS
-#COLOR_GREEN=\033[0;32m
 COLOR_GREEN=\033[0;32m
 COLOR_RED=\033[0;31m
 COLOR_BLUE=\033[0;34m
@@ -55,7 +55,7 @@ all: $(NAME)
 
 $(NAME): libft/libft.a $(OBJECTS)
 	@echo " ]"
-	@printf " $(COLOR_CYAN)$(NAME)$(COLOR_END) executable:\t\t"
+	@printf "  $(COLOR_MAGENTA)$(NAME)$(COLOR_END) executable:\t\t\t"
 	@$(CC) -o $@ $(OBJECTS) $(LIBFT) $(EXTRAFLAGS)
 	@echo "[$(COLOR_GREEN) done $(COLOR_END)]"
 
@@ -66,25 +66,33 @@ $(OBJDIR)/%.o:%.c msg
 	@mkdir -p $(foreach D,$(CODEDIRS), $(OBJDIR)/$(D))
 	@$(CC) $(CFLAGS) -c -o $@ $<
 
+# this starts the Makefile in the libft folder
 libft/libft.a:
 	@$(MAKE) -s -C libft all
 
+# this .INTERMEDIATE step prints out the msg only once when compiling all the .o files
 .INTERMEDIATE: msg
 msg:
-	@printf " compiling object files:\t[ "
+	@printf "  compiling $(NAME) object files:\t[ "
 
+# removes the object directory in the root directory of project
+# starts the libft clean Makefile rule. 
 clean:
-	@echo "$(COLOR_RED)-$(COLOR_END)$(COLOR_PURPLE) $(NAME) objects and dependencies$(COLOR_END)"
-	@echo "$(COLOR_RED)-$(COLOR_END)$(COLOR_PURPLE) libft objects$(COLOR_END)"
+	@echo "  $(NAME) objects and dependencies\t[ $(COLOR_RED)-$(COLOR_END) ]"
 	@rm -rf $(OBJDIR)
+	@echo "  libft objects\t\t\t\t[ $(COLOR_RED)-$(COLOR_END) ]"
 	@$(MAKE) -s -C libft clean
 
+# removes executable in root folder of project
+# starts libft execlean rule which only removes the libft.a file because the rest is cleaned 
+# by the libft clean rule that libft fclean calls.
 fclean: clean
-	@echo "$(COLOR_RED)-$(COLOR_END)$(COLOR_PURPLE) executable $(NAME)$(COLOR_END)"
-	@echo "$(COLOR_RED)-$(COLOR_END)$(COLOR_PURPLE) static library libft$(COLOR_END)"
+	@echo "  executable $(NAME)\t\t\t[ $(COLOR_RED)-$(COLOR_END) ]"
 	@rm -rf $(NAME)
+	@echo "  static library libft\t\t\t[ $(COLOR_RED)-$(COLOR_END) ]"
 	@$(MAKE) -s -C libft execlean
 
+# fclean and then all
 re: fclean all
 
 # shell commands are a set of keystrokes away
@@ -102,4 +110,4 @@ diff:
 -include $(DEPFILES)
 
 # add .PHONY so that the non-targetfile - rules work even if a file with the same name exists.
-#.PHONY: all clean fclean re distribute diff
+.PHONY: all clean fclean re distribute diff
