@@ -67,6 +67,7 @@ $(OBJDIR)/%.o:%.c msg
 	@$(CC) $(CFLAGS) -c -o $@ $<
 
 # this starts the Makefile in the libft folder
+# the -s flag silences the going into libft folder and coming out of folder lines
 libft/libft.a:
 	@$(MAKE) -s -C libft all
 

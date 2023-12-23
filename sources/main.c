@@ -6,7 +6,7 @@
 /*   By: gdanis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 16:48:10 by gdanis            #+#    #+#             */
-/*   Updated: 2023/12/22 16:02:10 by gdanis           ###   ########.fr       */
+/*   Updated: 2023/12/23 09:50:11 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,12 @@
 
 int	main(int argc, char **argv, char **envp)
 {
-	char	*str;
-	t_token	*list;
 	t_parsed	*plist;
-	char	**s_envp;
+	t_token		*list;
+	char		**s_envp;
+	char		*str;
 
 	s_envp = dup_envp(envp);
-
 	(void) argc;
 	(void) argv;
 	while (1)
@@ -42,6 +41,5 @@ int	main(int argc, char **argv, char **envp)
 		free_parsed_list(plist);
 		}
 		free(str);
-		//free_2d_array((void **)s_envp);
 	}
 }
