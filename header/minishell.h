@@ -6,7 +6,7 @@
 /*   By: gdanis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 16:49:31 by gdanis            #+#    #+#             */
-/*   Updated: 2023/12/22 16:53:02 by gabriel          ###   ########.fr       */
+/*   Updated: 2023/12/23 12:35:53 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,9 @@
 
 # include <stdio.h>
 # include <stdlib.h>
+# include <signal.h>
+# include <unistd.h>
+# include <termios.h>
 # include <readline/readline.h>
 # include <readline/history.h>
 # include "../libft/libft.h"
