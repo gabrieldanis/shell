@@ -6,7 +6,7 @@
 /*   By: gdanis <gdanis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/16 17:13:51 by gdanis            #+#    #+#             */
-/*   Updated: 2023/12/23 22:50:47 by gdanis           ###   ########.fr       */
+/*   Updated: 2023/12/26 09:47:47 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,26 +49,12 @@ void	sort_var_list(char **dup)
 	}
 }
 
-char	**dup_envp(char **envp)
+void	shlvl_plusone(char **dup)
 {
-	char	**dup;
 	char	*tmp;
 	char	*num;
-	int	i;
+	int		i;
 
-	i = 0;
-	while (envp[i])
-		i++;
-	dup = (char **)malloc(sizeof(char *) * (i + 1));
-	if (!dup)
-		free_and_exit(MALLOC_ERROR, NULL, NULL, NULL);
-	i = 0;
-	while (envp[i])
-	{
-		dup[i] = ft_strdup(envp[i]);
-		i++;
-	}
-	dup[i] = NULL;
 	i = 0;
 	while (dup[i])
 	{
@@ -91,6 +77,26 @@ char	**dup_envp(char **envp)
 		}
 		i++;
 	}
+}
+
+char	**dup_envp(char **envp)
+{
+	char	**dup;
+	int	i;
+
+	i = 0;
+	while (envp[i])
+		i++;
+	dup = (char **)malloc(sizeof(char *) * (i + 1));
+	if (!dup)
+		free_and_exit(MALLOC_ERROR, NULL, NULL, NULL);
+	i = 0;
+	while (envp[i])
+	{
+		dup[i] = ft_strdup(envp[i]);
+		i++;
+	}
+	dup[i] = NULL;
 	return (dup);
 }
 

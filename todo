@@ -1,0 +1,13 @@
+
+
+*	export "declare -x" hardcoded??
+*	variables notworking correctly
+
+
+
+
+parsing:
+	*	count pipes
+	*	after redirect must be a file
+	*	
+

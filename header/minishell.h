@@ -6,7 +6,7 @@
 /*   By: gdanis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 16:49:31 by gdanis            #+#    #+#             */
-/*   Updated: 2023/12/23 22:17:06 by gdanis           ###   ########.fr       */
+/*   Updated: 2023/12/26 11:59:47 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,9 @@
 # define IDENT_ERROR 3
 # define GEN_ERROR 4
 # define NOFILE_ERROR 5
+# define CMD_ERROR 6
+# define EXECVE_ERROR 7
+
 
 /*********************************
  * 	PARSER CATEGORIES
@@ -105,6 +108,7 @@ void		free_parsed_list(t_parsed *list);
 void		handle_sig1(int sig, siginfo_t *info, void *ucontext);
 void		handle_sig2(int sig, siginfo_t *info, void *ucontext);
 void		init_signals(struct sigaction sig1, struct sigaction sig2);
+void		shlvl_plusone(char **dup);
 char		**dup_envp(char **envp);
 char		*token_type(int i);
 char		*expand_var(char *str);

@@ -6,7 +6,7 @@
 /*   By: gdanis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 16:48:10 by gdanis            #+#    #+#             */
-/*   Updated: 2023/12/23 22:17:13 by gdanis           ###   ########.fr       */
+/*   Updated: 2023/12/26 09:49:05 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,14 +16,17 @@ int	g_signal = 0;
 
 int	main(int argc, char **argv, char **envp)
 {
-	struct sigaction	sig1;
-	struct sigaction	sig2;
 	t_parsed	*plist;
 	t_token		*list;
 	char		**s_envp;
 	char		*str;
+	struct sigaction	sig1;
+	struct sigaction	sig2;
 
+	sig1 = (struct sigaction){0};
+	sig2 = (struct sigaction){0};
 	s_envp = dup_envp(envp);
+	shlvl_plusone(s_envp);
 	(void) argc;
 	(void) argv;
 	init_signals(sig1, sig2);

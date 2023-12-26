@@ -6,7 +6,7 @@
 /*   By: gdanis <gdanis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 14:07:21 by gdanis            #+#    #+#             */
-/*   Updated: 2023/12/21 14:47:57 by gdanis           ###   ########.fr       */
+/*   Updated: 2023/12/26 12:00:11 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,11 @@ int	error_message(int n, char *exe_name, char *str)
 	if (n == 4)
 		printf("error");
 	if (n == 5)
-		printf("no such file or directory");
+		printf("no such file or directory\n");
+	if (n == 6)
+		printf("command not found\n");
+	if (n == 7)
+		printf("execve error\n");
 	else
 		printf("unknown error\n");
 	return (n);
