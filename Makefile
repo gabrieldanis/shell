@@ -66,6 +66,7 @@ $(OBJDIR)/%.o:%.c msg
 	@mkdir -p $(foreach D,$(CODEDIRS), $(OBJDIR)/$(D))
 	@$(CC) $(CFLAGS) -c -o $@ $<
 
+
 # this starts the Makefile in the libft folder
 # the -s flag silences the going into libft folder and coming out of folder lines
 libft/libft.a:

@@ -6,7 +6,7 @@
 /*   By: gdanis <gdanis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 15:04:02 by gdanis            #+#    #+#             */
-/*   Updated: 2023/12/22 10:06:23 by gdanis           ###   ########.fr       */
+/*   Updated: 2023/12/24 09:32:00 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ void	expand_sublist(t_parsed *plist)
 	t_parsed	*tmp;
 	int	i;
 
-	i =0;
+	i = 0;
 	while (plist->str[i])
 	{
 		tmp = (t_parsed *) malloc (sizeof(t_parsed));

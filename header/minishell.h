@@ -6,7 +6,7 @@
 /*   By: gdanis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 16:49:31 by gdanis            #+#    #+#             */
-/*   Updated: 2023/12/23 12:35:53 by gdanis           ###   ########.fr       */
+/*   Updated: 2023/12/23 22:17:06 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,11 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include "../libft/libft.h"
+
+/*********************************
+ * 	GLOBAL VARIABLE
+ *********************************/
+
 
 /*********************************
  * 	ERROR CODES
@@ -97,6 +102,9 @@ void		set_q_flag_plist(t_parsed *list, int *q_flag, char *quotes);
 void		remove_quotes(t_parsed *plist);
 void		free_token_list(t_token *list);
 void		free_parsed_list(t_parsed *list);
+void		handle_sig1(int sig, siginfo_t *info, void *ucontext);
+void		handle_sig2(int sig, siginfo_t *info, void *ucontext);
+void		init_signals(struct sigaction sig1, struct sigaction sig2);
 char		**dup_envp(char **envp);
 char		*token_type(int i);
 char		*expand_var(char *str);

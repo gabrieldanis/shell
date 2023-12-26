@@ -6,7 +6,7 @@
 /*   By: gdanis <gdanis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/15 11:28:20 by gdanis            #+#    #+#             */
-/*   Updated: 2023/12/21 19:39:22 by gdanis           ###   ########.fr       */
+/*   Updated: 2023/12/23 22:56:34 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,6 +152,6 @@ int	ft_print_export(char **s_envp)
 	dup = dup_envp(s_envp);
 	sort_var_list(dup);
 	ft_print_export_lines(dup, i, j);
-	free(dup);
+	free_2d_array((void **)dup);
 	return (0);
 }

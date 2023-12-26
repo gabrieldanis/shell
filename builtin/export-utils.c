@@ -6,7 +6,7 @@
 /*   By: gdanis <gdanis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/16 17:13:51 by gdanis            #+#    #+#             */
-/*   Updated: 2023/12/21 19:39:05 by gdanis           ###   ########.fr       */
+/*   Updated: 2023/12/23 22:50:47 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,8 @@ void	sort_var_list(char **dup)
 char	**dup_envp(char **envp)
 {
 	char	**dup;
+	char	*tmp;
+	char	*num;
 	int	i;
 
 	i = 0;
@@ -67,6 +69,28 @@ char	**dup_envp(char **envp)
 		i++;
 	}
 	dup[i] = NULL;
+	i = 0;
+	while (dup[i])
+	{
+		if (!strncmp(dup[i], "SHLVL", 5))	
+		{
+			if (dup[i][5] == '\0' || (dup[i][5] == '=' && dup[i][6] == '\0'))
+				ft_setenv(&dup, "SHLVL=1");
+			if (dup[i][5] == '=' && ft_isdigit(dup[i][6]))
+			{
+				num = ft_itoa(ft_atoi(ft_strchr(dup[i], '=') + 1) + 1);
+				if (!num)
+					free_and_exit(MALLOC_ERROR, NULL, NULL, NULL);
+				tmp = ft_strjoin("SHLVL=", num);
+				free(num);
+				if (!tmp)
+					free_and_exit(MALLOC_ERROR, NULL, NULL, NULL);
+				ft_setenv(&dup, tmp);
+				free(tmp);
+			}
+		}
+		i++;
+	}
 	return (dup);
 }
 
