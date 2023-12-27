@@ -6,7 +6,7 @@
 /*   By: gdanis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 16:48:10 by gdanis            #+#    #+#             */
-/*   Updated: 2023/12/26 09:49:05 by gdanis           ###   ########.fr       */
+/*   Updated: 2023/12/27 14:57:40 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,43 +14,54 @@
 
 int	g_signal = 0;
 
+t_shell	*init_shell(char **envp)
+{
+	t_shell	*s;
+
+	s = (t_shell *)malloc(sizeof(t_shell));
+	if (!s)
+	{
+		error_message(MALLOC_ERROR, NULL, NULL);
+		exit(0);
+	}
+	*s = (t_shell){0};
+	s->env = dup_envp(envp);
+	set_shlvl(s->env);
+	//ft_signal(s);
+	s->str = NULL;
+	return (s);
+}
+
 int	main(int argc, char **argv, char **envp)
 {
-	t_parsed	*plist;
-	t_token		*list;
-	char		**s_envp;
-	char		*str;
-	struct sigaction	sig1;
-	struct sigaction	sig2;
+	t_shell	*shell;
 
-	sig1 = (struct sigaction){0};
-	sig2 = (struct sigaction){0};
-	s_envp = dup_envp(envp);
-	shlvl_plusone(s_envp);
-	(void) argc;
-	(void) argv;
-	init_signals(sig1, sig2);
-	str = NULL;
+	(void)argc;
+	(void)argv;
+	shell = init_shell(envp);
 	while (1)
 	{
-		str = readline("💻 minishell > ");
-		if (str && str[0] != '\0')
+		shell->str = readline("💻 minishell > ");
+		if (shell->str && shell->str[0] != '\0')
 		{
-			add_history(str);
-			list = tokenizer(str);
-			plist = parser(list);
-			plist = expander(plist);
+			add_history(shell->str);
+			tokenizer(shell);
+			//print_tokens(shell->tlst);
+			parser(shell);
+			print_parsed_list(shell);
+			expander(shell);
 			/*
-			print_parsed_list(plist);
+			printf("$USER variable: %s", ft_getenv("USER", shell));
 			plist = type_parsed_list(plist);
 			plist = info_parsed_list(plist);
+			execute_parsed_list(shell);
 			*/
-			execute_parsed_list(plist, &s_envp, list);
-			free_token_list(list);
-			free_parsed_list(plist);
+			free_token_list(shell);
+			free_parsed_list(shell->lst);
+			shell->lst = NULL;
 		}
-		if (!str)
-			free_and_exit(0, NULL, NULL, NULL);
-		free(str);
+		if (!shell->str)
+			free_and_exit(0, shell);
+		free(shell->str);
 	}
 }

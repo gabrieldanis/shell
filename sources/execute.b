@@ -6,12 +6,11 @@
 /*   By: gdanis <gdanis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 08:08:33 by gdanis            #+#    #+#             */
-/*   Updated: 2023/12/26 12:22:50 by gdanis           ###   ########.fr       */
+/*   Updated: 2023/12/27 10:44:56 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../header/minishell.h"
-
 
 char    *get_path(char **env)
 {
@@ -35,7 +34,7 @@ char    *get_dir(char *str, char *cmd)
 
     dirs = ft_split(str, 58);
 	if (!dirs)
-			free_and_exit(MALLOC_ERROR, NULL, NULL, NULL);
+		free_and_exit(MALLOC_ERROR, NULL);
     i = 0;
     cmd = ft_strjoin("/", cmd);
     while (dirs[i] != NULL)
@@ -49,7 +48,7 @@ char    *get_dir(char *str, char *cmd)
         i++;
     }
     free_2d_array((void **)dirs);
-	error_message(CMD_ERROR, NULL, cmd + 1);
+		error_message(CMD_ERROR, NULL, cmd + 1);
     return (NULL);
 }
 
@@ -74,7 +73,7 @@ char	**arg_list(t_parsed *plist)
 
 	list = (char **)malloc((p_lstsize(plist) + 1) * sizeof(char *));
 	if (!list)
-			free_and_exit(MALLOC_ERROR, NULL, NULL, NULL);
+			free_and_exit(MALLOC_ERROR, NULL);
 	i = 0;
 	while (plist)
 	{
@@ -84,7 +83,7 @@ char	**arg_list(t_parsed *plist)
 			str = plist->str;
 		list[i] = ft_strdup(str);
 		if (!list[i])
-			free_and_exit(MALLOC_ERROR, NULL, NULL, NULL);
+			free_and_exit(MALLOC_ERROR, NULL);
 		plist = plist->next;
 		i++;
 	}
@@ -96,6 +95,7 @@ void	execute_parsed_list(t_parsed *plist, char ***envp, t_token *list)
 	char	*cmd;
 	char	**args;
 
+	(void)list;
 	args = arg_list(plist);
 	if (plist->expand)
 		cmd = plist->expand;
@@ -104,7 +104,7 @@ void	execute_parsed_list(t_parsed *plist, char ***envp, t_token *list)
 	if (!ft_strncmp(cmd, "echo\0", 5))
 		ft_echo(plist->next);
 	else if (!ft_strncmp(cmd, "exit\0", 5))
-		free_and_exit(0, list, plist, *envp);
+		free_and_exit(0, NULL);
 	else if (!ft_strncmp(cmd, "pwd\0", 4))
 		ft_pwd();
 	else if (!ft_strncmp(cmd, "cd\0", 3))
@@ -124,8 +124,7 @@ void	execute_parsed_list(t_parsed *plist, char ***envp, t_token *list)
 				return;
 		if (execve(cmd, args, *envp) == -1)
 		{
-				printf("hi\n");
-				free_and_exit(EXECVE_ERROR, NULL, NULL, NULL);
+				free_and_exit(EXECVE_ERROR, NULL);
 		}
 		printf("i found command in path %s\n", get_dir(get_path(*envp), cmd));
 		/*

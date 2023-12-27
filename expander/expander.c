@@ -6,7 +6,7 @@
 /*   By: gdanis <gdanis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 15:04:02 by gdanis            #+#    #+#             */
-/*   Updated: 2023/12/24 09:32:00 by gdanis           ###   ########.fr       */
+/*   Updated: 2023/12/27 15:01:47 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,20 +100,20 @@ void	strjoin_expanded_str(t_parsed *plist)
 	plist->ex = start;
 }
 
-t_parsed *expander(t_parsed *plist)
+void	expander(t_shell *s)
 {
 	t_parsed	*start;
 
-	start = plist;
-	while (plist)
+	start = s->lst;
+	while (s->lst)
 	{
-		if (ft_strchr(plist->str, '$'))
-			expand_sublist(plist);
-		if (plist->ex)
-			strjoin_expanded_str(plist);
-		if (ft_strchr(plist->str, '"') || ft_strchr(plist->str, 39))
-			remove_quotes(plist);
-		plist = plist->next;
+		if (ft_strchr(s->lst->str, '$'))
+			expand_sublist(s->lst);
+		if (s->lst->ex)
+			strjoin_expanded_str(s->lst);
+		if (ft_strchr(s->lst->str, '"') || ft_strchr(s->lst->str, 39))
+			remove_quotes(s->lst);
+		s->lst = s->lst->next;
 	}
-	return (start);
+	s->lst = start;
 }

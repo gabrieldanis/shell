@@ -6,37 +6,34 @@
 /*   By: gdanis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/08 09:51:30 by gdanis            #+#    #+#             */
-/*   Updated: 2023/12/21 19:40:59 by gdanis           ###   ########.fr       */
+/*   Updated: 2023/12/27 11:01:54 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "../header/minishell.h"
 
-void	operator_tokens(t_token **list, int * flag, int *i, char *str)
+void	operator_tokens(t_shell *s, int * flag, int *i)
 {
 	t_token	*tmp;
 
 	tmp = (t_token *)malloc(sizeof(t_token));
 	*tmp = (t_token){0};
-	if (!(*list))
-		*list = tmp;
-	else
-		last_token(*list)->next = tmp;
-	ft_charjoin(&(last_token(*list)->str), str[*i]);
+	token_addlstlast(s, tmp);
+	ft_charjoin(&(last_token(s->tlst)->str), s->str[*i], s);
 	(*i)++;
-	if (str[*i] == '<' && str[(*i) - 1] == '<')
+	if (s->str[*i] == '<' && s->str[(*i) - 1] == '<')
 	{
-		ft_charjoin(&(last_token(*list)->str), str[*i]);
+		ft_charjoin(&(last_token(s->tlst)->str), s->str[*i], s);
 		(*i)++;
 	}
-	if (str[*i] == '>' && str[(*i) - 1] == '>')
+	if (s->str[*i] == '>' && s->str[(*i) - 1] == '>')
 	{
-		ft_charjoin(&(last_token(*list)->str), str[*i]);
+		ft_charjoin(&(last_token(s->tlst)->str), s->str[*i], s);
 		(*i)++;
 	}
 	*flag = 0;
 }
 
-void	char_to_token(t_token **list, int *flag, int *i, char *str)
+void	char_to_token(t_shell *s, int *flag, int *i)
 {
 	t_token	*tmp;
 
@@ -44,72 +41,63 @@ void	char_to_token(t_token **list, int *flag, int *i, char *str)
 	{
 		tmp = (t_token *)malloc(sizeof(t_token));
 		if (!tmp)
-			free_and_exit(MALLOC_ERROR, NULL, NULL, NULL);
+			free_and_exit(MALLOC_ERROR, s);
 		*tmp = (t_token){0};
-		if (!(*list))
-			*list = tmp;
-		else
-			last_token(*list)->next = tmp;
-		ft_charjoin(&(last_token(*list)->str), str[*i]);
-		if (!last_token(*list)->str)
-			free_and_exit(MALLOC_ERROR, NULL, NULL, NULL);
+		token_addlstlast(s, tmp);
+		ft_charjoin(&(last_token(s->tlst)->str), s->str[*i], s);
+		if (!last_token(s->tlst)->str)
+			free_and_exit(MALLOC_ERROR, s);
 		*flag = 1;
 	}
 	else
 	{
-		ft_charjoin(&(last_token(*list)->str), str[*i]);
-		if (!last_token(*list)->str)
-			free_and_exit(MALLOC_ERROR, NULL, NULL, NULL);
+		ft_charjoin(&(last_token(s->tlst)->str), s->str[*i], s);
+		if (!last_token(s->tlst)->str)
+			free_and_exit(MALLOC_ERROR, s);
 	}
 	(*i)++;
 }
 
-void	space_to_token(t_token **list, int *flag, int *i, char *str)
+void	space_to_token(t_shell *s, int *flag, int *i)
 {
 	t_token	*tmp;
 	int	j;
 
 	j = 0;
-	while (str[*i] == ' ')
+	while (s->str[*i] == ' ')
 	{
 		(*i)++;
 		j++;
 	}
 	tmp = (t_token *)malloc(sizeof(t_token));
 	if (!tmp)
-		free_and_exit(MALLOC_ERROR, NULL, NULL, NULL);
+		free_and_exit(MALLOC_ERROR, s);
 	*tmp = (t_token){0};
-	if (!(*list))
-		*list = tmp;
-	else
-		last_token(*list)->next = tmp;
-	last_token(*list)->str = (char *) malloc (sizeof(char) * (j + 1));
-	if (!last_token(*list)->str)
-		free_and_exit(MALLOC_ERROR, NULL, NULL, NULL);
-	ft_memset(last_token((*list))->str, ' ', j);
-	last_token((*list))->str[j] = '\0';
+	token_addlstlast(s, tmp);
+	last_token(s->tlst)->str = (char *) malloc (sizeof(char) * (j + 1));
+	if (!last_token(s->tlst)->str)
+		free_and_exit(MALLOC_ERROR, s);
+	ft_memset(last_token(s->tlst)->str, ' ', j);
+	last_token(s->tlst)->str[j] = '\0';
 	*flag = 0;
 }
 
-t_token	*tokenizer(char *str)
+void	tokenizer(t_shell *s)
 {
-	t_token	*list;
 	int		i;
 	int		flag;
 
-	list = NULL;
 	i = 0;
 	flag = 0;
-	while (str[i])
+	while (s->str[i])
 	{
-		if (str[i] == ' ')
-			space_to_token(&list, &flag, &i, str);
-		if (str[i] == '|'|| str[i] == '<' || str[i] == '>'
-			|| str[i] == '"' || str[i] == 39 || str[i] == '/' || str[i] == '.')
-			operator_tokens(&list, &flag, &i, str);
-		if (str[i] != ' ' && str[i] != '\0' && str[i] != '|' && str[i] != '<' 
-			&& str[i] != '>' && str[i] != '"' && str[i] != 39 && str[i] != '/' && str[i] != '.')
-			char_to_token(&list, &flag, &i, str);
+		if (s->str[i] == ' ')
+			space_to_token(s, &flag, &i);
+		if (s->str[i] == '|'|| s->str[i] == '<' || s->str[i] == '>'
+			|| s->str[i] == '"' || s->str[i] == 39 || s->str[i] == '/' || s->str[i] == '.')
+			operator_tokens(s, &flag, &i);
+		if (s->str[i] != ' ' && s->str[i] != '\0' && s->str[i] != '|' && s->str[i] != '<' 
+			&& s->str[i] != '>' && s->str[i] != '"' && s->str[i] != 39 && s->str[i] != '/' && s->str[i] != '.')
+			char_to_token(s, &flag, &i);
 	}
-	return (list);
 }

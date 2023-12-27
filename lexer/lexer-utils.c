@@ -6,13 +6,13 @@
 /*   By: gdanis <gdanis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/09 16:13:40 by gdanis            #+#    #+#             */
-/*   Updated: 2023/12/21 19:41:06 by gdanis           ###   ########.fr       */
+/*   Updated: 2023/12/27 10:54:21 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../header/minishell.h"
 
-void	ft_charjoin(char **s1, char c)
+void	ft_charjoin(char **s1, char c, t_shell *s)
 {
 	char	*str;
 	int		i;
@@ -25,7 +25,7 @@ void	ft_charjoin(char **s1, char c)
 		len = 0;
 	str = (char *) malloc ((sizeof(char)) * (len + 2));
 	if (str == NULL)
-		free_and_exit(MALLOC_ERROR, NULL, NULL, NULL);
+		free_and_exit(MALLOC_ERROR, s);
 	i = 0;
 	while (*s1 && (*s1)[i])
 	{
@@ -54,4 +54,12 @@ void	print_tokens(t_token *list)
 		printf("%s\n", list->str);
 		list = list->next;
 	}
+}
+
+void	token_addlstlast(t_shell *s, t_token *tmp)
+{
+	if (!s->tlst)
+		s->tlst = tmp;
+	else
+		last_token(s->tlst)->next = tmp;
 }

@@ -6,25 +6,26 @@
 /*   By: gdanis <gdanis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/23 22:10:54 by gdanis            #+#    #+#             */
-/*   Updated: 2023/12/26 09:28:23 by gdanis           ###   ########.fr       */
+/*   Updated: 2023/12/27 10:47:17 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../header/minishell.h"
 
-
-void	init_signals(struct sigaction sig1, struct sigaction sig2)
+void	ft_signal(t_shell *s)
 {
+	struct sigaction	sig1;
+	struct sigaction	sig2;
+
+	sig1 = (struct sigaction){0};
 	sig2 = (struct sigaction){0};
 	sig2.sa_handler = SIG_IGN;
 	if (sigaction(SIGQUIT, &sig2, NULL) == -1)
-		free_and_exit(1, NULL, NULL, NULL);
-	sig1 = (struct sigaction){0};
+		free_and_exit(1, s);
 	sig1.sa_sigaction = &handle_sig1;
 	sig1.sa_flags = SA_SIGINFO;
 	if (sigaction(SIGINT, &sig1, NULL) == -1)
-		free_and_exit(1, NULL, NULL, NULL);
-
+		free_and_exit(1, s);
 }
 
 void	handle_sig1(int sig, siginfo_t *info, void *ucontext)

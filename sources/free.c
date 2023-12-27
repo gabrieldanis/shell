@@ -6,13 +6,13 @@
 /*   By: gdanis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 13:17:49 by gdanis            #+#    #+#             */
-/*   Updated: 2023/12/25 11:00:44 by gdanis           ###   ########.fr       */
+/*   Updated: 2023/12/27 11:22:48 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../header/minishell.h"
 
-void	free_and_exit(int n, t_token *list, t_parsed *plist, char **envp)
+void	free_and_exit(int n, t_shell *shell)
 {
 	if (n != 0)
 		error_message(n, NULL, NULL);
@@ -20,29 +20,31 @@ void	free_and_exit(int n, t_token *list, t_parsed *plist, char **envp)
 	 * great code that frees everything
 	 * goes here :
 	 */
-	if (list)
-		free_token_list(list);
-	if (plist)
-		free_parsed_list(plist);
-	if (envp)
-		free_2d_array((void **)envp);
+	if (shell->tlst)
+		free_token_list(shell);
+	if (shell->lst)
+		free_parsed_list(shell->lst);
+	if (shell->env)
+		free_2d_array((void **)shell->env);
 	if (n == 0)
 		printf("exit\n");
 	exit (n);
 }
 
-void	free_token_list(t_token *list)
+
+void	free_token_list(t_shell *s)
 {
 	t_token	*tmp;
 
-	while (list)
+	while (s->tlst)
 	{
-		tmp = list;
-		list = list->next;
+		tmp = s->tlst;
+		s->tlst = s->tlst->next;
 		if (tmp->str)
 			free(tmp->str);
 		free(tmp);
 	}
+	s->tlst = NULL;
 }
 
 void	free_parsed_list(t_parsed *list)

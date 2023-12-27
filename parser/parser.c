@@ -6,28 +6,27 @@
 /*   By: gdanis <gdanis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/10 09:37:21 by gdanis            #+#    #+#             */
-/*   Updated: 2023/12/21 19:42:01 by gdanis           ###   ########.fr       */
+/*   Updated: 2023/12/27 14:52:07 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../header/minishell.h"
 
-t_parsed	*op_char_node(t_token **list, t_parsed *plist)	
+void	op_char_node(t_shell *s)	
 {
 	t_parsed	*tmp;
 
 	tmp = (t_parsed *)malloc(sizeof(t_parsed));
 	if (!tmp)
-		free_and_exit(MALLOC_ERROR, NULL, NULL, NULL);
+		free_and_exit(MALLOC_ERROR, s);
 	*tmp = (t_parsed){0};
-	tmp->str = ft_strdup((*list)->str);
-	plist_add_to_last(&tmp, &plist);
-	(*list) = (*list)->next;
-	return (plist);
+	tmp->str = ft_strdup(s->tlst->str);
+	plist_add_to_last(&tmp, s);
+	(s->tlst) = (s->tlst)->next;
 }
 
 
-t_parsed	*word_node(t_token **list, t_parsed *plist)	
+void	word_node(t_shell *s)	
 {
 	t_parsed	*tmp;
 	int	q_flag;
@@ -37,38 +36,37 @@ t_parsed	*word_node(t_token **list, t_parsed *plist)
 	q_flag = 0;
 	tmp = (t_parsed *) malloc (sizeof(t_parsed));
 	if (!tmp)
-		free_and_exit(MALLOC_ERROR, NULL, NULL, NULL);
+		free_and_exit(MALLOC_ERROR, s);
 	*tmp = (t_parsed){0};
-	plist_add_to_last(&tmp, &plist);
-	while (*list && !delimiter_char((*list)->str[0]))
+	plist_add_to_last(&tmp, s);
+	while (s->tlst && !delimiter_char(s->tlst->str[0]))
 	{
-		if (*list && !delimiter_char((*list)->str[0]) && !q_flag)
-			plist_strjoin(plist, list, &q_flag, quotes);
-		while (*list && q_flag)
-			plist_strjoin(plist, list, &q_flag, quotes);
-		if (!(*list) && q_flag)
-			free_and_exit(MALLOC_ERROR, NULL, NULL, NULL);
+		if (s->tlst && !delimiter_char(s->tlst->str[0]) && !q_flag)
+			plist_strjoin(s, &q_flag, quotes);
+		while (s->tlst && q_flag)
+			plist_strjoin(s, &q_flag, quotes);
+		if (!s->tlst && q_flag)
+			error_message(QUOTE_ERROR, NULL, NULL);
 	}
-	return (plist);
 }
 
-t_parsed	*parser(t_token *list)
+void	parser(t_shell *s)
 {
-	t_parsed *plist;
+	t_token	*start;
 
-	plist = NULL;
-	while (list)
+	start = s->tlst;
+	while (s->tlst)
 	{
-		while (list && list->str[0] != ' ')
+		while (s->tlst && s->tlst->str[0] != ' ')
 		{
-			if (op_char(list->str[0]))
-					plist = op_char_node(&list, plist);
+			if (op_char(s->tlst->str[0]))
+				op_char_node(s);
 			else
-					plist = word_node(&list, plist);
+				word_node(s);
 		}
-		if (list)
-			list = list->next;
+		if (s->tlst)
+			s->tlst = s->tlst->next;
 	}
-	return (plist);
+	s->tlst = start;
 }
 

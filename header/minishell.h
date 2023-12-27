@@ -6,7 +6,7 @@
 /*   By: gdanis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 16:49:31 by gdanis            #+#    #+#             */
-/*   Updated: 2023/12/26 11:59:47 by gdanis           ###   ########.fr       */
+/*   Updated: 2023/12/27 14:58:08 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ typedef struct s_parsed
 	struct s_parsed	*next;
 	struct s_parsed	*ex;
 	char			*str;
+	char			*fstr;
 	char			*expand;
 	int				idx;
 	int				type;
@@ -70,19 +71,28 @@ typedef struct s_parsed
 	int				to_ex;
 }	t_parsed;
 
+typedef struct s_shell
+{
+	t_parsed	*lst;
+	t_token		*tlst;
+	char		**env;
+	char		*str;
+}	t_shell;
+
 /*********************************
  * 	FUNCTION PROTOTYPES
  *********************************/
 
-t_parsed	*parser(t_token *list);
 t_parsed	*info_parsed_list(t_parsed *list);
 t_parsed	*type_parsed_list(t_parsed *list);
 t_parsed	*p_lstlast(t_parsed *list);
-t_parsed	*expander(t_parsed *plist);
-t_token		*tokenizer(char *str);
 t_token		*last_token(t_token *t);
-void		print_parsed_list(t_parsed *list);
-void		ft_charjoin(char **s1, char c);
+void		expander(t_shell *s);
+void		parser(t_shell *s);
+void		token_addlstlast(t_shell *s, t_token *tmp);
+void		tokenizer(t_shell *s);
+void		print_parsed_list(t_shell *s);
+void		ft_charjoin(char **s1, char c, t_shell *s);
 void		print_tokens(t_token *list);
 void		idx_tokens(t_token *list);
 void		print_parsed_tokens(t_token *list);
@@ -95,24 +105,26 @@ void		sort_var_list(char **dup);
 void		ft_print_export_lines(char **dup, int i, int j);
 void		free_2d_array(void **ptr);
 void		set_q_flag(t_token *list, int *q_flag, char *quotes);
-void		free_and_exit(int n, t_token *list, t_parsed *plist, char **envp);
-void		plist_strjoin(t_parsed *plist, t_token **list, int *q_flag, char *quotes);
-void		plist_add_to_last(t_parsed **tmp, t_parsed **plist);
+void		free_and_exit(int n, t_shell *shell);
+void		plist_strjoin(t_shell *s, int *q_flag, char *quotes);
+void		plist_add_to_last(t_parsed **tmp, t_shell *s);
 void		plist_add_to_last_ex(t_parsed **tmp, t_parsed **plist);
 void		set_q_flag_ex(t_parsed *list, int *q_flag, char *quotes, int *i);
 void		set_sq_flag(int *sq_flag, char c);
 void		set_q_flag_plist(t_parsed *list, int *q_flag, char *quotes);
 void		remove_quotes(t_parsed *plist);
-void		free_token_list(t_token *list);
+void		free_token_list(t_shell *s);
 void		free_parsed_list(t_parsed *list);
 void		handle_sig1(int sig, siginfo_t *info, void *ucontext);
 void		handle_sig2(int sig, siginfo_t *info, void *ucontext);
 void		init_signals(struct sigaction sig1, struct sigaction sig2);
-void		shlvl_plusone(char **dup);
+void		set_shlvl(char **dup);
+void		ft_signal(t_shell *s);
 char		**dup_envp(char **envp);
 char		*token_type(int i);
 char		*expand_var(char *str);
 char		*get_str(t_parsed *list);
+char		*ft_getenv(char *str, t_shell *s);
 int			clear_screen(void);
 int			error_message(int n, char *exe_name, char *str);
 int			ft_pwd(void);
