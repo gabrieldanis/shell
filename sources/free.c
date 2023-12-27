@@ -6,7 +6,7 @@
 /*   By: gdanis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 13:17:49 by gdanis            #+#    #+#             */
-/*   Updated: 2023/12/27 11:22:48 by gdanis           ###   ########.fr       */
+/*   Updated: 2023/12/27 18:19:33 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@ void	free_and_exit(int n, t_shell *shell)
 	 * great code that frees everything
 	 * goes here :
 	 */
+	if (shell->arglst)
+		free_2d_array((void **)shell->arglst);
 	if (shell->tlst)
 		free_token_list(shell);
 	if (shell->lst)

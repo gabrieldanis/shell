@@ -6,26 +6,11 @@
 /*   By: gdanis <gdanis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/17 08:49:36 by gdanis            #+#    #+#             */
-/*   Updated: 2023/12/27 14:37:43 by gdanis           ###   ########.fr       */
+/*   Updated: 2023/12/27 21:26:10 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../header/minishell.h"
-
-char	*get_str(t_parsed *list)
-{
-	char	*arg;
-
-	arg = NULL;
-	if (list)
-	{
-		if (list->expand)
-			arg = list->expand;
-		else
-			arg = list->str;
-	}
-	return (arg);
-}
 
 void	free_2d_array(void **ptr)
 {
@@ -59,29 +44,29 @@ int	op_char(char c)
 	return (0);
 }
 
-void	set_shlvl(char **dup)
+void	set_shlvl(t_shell *s)
 {
 	char	*tmp;
 	char	*num;
 	int		i;
 
 	i = 0;
-	while (dup[i])
+	while (s->env[i])
 	{
-		if (!strncmp(dup[i], "SHLVL", 5))	
+		if (!strncmp(s->env[i], "SHLVL", 5))	
 		{
-			if (dup[i][5] == '\0' || (dup[i][5] == '=' && dup[i][6] == '\0'))
-				//ft_setenv(&dup, "SHLVL=1");
-			if (dup[i][5] == '=' && ft_isdigit(dup[i][6]))
+			if (s->env[i][5] == '\0' || (s->env[i][5] == '=' && s->env[i][6] == '\0'))
+				ft_setenv(s, "SHLVL=1");
+			if (s->env[i][5] == '=' && ft_isdigit(s->env[i][6]))
 			{
-				num = ft_itoa(ft_atoi(ft_strchr(dup[i], '=') + 1) + 1);
+				num = ft_itoa(ft_atoi(ft_strchr(s->env[i], '=') + 1) + 1);
 				if (!num)
-					free_and_exit(MALLOC_ERROR, NULL);
+					free_and_exit(MALLOC_ERROR, s);
 				tmp = ft_strjoin("SHLVL=", num);
 				free(num);
 				if (!tmp)
-					free_and_exit(MALLOC_ERROR, NULL);
-				//ft_setenv(&dup, tmp);
+					free_and_exit(MALLOC_ERROR, s);
+				ft_setenv(s, tmp);
 				free(tmp);
 			}
 		}

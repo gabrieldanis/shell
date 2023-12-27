@@ -6,61 +6,61 @@
 /*   By: gdanis <gdanis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 15:04:02 by gdanis            #+#    #+#             */
-/*   Updated: 2023/12/27 15:01:47 by gdanis           ###   ########.fr       */
+/*   Updated: 2023/12/27 22:12:57 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../header/minishell.h"
 
-void	expand_sublist_var (t_parsed *plist, int *i)
+void	expand_sublist_var (t_shell *s, int *i)
 {
-	while (plist->str[*i])	
+	while (s->lst->str[*i])	
 	{
-		ft_charjoin(&(p_lstlast(plist->ex)->str), plist->str[*i]);
+		ft_charjoin(&(p_lstlast(s->lst->ex)->str), s->lst->str[*i], s);
 		(*i)++;
-		if (!check_is_var(plist->str[*i]))
+		if (!check_is_var(s->lst->str[*i]))
 			break ;
 	}
 }
 
-void	expand_sublist_nonvar(t_parsed *plist, int *i)
+void	expand_sublist_nonvar(t_shell *s, int *i)
 {
 	char	*quotes;
 	int	q_flag;
 
 	quotes = " '\"";
 	q_flag = 0;
-	while (plist->str[*i])
+	while (s->lst->str[*i])
 	{
-		if (plist->str[*i] == '$' && q_flag != 1)
+		if (s->lst->str[*i] == '$' && q_flag != 1)
 			break ;
-		set_q_flag_plist(plist, &q_flag, quotes);
-		ft_charjoin(&(p_lstlast(plist->ex)->str), plist->str[*i]);
+		set_q_flag_plist(s->lst, &q_flag, quotes);
+		ft_charjoin(&(p_lstlast(s->lst->ex)->str), s->lst->str[*i], s);
 		(*i)++;
 	}
 }
 
-void	expand_sublist(t_parsed *plist)
+void	expand_sublist(t_shell *s)
 {
 	t_parsed	*tmp;
 	int	i;
 
 	i = 0;
-	while (plist->str[i])
+	while (s->lst->str[i])
 	{
 		tmp = (t_parsed *) malloc (sizeof(t_parsed));
 		if (!tmp)
-			free_and_exit(MALLOC_ERROR, NULL, NULL, NULL);
+			free_and_exit(MALLOC_ERROR, s);
 		*tmp = (t_parsed){0};
-		plist_add_to_last_ex(&tmp, &plist);
-		if (plist->str[i] != '$')
-			expand_sublist_nonvar(plist, &i);
+		plist_add_to_last_ex(&tmp, s);
+		if (s->lst->str[i] != '$')
+			expand_sublist_nonvar(s, &i);
 		else
-			expand_sublist_var(plist, &i);
+			expand_sublist_var(s, &i);
 	}
 }
 
-void	strjoin_expanded_str(t_parsed *plist)
+void	strjoin_expanded_str(t_shell *s)
 {
 	int	q_flag;
 	char	*quotes;
@@ -71,33 +71,35 @@ void	strjoin_expanded_str(t_parsed *plist)
 	quotes = " '\"";
 	q_flag = 0;
 	i = 0;
-	start = plist->ex;
-	while (plist->ex)
+	start = s->lst->ex;
+	while (s->lst->ex)
 	{
-		if (plist->ex->str[0] == '$' && q_flag != 1
-			&& ft_strlen(plist->ex->str) != 1)
+		if (s->lst->ex->str[0] == '$' && q_flag != 1
+			&& ft_strlen(s->lst->ex->str) != 1)
 		{
-			tmp = plist->expand;	
-			plist->expand = ft_strjoin(plist->expand, getenv(plist->ex->str + 1));
+			tmp = s->lst->expand;	
+			s->lst->expand = ft_strjoin(s->lst->expand, ft_getenv(s->lst->ex->str + 1, s));
+			if (!s->lst->expand)
+				free_and_exit(MALLOC_ERROR, s);
 			if (tmp)
 				free(tmp);
 		}
 		else
 		{
 			i = 0;
-			while (plist->ex->str[i])	
+			while (s->lst->ex->str[i])	
 			{
-				set_q_flag_ex(plist->ex, &q_flag, quotes, &i);
-				if (plist->ex->str[i] && plist->ex->str[i] != quotes[q_flag])
+				set_q_flag_ex(s->lst->ex, &q_flag, quotes, &i);
+				if (s->lst->ex->str[i] && s->lst->ex->str[i] != quotes[q_flag])
 				{
-					ft_charjoin(&plist->expand, plist->ex->str[i]);
+					ft_charjoin(&s->lst->expand, s->lst->ex->str[i], s);
 					i++;
 				}
 			}
 		}
-		plist->ex = plist->ex->next;
+		s->lst->ex = s->lst->ex->next;
 	}
-	plist->ex = start;
+	s->lst->ex = start;
 }
 
 void	expander(t_shell *s)
@@ -108,11 +110,15 @@ void	expander(t_shell *s)
 	while (s->lst)
 	{
 		if (ft_strchr(s->lst->str, '$'))
-			expand_sublist(s->lst);
+			expand_sublist(s);
 		if (s->lst->ex)
-			strjoin_expanded_str(s->lst);
+			strjoin_expanded_str(s);
 		if (ft_strchr(s->lst->str, '"') || ft_strchr(s->lst->str, 39))
-			remove_quotes(s->lst);
+			remove_quotes(s);
+		if (s->lst->expand)	 
+			s->lst->fstr = s->lst->expand;
+		else
+			s->lst->fstr = s->lst->str;
 		s->lst = s->lst->next;
 	}
 	s->lst = start;

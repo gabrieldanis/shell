@@ -6,36 +6,34 @@
 /*   By: gdanis <gdanis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/15 11:28:20 by gdanis            #+#    #+#             */
-/*   Updated: 2023/12/23 22:56:34 by gdanis           ###   ########.fr       */
+/*   Updated: 2023/12/27 22:00:25 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../header/minishell.h"
 
-int	ft_export(char ***envp, t_parsed *list, int env)
+int	ft_export(t_shell *s, int env)
 {
-	char	*str;
+	t_parsed	*start;
 
+	start = s->lst;
 	if (env)
-		return (ft_env(*envp), 0);
+		return (ft_env(s), 0);
 	////////////////once parsing works the 0 here must be replaced
-	if (!list->next)// || list->next->type != 0)
-		return (ft_print_export(*envp), 0);
-	list = list->next;
+	if (!s->lst->next)// || list->next->type != 0)
+		return (ft_print_export(s->env), 0);
+	s->lst = s->lst->next;
 	////////////////once parsing works the 0 here must be replaced
-	while (list)// && list->type == 0)
+	while (s->lst)// && list->type == 0)
 	{
-		if (list->expand)
-			str = list->expand;
-		else
-			str = list->str;
-		ft_setenv(envp, str);
-		list = list->next;
+		ft_setenv(s, s->lst->fstr);
+		s->lst = s->lst->next;
 	}
+	s->lst = start;
 	return (0);
 }
 
-int	update_existing_var(char **envp, char *str)
+int	update_existing_var(t_shell *s, char *str)
 {
 	int	i;
 	int	len;
@@ -45,15 +43,17 @@ int	update_existing_var(char **envp, char *str)
 	while (str[len] && str[len] != '=')
 		len++;
 	i = 0;
-	while (envp[i])
+	while (s->env[i])
 	{
-		if (!ft_strncmp(envp[i], str, len)
-			&& (envp[i][len] == '=' || envp[i][len] == '\0'))
+		if (!ft_strncmp(s->env[i], str, len)
+			&& (s->env[i][len] == '=' || s->env[i][len] == '\0'))
 		{
 			if (str[len] == '\0')
 				return (1);
-			tmp = envp[i];
-			envp[i] = ft_strdup(str);
+			tmp = s->env[i];
+			s->env[i] = ft_strdup(str);
+			if (!s->env[i])
+				free_and_exit(MALLOC_ERROR, s);
 			free(tmp);
 			return (1);
 		}
@@ -62,7 +62,7 @@ int	update_existing_var(char **envp, char *str)
 	return (0);
 }
 
-int	append_var(char ***envp, char *str)
+int	append_var(t_shell *s, char *str)
 {
 	int	len;
 	int	i;
@@ -75,32 +75,42 @@ int	append_var(char ***envp, char *str)
 		len++;
 	if (str[len] == '+' && str[len + 1] && str[len + 1] == '=')
 	{
-		while ((*envp)[i])
+		while (s->env[i])
 		{
-			if (!ft_strncmp((*envp)[i], str, len)
-				&& (*envp)[i][len] == '=')
+			if (!ft_strncmp(s->env[i], str, len)
+				&& s->env[i][len] == '=')
 			{
-				tmp = (*envp)[i];
-				(*envp)[i] = ft_strjoin((*envp)[i], str + len + 2);
+				tmp = s->env[i];
+				s->env[i] = ft_strjoin(s->env[i], str + len + 2);
+				if (!s->env[i])
+					free_and_exit(MALLOC_ERROR, s);
 				free(tmp);
 				return (1);
 			}
-			if (!ft_strncmp((*envp)[i], str, len)
-				&& (*envp)[i][len] == '\0')
+			if (!ft_strncmp(s->env[i], str, len)
+				&& s->env[i][len] == '\0')
 			{
-				tmp = (*envp)[i];
-				(*envp)[i] = ft_strjoin((*envp)[i], "=");
+				tmp = s->env[i];
+				s->env[i] = ft_strjoin(s->env[i], "=");
+				if (!s->env[i])
+					free_and_exit(MALLOC_ERROR, s);
 				free(tmp);
-				tmp = (*envp)[i];
-				(*envp)[i] = ft_strjoin((*envp)[i], str + len + 2);
+				tmp = s->env[i];
+				s->env[i] = ft_strjoin(s->env[i], str + len + 2);
+				if (!s->env[i])
+					free_and_exit(MALLOC_ERROR, s);
 				free(tmp);
 				return (1);
 			}
 			i++;
 		}
 		split_str = ft_split(str, '+');
+		if (!split_str)
+			free_and_exit(MALLOC_ERROR, s);
 		tmp = ft_strjoin(split_str[0], split_str[1]);
-		ft_setenv(envp, tmp);
+		if (!tmp)
+			free_and_exit(MALLOC_ERROR, s);
+		ft_setenv(s, tmp);
 		free(tmp);
 		free_2d_array((void **)split_str);
 		return (1);
@@ -108,35 +118,37 @@ int	append_var(char ***envp, char *str)
 	return (0);
 }
 
-int	ft_setenv(char ***envp, char *str)
+int	ft_setenv(t_shell *s, char *str)
 {
 	char	**tmp;
 	int	i;
 
 	if (!is_varname(str))
 		return (error_message(IDENT_ERROR, "export", str), 1);
-	if (update_existing_var(*envp, str))
+	if (update_existing_var(s, str))
 		return (0);
-	if (append_var(envp, str))
+	if (append_var(s, str))
 		return (0);
 	i = 0;
-	tmp = *envp;
-	while ((*envp)[i])
+	tmp = s->env;
+	while (s->env[i])
 		i++;
-	*envp = (char **)malloc(sizeof(char *) * (i + 2));
-	if (!(*envp))
-		free_and_exit(MALLOC_ERROR, NULL, NULL, NULL);
+	s->env = (char **)malloc(sizeof(char *) * (i + 2));
+	if (!s->env)
+		free_and_exit(MALLOC_ERROR, s);
 	i = 0;
 	while (tmp[i] && ft_strncmp(tmp[i], "_=", 2))
 	{
-		(*envp)[i] = tmp[i]; 
+		s->env[i] = tmp[i]; 
 		i++;
 	}
-	(*envp)[i] = ft_strdup(str);
+	s->env[i] = ft_strdup(str);
+	if (!s->env)
+		free_and_exit(MALLOC_ERROR, s);
 	i++;
-	(*envp)[i] = tmp[i - 1];
+	s->env[i] = tmp[i - 1];
 	i++;
-	(*envp)[i] = NULL;
+	s->env[i] = NULL;
 	free(tmp);
 	return (0);
 }

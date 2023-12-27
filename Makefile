@@ -3,8 +3,7 @@ NAME=minishell
 
 # list of folders where C files are stored
 # can NOT BE same folder as Makefile like:"." must be subfolder
-CODEDIRS=lexer sources parser
-#expander builtin 
+CODEDIRS=lexer sources parser expander builtin
 
 # list of directories that could have includes in it. meaning .h files
 INCDIRS=header

@@ -6,7 +6,7 @@
 /*   By: gdanis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 16:48:10 by gdanis            #+#    #+#             */
-/*   Updated: 2023/12/27 14:57:40 by gdanis           ###   ########.fr       */
+/*   Updated: 2023/12/27 23:02:20 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ t_shell	*init_shell(char **envp)
 	}
 	*s = (t_shell){0};
 	s->env = dup_envp(envp);
-	set_shlvl(s->env);
+	set_shlvl(s);
 	//ft_signal(s);
 	s->str = NULL;
 	return (s);
@@ -48,17 +48,20 @@ int	main(int argc, char **argv, char **envp)
 			tokenizer(shell);
 			//print_tokens(shell->tlst);
 			parser(shell);
-			print_parsed_list(shell);
 			expander(shell);
+			//print_parsed_list(shell);
+			execute_parsed_list(shell);
 			/*
 			printf("$USER variable: %s", ft_getenv("USER", shell));
 			plist = type_parsed_list(plist);
 			plist = info_parsed_list(plist);
-			execute_parsed_list(shell);
 			*/
 			free_token_list(shell);
 			free_parsed_list(shell->lst);
 			shell->lst = NULL;
+			if (shell->arglst)
+				free_2d_array((void **)shell->arglst);
+			shell->arglst = NULL;
 		}
 		if (!shell->str)
 			free_and_exit(0, shell);

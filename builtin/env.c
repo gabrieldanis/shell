@@ -6,21 +6,21 @@
 /*   By: gdanis <gdanis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/15 10:14:54 by gdanis            #+#    #+#             */
-/*   Updated: 2023/12/16 09:14:08 by gdanis           ###   ########.fr       */
+/*   Updated: 2023/12/27 22:01:37 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../header/minishell.h"
 
-int	ft_env(char **envp)
+int	ft_env(t_shell *s)
 {
 	int	i;
 
 	i = 0;
-	while (envp[i])
+	while (s->env[i])
 	{
-		if (ft_strchr(envp[i], '='))
-			printf("%s\n", envp[i]);
+		if (ft_strchr(s->env[i], '='))
+			printf("%s\n", s->env[i]);
 		i++;;
 	}
 	return (0);

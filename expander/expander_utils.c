@@ -6,18 +6,18 @@
 /*   By: gdanis <gdanis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 15:56:51 by gdanis            #+#    #+#             */
-/*   Updated: 2023/12/20 11:11:35 by gdanis           ###   ########.fr       */
+/*   Updated: 2023/12/27 15:36:55 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../header/minishell.h"
 
-void	plist_add_to_last_ex(t_parsed **tmp, t_parsed **plist)
+void	plist_add_to_last_ex(t_parsed **tmp, t_shell *s)
 {
-	if (!((*plist)->ex)) 
-		(*plist)->ex = *tmp;
+	if (!(s->lst->ex)) 
+		(s->lst)->ex = *tmp;
 	else
-		p_lstlast((*plist)->ex)->next = *tmp;
+		p_lstlast(s->lst->ex)->next = *tmp;
 }
 
 int	check_is_var(char c)
@@ -59,4 +59,24 @@ void	set_sq_flag(int *sq_flag, char c)
 		else
 			*sq_flag = 0;
 	}
+}
+
+char	*ft_getenv(char *str, t_shell *s)
+{
+	int	i;
+
+	i = 0;
+	if (!str)
+		return (NULL);
+	while (s->env[i])
+	{
+		if (!ft_strncmp(str, s->env[i], ft_strlen(str)) &&
+				s->env[i][ft_strlen(str)] == '='
+				 && s->env[i][ft_strlen(str) + 1] != '\0')
+		{
+			return (s->env[i] + ft_strlen(str) + 1);
+		}
+		i++;
+	}
+	return (NULL);
 }

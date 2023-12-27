@@ -6,59 +6,61 @@
 /*   By: gdanis <gdanis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 15:29:32 by gdanis            #+#    #+#             */
-/*   Updated: 2023/12/21 10:30:39 by gdanis           ###   ########.fr       */
+/*   Updated: 2023/12/27 22:28:53 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../header/minishell.h"
 
-int	ft_unset(char ***envp, t_parsed *list)
+int	ft_unset(t_shell *s)
 {
-	char	*arg;
-	char	**tmp;
-	int	i;
-	int	j;
+	t_parsed	*start;
+	char		**tmp;
+	int		i;
+	int		j;
 
 	i = 0;
 	j = 0;
-	while ((*envp)[i])
+	start = s->lst;
+	while (s->env[i])
 	{
 		i++;
 	}
-	list = list->next;
-	while (list)
+	s->lst = s->lst->next;
+	while (s->lst)
 	{
-		if (list->expand)
-			arg = list->expand;
-		else
-			arg = list->str;
-		if (!is_varname(arg))
+
+		if (!is_varname(s->lst->fstr))
 		{
-			error_message(IDENT_ERROR, "unset", arg);
+			error_message(IDENT_ERROR, "unset", s->lst->fstr);
 		}
 		else
 		{
 			tmp = (char **)malloc(sizeof(char *) * i);
+			if (!tmp)
+				free_and_exit(MALLOC_ERROR, s);
 			i = 0;
-			while ((*envp)[i + j])
+			while (s->env[i + j])
 			{
-				if (!ft_strncmp(arg, (*envp)[i + j], ft_strlen(arg))
-					&& ((*envp)[i + j][ft_strlen(arg)] == '=' || (*envp)[i + j][ft_strlen(arg)] == '\0'))
+				if (!ft_strncmp(s->lst->fstr, s->env[i + j], ft_strlen(s->lst->fstr))
+					&& (s->env[i + j][ft_strlen(s->lst->fstr)] == '='
+						|| s->env[i + j][ft_strlen(s->lst->fstr)] == '\0'))
 				{
-					free((*envp)[i]);
+					free(s->env[i]);
 					j++;
 				}
-				if ((*envp)[i + j])
+				if (s->env[i + j])
 				{
-					tmp[i] = (*envp)[i + j];
+					tmp[i] = s->env[i + j];
 					i++;
 				}
 			}
 			tmp[i] = NULL;
-			free(*envp);
-			*envp = tmp;
+			free(s->env);
+			s->env = tmp;
 		}
-		list = list->next;
+		s->lst = s->lst->next;
 	}
+	s->lst = start;
 	return (0);
 }

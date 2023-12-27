@@ -6,13 +6,13 @@
 /*   By: gdanis <gdanis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 11:11:11 by gdanis            #+#    #+#             */
-/*   Updated: 2023/12/22 10:06:10 by gdanis           ###   ########.fr       */
+/*   Updated: 2023/12/27 15:30:56 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../header/minishell.h"
 
-void	remove_quotes(t_parsed *plist)
+void	remove_quotes(t_shell *s)
 {
 	char	*quotes;
 	char	*tmp;
@@ -23,19 +23,19 @@ void	remove_quotes(t_parsed *plist)
 	q_flag = 0;
 	tmp = NULL;
 	i = 0;
-	while (plist->str[i])	
+	while (s->lst->str[i])	
 	{
-		set_q_flag_ex(plist, &q_flag, quotes, &i);
-		if (plist->str[i] && plist->str[i] != quotes[q_flag])
+		set_q_flag_ex(s->lst, &q_flag, quotes, &i);
+		if (s->lst->str[i] && s->lst->str[i] != quotes[q_flag])
 		{
-			ft_charjoin(&tmp, plist->str[i]);
+			ft_charjoin(&tmp, s->lst->str[i], s);
 			i++;
 		}
 	}
 	if (!tmp)
 		tmp = ft_strdup("");
-	free(plist->str);
-	plist->str = tmp;
+	free(s->lst->str);
+	s->lst->str = tmp;
 }
 
 void	set_q_flag_plist(t_parsed *list, int *q_flag, char *quotes)

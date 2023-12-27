@@ -6,7 +6,7 @@
 /*   By: gdanis <gdanis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/16 17:13:51 by gdanis            #+#    #+#             */
-/*   Updated: 2023/12/27 10:54:58 by gdanis           ###   ########.fr       */
+/*   Updated: 2023/12/27 15:36:46 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,24 +90,4 @@ int	is_varname(char *str)
 		i++;
 	}
 	return (1);
-}
-
-char	*ft_getenv(char *str, t_shell *s)
-{
-	int	i;
-
-	i = 0;
-	if (!str)
-		return (NULL);
-	while (s->env[i])
-	{
-		if (!ft_strncmp(str, s->env[i], ft_strlen(str)) &&
-				s->env[i][ft_strlen(str)] == '='
-				 && s->env[i][ft_strlen(str) + 1] != '\0')
-		{
-			return (s->env[i] + ft_strlen(str) + 1);
-		}
-		i++;
-	}
-	return (NULL);
 }
