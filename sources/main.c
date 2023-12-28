@@ -6,7 +6,7 @@
 /*   By: gdanis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 16:48:10 by gdanis            #+#    #+#             */
-/*   Updated: 2023/12/28 15:06:27 by gdanis           ###   ########.fr       */
+/*   Updated: 2023/12/28 23:20:47 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,19 +46,20 @@ int	main(int argc, char **argv, char **envp)
 		if (shell->str && shell->str[0] != '\0')
 		{
 			add_history(shell->str);
-			tokenizer(shell);
-			//print_tokens(shell->tlst);
-			parser(shell);
-			expander(shell);
-			print_parsed_list(shell);
-			execute_parsed_list(shell);
+			//tokenizer(shell);
+			str_to_token(shell);
+			print_tokens(shell->tlst);
+			//parser(shell);
+			//expander(shell);
+			//print_parsed_list(shell);
+			//execute_parsed_list(shell);
 			/*
 			printf("$USER variable: %s", ft_getenv("USER", shell));
 			plist = type_parsed_list(plist);
 			plist = info_parsed_list(plist);
 			*/
 			free_token_list(shell);
-			free_parsed_list(shell->lst);
+			//free_parsed_list(shell->lst);
 			shell->lst = NULL;
 			if (shell->arglst)
 				free_2d_array((void **)shell->arglst);

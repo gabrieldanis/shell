@@ -1,5 +1,5 @@
-objects/builtin/chdir.o: builtin/chdir.c /usr/include/stdc-predef.h \
- builtin/../header/minishell.h /usr/include/stdio.h \
+objects/lexing/lexer.o: lexing/lexer.c /usr/include/stdc-predef.h \
+ lexing/../header/minishell.h /usr/include/stdio.h \
  /usr/include/x86_64-linux-gnu/bits/libc-header-start.h \
  /usr/include/features.h /usr/include/features-time64.h \
  /usr/include/x86_64-linux-gnu/bits/wordsize.h \
@@ -96,9 +96,9 @@ objects/builtin/chdir.o: builtin/chdir.c /usr/include/stdc-predef.h \
  /usr/include/x86_64-linux-gnu/bits/types/struct_itimerspec.h \
  /usr/include/x86_64-linux-gnu/sys/wait.h \
  /usr/include/x86_64-linux-gnu/bits/types/idtype_t.h \
- builtin/../header/../libft/libft.h
+ lexing/../header/../libft/libft.h
 /usr/include/stdc-predef.h:
-builtin/../header/minishell.h:
+lexing/../header/minishell.h:
 /usr/include/stdio.h:
 /usr/include/x86_64-linux-gnu/bits/libc-header-start.h:
 /usr/include/features.h:
@@ -209,4 +209,4 @@ builtin/../header/minishell.h:
 /usr/include/x86_64-linux-gnu/bits/types/struct_itimerspec.h:
 /usr/include/x86_64-linux-gnu/sys/wait.h:
 /usr/include/x86_64-linux-gnu/bits/types/idtype_t.h:
-builtin/../header/../libft/libft.h:
+lexing/../header/../libft/libft.h:

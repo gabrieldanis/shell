@@ -6,7 +6,7 @@
 /*   By: gdanis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 16:49:31 by gdanis            #+#    #+#             */
-/*   Updated: 2023/12/28 10:23:15 by gdanis           ###   ########.fr       */
+/*   Updated: 2023/12/28 23:19:41 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,6 +123,7 @@ void		handle_sig2(int sig, siginfo_t *info, void *ucontext);
 void		init_signals(struct sigaction sig1, struct sigaction sig2);
 void		set_shlvl(t_shell *s);
 void		ft_signal(t_shell *s);
+void		str_to_token(t_shell *s);
 char		**dup_envp(char **envp);
 char		*token_type(int i);
 char		*expand_var(char *str);

@@ -6,7 +6,7 @@
 /*   By: gdanis <gdanis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/17 08:49:36 by gdanis            #+#    #+#             */
-/*   Updated: 2023/12/27 21:26:10 by gdanis           ###   ########.fr       */
+/*   Updated: 2023/12/28 23:22:08 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ void	set_shlvl(t_shell *s)
 		if (!strncmp(s->env[i], "SHLVL", 5))	
 		{
 			if (s->env[i][5] == '\0' || (s->env[i][5] == '=' && s->env[i][6] == '\0'))
-				ft_setenv(s, "SHLVL=1");
+				//ft_setenv(s, "SHLVL=1");
 			if (s->env[i][5] == '=' && ft_isdigit(s->env[i][6]))
 			{
 				num = ft_itoa(ft_atoi(ft_strchr(s->env[i], '=') + 1) + 1);
@@ -66,7 +66,7 @@ void	set_shlvl(t_shell *s)
 				free(num);
 				if (!tmp)
 					free_and_exit(MALLOC_ERROR, s);
-				ft_setenv(s, tmp);
+				//ft_setenv(s, tmp);
 				free(tmp);
 			}
 		}
