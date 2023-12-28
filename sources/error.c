@@ -6,7 +6,7 @@
 /*   By: gdanis <gdanis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 14:07:21 by gdanis            #+#    #+#             */
-/*   Updated: 2023/12/27 14:55:31 by gdanis           ###   ########.fr       */
+/*   Updated: 2023/12/28 11:59:41 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,8 @@ int	error_message(int n, char *exe_name, char *str)
 		printf("command not found\n");
 	else if (n == 7)
 		printf("execve error\n");
+	else if (n == 8)
+		printf("fork error\n");
 	else
 		printf("unknown error\n");
 	return (n);

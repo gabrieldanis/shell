@@ -6,7 +6,7 @@
 /*   By: gdanis <gdanis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 08:08:33 by gdanis            #+#    #+#             */
-/*   Updated: 2023/12/27 23:07:14 by gdanis           ###   ########.fr       */
+/*   Updated: 2023/12/28 14:53:16 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,11 +98,59 @@ void	arg_list(t_shell *s)
 	s->lst = start;
 }
 
-void	execute_parsed_list(t_shell *s)
+void	exit_child(int n)
+{
+	error_message(n, NULL, NULL);
+	exit(n);
+}
+
+void	no_pipe(t_shell *s)
 {
 	char	*cmd;
+	pid_t	pid;
+	char	path[500];
 
-	cmd = NULL;
+
+	pid = fork();
+	if (pid == -1)
+			exit_child(FORK_ERROR);
+	if (pid == 0)
+	{
+			cmd = NULL;
+			arg_list(s);
+			if (ft_strchr(s->arglst[0], '/'))
+			{
+				if (s->arglst[0][0] == '.' 
+					&& s->arglst[0][1] == '/')
+						{
+							if (getcwd(path, sizeof(path)) == NULL)
+								exit_child(GEN_ERROR);
+							cmd = ft_strjoin(path, s->arglst[0] + 1);
+						}
+				else if (s->arglst[0][0] == '/')
+						cmd = s->arglst[0];
+				else
+						{
+							if (getcwd(path, sizeof(path)) == NULL)
+								exit_child(GEN_ERROR);
+							cmd = ft_strjoin(path, "/");
+							cmd = ft_strjoin(cmd, s->arglst[0]);
+						}
+			}
+			else
+				cmd = get_dir(get_path(s), s);
+			printf("%s\n", cmd);
+			if (!cmd)
+				exit_child(CMD_ERROR);
+			if (execve(cmd, s->arglst, s->env) == -1)
+				exit_child(EXECVE_ERROR);
+	}
+	else
+		wait(NULL);
+}
+
+void	execute_parsed_list(t_shell *s)
+{
 	if (!ft_strncmp(s->lst->fstr, "echo\0", 5))
 		ft_echo(s->lst->next);
 	else if (!ft_strncmp(s->lst->fstr, "exit\0", 5))
@@ -120,14 +168,5 @@ void	execute_parsed_list(t_shell *s)
 	else if (!ft_strncmp(s->lst->fstr, "clear\0", 6))
 		clear_screen();
 	else
-	{
-		arg_list(s);
-		cmd = get_dir(get_path(s), s);
-		if (!cmd)
-			return ;
-		if (execve(cmd, s->arglst, s->env) == -1)
-		{
-			free_and_exit(EXECVE_ERROR, s);
-		}
-	}
+			no_pipe(s);
 }

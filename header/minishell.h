@@ -6,7 +6,7 @@
 /*   By: gdanis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 16:49:31 by gdanis            #+#    #+#             */
-/*   Updated: 2023/12/27 22:20:42 by gdanis           ###   ########.fr       */
+/*   Updated: 2023/12/28 10:23:15 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@
 # include <termios.h>
 # include <readline/readline.h>
 # include <readline/history.h>
+# include <sys/wait.h>
 # include "../libft/libft.h"
 
 /*********************************
@@ -42,6 +43,7 @@
 # define NOFILE_ERROR 5
 # define CMD_ERROR 6
 # define EXECVE_ERROR 7
+# define FORK_ERROR 8
 
 
 /*********************************

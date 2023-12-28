@@ -6,7 +6,7 @@
 /*   By: gdanis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 16:48:10 by gdanis            #+#    #+#             */
-/*   Updated: 2023/12/27 23:02:20 by gdanis           ###   ########.fr       */
+/*   Updated: 2023/12/28 15:06:27 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,8 @@ t_shell	*init_shell(char **envp)
 	*s = (t_shell){0};
 	s->env = dup_envp(envp);
 	set_shlvl(s);
-	//ft_signal(s);
+	//update shell name here
+	ft_signal(s);
 	s->str = NULL;
 	return (s);
 }
@@ -49,7 +50,7 @@ int	main(int argc, char **argv, char **envp)
 			//print_tokens(shell->tlst);
 			parser(shell);
 			expander(shell);
-			//print_parsed_list(shell);
+			print_parsed_list(shell);
 			execute_parsed_list(shell);
 			/*
 			printf("$USER variable: %s", ft_getenv("USER", shell));

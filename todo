@@ -1,5 +1,3 @@
-
-
 *	export "declare -x" hardcoded??
 *	variables notworking correctly
 
@@ -11,3 +9,5 @@ parsing:
 	*	after redirect must be a file
 	*	
 
+
+expandig should happen right before
