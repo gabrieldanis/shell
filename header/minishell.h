@@ -6,7 +6,7 @@
 /*   By: gdanis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 16:49:31 by gdanis            #+#    #+#             */
-/*   Updated: 2023/12/29 11:30:49 by gdanis           ###   ########.fr       */
+/*   Updated: 2023/12/29 15:33:12 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,6 +130,7 @@ void		ft_signal(t_shell *s);
 void		str_to_token(t_shell *s);
 void		setqflag(int *flag, char c);
 void		split_token(t_shell *s);
+void		expand_token(t_shell *s);
 char		**dup_envp(char **envp);
 char		*token_type(int i);
 char		*expand_var(char *str);

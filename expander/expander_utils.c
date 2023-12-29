@@ -6,7 +6,7 @@
 /*   By: gdanis <gdanis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 15:56:51 by gdanis            #+#    #+#             */
-/*   Updated: 2023/12/29 11:32:53 by gdanis           ###   ########.fr       */
+/*   Updated: 2023/12/29 15:31:22 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ void	set_sq_flag(int *sq_flag, char c)
 			*sq_flag = 0;
 	}
 }
-
+/*
 char	*ft_getenv(char *str, t_shell *s)
 {
 	int	i;
@@ -82,3 +82,4 @@ char	*ft_getenv(char *str, t_shell *s)
 	}
 	return (NULL);
 }
+*/

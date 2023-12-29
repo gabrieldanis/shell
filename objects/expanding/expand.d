@@ -1,5 +1,5 @@
-objects/sources/free.o: sources/free.c /usr/include/stdc-predef.h \
- sources/../header/minishell.h /usr/include/stdio.h \
+objects/expanding/expand.o: expanding/expand.c /usr/include/stdc-predef.h \
+ expanding/../header/minishell.h /usr/include/stdio.h \
  /usr/include/x86_64-linux-gnu/bits/libc-header-start.h \
  /usr/include/features.h /usr/include/features-time64.h \
  /usr/include/x86_64-linux-gnu/bits/wordsize.h \
@@ -96,9 +96,9 @@ objects/sources/free.o: sources/free.c /usr/include/stdc-predef.h \
  /usr/include/x86_64-linux-gnu/bits/types/struct_itimerspec.h \
  /usr/include/x86_64-linux-gnu/sys/wait.h \
  /usr/include/x86_64-linux-gnu/bits/types/idtype_t.h \
- sources/../header/../libft/libft.h
+ expanding/../header/../libft/libft.h
 /usr/include/stdc-predef.h:
-sources/../header/minishell.h:
+expanding/../header/minishell.h:
 /usr/include/stdio.h:
 /usr/include/x86_64-linux-gnu/bits/libc-header-start.h:
 /usr/include/features.h:
@@ -209,4 +209,4 @@ sources/../header/minishell.h:
 /usr/include/x86_64-linux-gnu/bits/types/struct_itimerspec.h:
 /usr/include/x86_64-linux-gnu/sys/wait.h:
 /usr/include/x86_64-linux-gnu/bits/types/idtype_t.h:
-sources/../header/../libft/libft.h:
+expanding/../header/../libft/libft.h:
