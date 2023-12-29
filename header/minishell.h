@@ -6,7 +6,7 @@
 /*   By: gdanis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 16:49:31 by gdanis            #+#    #+#             */
-/*   Updated: 2023/12/28 23:19:41 by gdanis           ###   ########.fr       */
+/*   Updated: 2023/12/29 11:30:49 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,11 @@
 typedef struct s_token
 {
 	struct s_token	*next;
+	struct s_token	*sp;
+	struct s_token	*ex;
 	char			*str;
+	int				split;
+	int				type;
 }	t_token;
 
 typedef struct s_parsed
@@ -92,11 +96,11 @@ t_parsed	*p_lstlast(t_parsed *list);
 t_token		*last_token(t_token *t);
 void		expander(t_shell *s);
 void		parser(t_shell *s);
-void		token_addlstlast(t_shell *s, t_token *tmp);
+void		token_addlstlast(t_token **lst, t_token *tmp);
 void		tokenizer(t_shell *s);
 void		print_parsed_list(t_shell *s);
 void		ft_charjoin(char **s1, char c, t_shell *s);
-void		print_tokens(t_token *list);
+void		print_tokens(t_shell *s);
 void		idx_tokens(t_token *list);
 void		print_parsed_tokens(t_token *list);
 void		type_tokens(t_token *list);
@@ -124,6 +128,8 @@ void		init_signals(struct sigaction sig1, struct sigaction sig2);
 void		set_shlvl(t_shell *s);
 void		ft_signal(t_shell *s);
 void		str_to_token(t_shell *s);
+void		setqflag(int *flag, char c);
+void		split_token(t_shell *s);
 char		**dup_envp(char **envp);
 char		*token_type(int i);
 char		*expand_var(char *str);

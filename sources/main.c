@@ -6,7 +6,7 @@
 /*   By: gdanis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 16:48:10 by gdanis            #+#    #+#             */
-/*   Updated: 2023/12/28 23:20:47 by gdanis           ###   ########.fr       */
+/*   Updated: 2023/12/29 11:29:52 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,8 @@ int	main(int argc, char **argv, char **envp)
 			add_history(shell->str);
 			//tokenizer(shell);
 			str_to_token(shell);
-			print_tokens(shell->tlst);
+			split_token(shell);
+			print_tokens(shell);
 			//parser(shell);
 			//expander(shell);
 			//print_parsed_list(shell);

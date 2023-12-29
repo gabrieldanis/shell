@@ -6,7 +6,7 @@
 /*   By: gdanis <gdanis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 15:56:51 by gdanis            #+#    #+#             */
-/*   Updated: 2023/12/27 15:36:55 by gdanis           ###   ########.fr       */
+/*   Updated: 2023/12/29 11:32:53 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ void	plist_add_to_last_ex(t_parsed **tmp, t_shell *s)
 		p_lstlast(s->lst->ex)->next = *tmp;
 }
 
+/*
 int	check_is_var(char c)
 {
 	if (ft_isalnum(c) || c == '_')
@@ -27,6 +28,7 @@ int	check_is_var(char c)
 	else
 		return (0);
 }
+*/
 
 void	set_q_flag_ex(t_parsed *list, int *q_flag, char *quotes, int *i)
 {

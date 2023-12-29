@@ -6,7 +6,7 @@
 /*   By: gdanis <gdanis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/28 22:27:36 by gdanis            #+#    #+#             */
-/*   Updated: 2023/12/29 00:01:52 by gdanis           ###   ########.fr       */
+/*   Updated: 2023/12/29 10:50:17 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,22 +40,6 @@ void	ft_charjoin(char **s1, char c, t_shell *s)
 	*s1 = str;
 }
 
-t_token	*last_token(t_token *t)
-{
-	while(t && t->next)
-		t = t->next;	
-	return (t);
-}
-
-void	print_tokens(t_token *list)
-{
-	while (list)
-	{
-		printf("%s\n", list->str);
-		list = list->next;
-	}
-}
-
 int	is_delimiter(char c)
 {
 	if (c == '<' || c == '>' || c == '|' || c == ' ' || c == '\t')
@@ -70,34 +54,13 @@ int	is_operator(char c)
 	return (0);
 }
 
-void	setqflag(int *flag, char c)
-{
-	if (!(*flag) && (c == '"' || c == 39))
-	{
-		if (c == '"')	
-			*flag = 2;
-		if (c == 39)
-			*flag = 1;
-	}
-	else if((*flag == 2 && c == '"') || (*flag == 1 && c == 39))
-		*flag = 0;
-}
-
-void	token_addlstlast(t_shell *s, t_token *tmp)
-{
-	if (!s->tlst)
-		s->tlst = tmp;
-	else
-		last_token(s->tlst)->next = tmp;
-}
-
 void	operator_token(t_shell *s, int *i)
 {
 	t_token	*tmp;
 
 	tmp = (t_token *)malloc(sizeof(t_token));
 	*tmp = (t_token){0};
-	token_addlstlast(s, tmp);
+	token_addlstlast(&s->tlst, tmp);
 	ft_charjoin(&(last_token(s->tlst)->str), s->str[*i], s);
 	(*i)++;
 	if (s->str[*i] == '<' && s->str[(*i) - 1] == '<')
@@ -130,7 +93,7 @@ void	str_to_token(t_shell *s)
 		{
 			tmp = (t_token *)malloc(sizeof(t_token));
 			*tmp = (t_token){0};
-			token_addlstlast(s, tmp);
+			token_addlstlast(&s->tlst, tmp);
 			while (s->str[i] && !is_operator(s->str[i]))
 			{
 				setqflag(&flag, s->str[i]);

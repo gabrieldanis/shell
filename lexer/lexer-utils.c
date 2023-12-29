@@ -6,7 +6,7 @@
 /*   By: gdanis <gdanis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/09 16:13:40 by gdanis            #+#    #+#             */
-/*   Updated: 2023/12/27 10:54:21 by gdanis           ###   ########.fr       */
+/*   Updated: 2023/12/29 12:33:01 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,13 +40,13 @@ void	ft_charjoin(char **s1, char c, t_shell *s)
 	*s1 = str;
 }
 
+/*
 t_token	*last_token(t_token *t)
 {
 	while(t && t->next)
 		t = t->next;	
 	return (t);
 }
-
 void	print_tokens(t_token *list)
 {
 	while (list)
@@ -63,3 +63,4 @@ void	token_addlstlast(t_shell *s, t_token *tmp)
 	else
 		last_token(s->tlst)->next = tmp;
 }
+*/
