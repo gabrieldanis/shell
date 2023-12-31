@@ -6,7 +6,7 @@
 /*   By: gdanis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/29 10:00:53 by gdanis            #+#    #+#             */
-/*   Updated: 2023/12/29 19:03:43 by gdanis           ###   ########.fr       */
+/*   Updated: 2023/12/30 18:19:55 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,8 +78,9 @@ void	split_token(t_shell *s)
 					oldflag = flag;
 					i++;
 				}
-				remove_lastsp_if_empty(s->tlst);
-			}
+				if (!last_token(s->tlst->sp)->str)
+					last_token(s->tlst->sp)->str = ft_strdup("");
+	 		}
 			if (s->tlst->str[i] == '$')
 			{
 				if (!s->tlst->sp || (s->tlst->sp && last_token(s->tlst->sp)->str))
@@ -94,6 +95,8 @@ void	split_token(t_shell *s)
 				{
 					if (!flag)
 						last_token(s->tlst->sp)->split = 1;
+					if (flag == 2 || flag == 0)
+						last_token(s->tlst->sp)->expand = 1;
 					ft_charjoin(&(last_token(s->tlst->sp)->str), s->tlst->str[i], s);
 					i++;
 				}

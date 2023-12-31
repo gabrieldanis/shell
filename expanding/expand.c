@@ -6,7 +6,7 @@
 /*   By: gdanis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/29 11:54:47 by gdanis            #+#    #+#             */
-/*   Updated: 2023/12/29 15:37:00 by gdanis           ###   ########.fr       */
+/*   Updated: 2023/12/30 18:32:42 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,62 +36,70 @@ void	expand_token(t_shell *s)
 {
 	t_token	*tmp;
 	t_token	*start;
+	t_token	*tstart;
 	char	*var;
 	char	*old_str;
 	int		i;
 
 	start = s->tlst->sp;
-	tmp = (t_token *)malloc(sizeof(t_token));
-	*tmp = (t_token){0};
-	token_addlstlast(&s->tlst->ex, tmp);
-	while (s->tlst->sp)
+	tstart = s->tlst;
+	while (s->tlst)
 	{
-		if (ft_strchr(s->tlst->sp->str, '$')
-				&& ft_strlen(s->tlst->sp->str) != 1 && s->tlst->sp->split)
+		tmp = (t_token *)malloc(sizeof(t_token));
+		*tmp = (t_token){0};
+		token_addlstlast(&s->tlst->ex, tmp);
+		while (s->tlst->sp)
 		{
-			var = ft_getenv(s->tlst->sp->str + 1, s);
-			i = 0;
-			while (var[i])
+			if (ft_strchr(s->tlst->sp->str, '$')
+					&& ft_strlen(s->tlst->sp->str) != 1 && s->tlst->sp->split)
 			{
-				while (var[i] && var[i] != ' ' && var[i] != '\t')
+				var = ft_getenv(s->tlst->sp->str + 1, s);
+				i = 0;
+				while (var && var[i])
 				{
-					ft_charjoin(&last_token(s->tlst->ex)->str, var[i], s);
-					i++;
-				}
-				if (var[i] == ' ' || var[i] == '\t')
-				{
-					tmp = (t_token *)malloc(sizeof(t_token));
-					*tmp = (t_token){0};
-					token_addlstlast(&s->tlst->ex, tmp);
-					last_token(s->tlst->ex)->str = ft_strdup(" ");
-					while (var[i] == ' ' || var[i] == '\t')
-						i++;
-					if (var[i])
+					while (var[i] && var[i] != ' ' && var[i] != '\t')
 					{
-						tmp = (t_token *)malloc(sizeof(t_token));
-						*tmp = (t_token){0};
-						token_addlstlast(&s->tlst->ex, tmp);
+						ft_charjoin(&last_token(s->tlst->ex)->str, var[i], s);
+						i++;
+					}
+					if (var[i] == ' ' || var[i] == '\t')
+					{
+						while (var[i] == ' ' || var[i] == '\t')
+							i++;
+						if (var[i] && last_token(s->tlst->ex)->str)
+						{
+							tmp = (t_token *)malloc(sizeof(t_token));
+							*tmp = (t_token){0};
+							token_addlstlast(&s->tlst->ex, tmp);
+						}
 					}
 				}
 			}
+			else if (ft_strchr(s->tlst->sp->str, '$')
+					&& ft_strlen(s->tlst->sp->str) != 1)
+			{
+				if (s->tlst->sp->expand)
+					var = ft_getenv(s->tlst->sp->str + 1, s);
+				else
+					var = s->tlst->sp->str;
+				old_str = last_token(s->tlst->ex)->str;
+				last_token(s->tlst->ex)->str = ft_strjoin(last_token(s->tlst->ex)->str, var);
+				if (old_str)
+					free(old_str);
+			}
+			else
+			{
+				old_str = last_token(s->tlst->ex)->str;
+				last_token(s->tlst->ex)->str = ft_strjoin(last_token(s->tlst->ex)->str, s->tlst->sp->str);
+				if (old_str)
+					free(old_str);
+			}
+			s->tlst->sp = s->tlst->sp->next;
 		}
-		else if (ft_strchr(s->tlst->sp->str, '$')
-				&& ft_strlen(s->tlst->sp->str) != 1)
-		{
-			var = ft_getenv(s->tlst->sp->str + 1, s);
-			old_str = last_token(s->tlst->ex)->str;
-			last_token(s->tlst->ex)->str = ft_strjoin(last_token(s->tlst->ex)->str, var);
-			if (old_str)
-				free(old_str);
-		}
-		else
-		{
-			old_str = last_token(s->tlst->ex)->str;
-			last_token(s->tlst->ex)->str = ft_strjoin(last_token(s->tlst->ex)->str, s->tlst->sp->str);
-			if (old_str)
-				free(old_str);
-		}
-		s->tlst->sp = s->tlst->sp->next;
+		s->tlst->sp = start;
+		s->tlst = s->tlst->next;
+		if (s->tlst)
+			start = s->tlst->sp;
 	}
-	s->tlst->sp = start;
+	s->tlst = tstart;
 }

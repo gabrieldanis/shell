@@ -6,7 +6,7 @@
 /*   By: gdanis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 16:48:10 by gdanis            #+#    #+#             */
-/*   Updated: 2023/12/29 19:05:35 by gdanis           ###   ########.fr       */
+/*   Updated: 2023/12/30 22:34:16 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,24 +48,27 @@ int	main(int argc, char **argv, char **envp)
 			add_history(shell->str);
 			//tokenizer(shell);
 			str_to_token(shell);
-			split_token(shell);
-			expand_token(shell);
-			print_tokens(shell);
-			//parser(shell);
-			//expander(shell);
-			//print_parsed_list(shell);
-			//execute_parsed_list(shell);
-			/*
-			printf("$USER variable: %s", ft_getenv("USER", shell));
-			plist = type_parsed_list(plist);
-			plist = info_parsed_list(plist);
-			*/
-			free_token_list(shell);
-			//free_parsed_list(shell->lst);
-			shell->lst = NULL;
-			if (shell->arglst)
-				free_2d_array((void **)shell->arglst);
-			shell->arglst = NULL;
+			if (shell->tlst)
+			{
+				split_token(shell);
+				expand_token(shell);
+				//print_token(shell);
+				execute_parsed_list(shell);
+				//parser(shell);
+				//expander(shell);
+				//print_parsed_list(shell);
+				/*
+				printf("$USER variable: %s", ft_getenv("USER", shell));
+				plist = type_parsed_list(plist);
+				plist = info_parsed_list(plist);
+				*/
+				free_token_list(shell);
+				//free_parsed_list(shell->lst);
+				shell->lst = NULL;
+				if (shell->arglst)
+					free_2d_array((void **)shell->arglst);
+				shell->arglst = NULL;
+			}
 		}
 		if (!shell->str)
 			free_and_exit(0, shell);

@@ -6,7 +6,7 @@
 /*   By: gdanis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 16:49:31 by gdanis            #+#    #+#             */
-/*   Updated: 2023/12/29 15:33:12 by gdanis           ###   ########.fr       */
+/*   Updated: 2023/12/30 22:22:34 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,19 +36,25 @@
  * 	ERROR CODES
  *********************************/
 
-# define MALLOC_ERROR 1
-# define QUOTE_ERROR 2
-# define IDENT_ERROR 3
-# define GEN_ERROR 4
-# define NOFILE_ERROR 5
-# define CMD_ERROR 6
-# define EXECVE_ERROR 7
-# define FORK_ERROR 8
+# define MALLOC_ERROR	1
+# define QUOTE_ERROR	2
+# define IDENT_ERROR	3
+# define GEN_ERROR	4
+# define NOFILE_ERROR	5
+# define CMD_ERROR	6
+# define EXECVE_ERROR	7
+# define FORK_ERROR	8
 
 
 /*********************************
  * 	PARSER CATEGORIES
  *********************************/
+
+# define RED_IN		0 /* < */
+# define RED_OUT	1 /* > */
+# define PIPE		2 /* | */
+# define HEREDOC	3 /* << */
+# define RED_APP	4 /* >> */
 
 /*********************************
  * 	STRUCTS
@@ -61,6 +67,7 @@ typedef struct s_token
 	struct s_token	*ex;
 	char			*str;
 	int				split;
+	int				expand;
 	int				type;
 }	t_token;
 
@@ -100,13 +107,13 @@ void		token_addlstlast(t_token **lst, t_token *tmp);
 void		tokenizer(t_shell *s);
 void		print_parsed_list(t_shell *s);
 void		ft_charjoin(char **s1, char c, t_shell *s);
-void		print_tokens(t_shell *s);
+void		print_token(t_shell *s);
 void		idx_tokens(t_token *list);
 void		print_parsed_tokens(t_token *list);
 void		type_tokens(t_token *list);
 void		block_tokens(t_token *list);
 void		execute_parsed_list(t_shell *s);
-void		ft_echo(t_parsed *list);
+void		ft_echo(t_token *list);
 void		ft_exit(t_parsed *list);
 void		sort_var_list(char **dup);
 void		ft_print_export_lines(char **dup, int i, int j);

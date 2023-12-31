@@ -6,7 +6,7 @@
 /*   By: gdanis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/29 09:52:50 by gdanis            #+#    #+#             */
-/*   Updated: 2023/12/29 19:32:35 by gdanis           ###   ########.fr       */
+/*   Updated: 2023/12/30 18:36:04 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void	token_addlstlast(t_token **lst, t_token *tmp)
 		last_token(*lst)->next = tmp;
 }
 
-void	print_tokens(t_shell *s)
+void	print_token(t_shell *s)
 {
 	t_token	*start;
 	t_token	*sp_start;
@@ -54,25 +54,29 @@ void	print_tokens(t_shell *s)
 		if (s->tlst->str)
 			printf("%s", s->tlst->str);
 		printf("\n");
-		printf("-------------------------------\n");
-		printf("split:");
 		if (s->tlst->sp)
 		{
+			printf("-------------------------------\n");
+			printf("split:");
 			sp_start = s->tlst->sp;
 			while (s->tlst->sp)
 			{
+				if (s->tlst->sp->str[0] == '\0')
+					printf("im heeere");
 				printf("\t\t%s\n", s->tlst->sp->str);
 				s->tlst->sp = s->tlst->sp->next;
 			}
 			s->tlst->sp = sp_start;
 		}
-		printf("-------------------------------\n");
-		printf("exp:");
 		if (s->tlst->ex)
 		{
+			printf("-------------------------------\n");
+			printf("exp:");
 			ex_start = s->tlst->ex;
 			while (s->tlst->ex)
 			{
+				if (s->tlst->ex->str && s->tlst->ex->str[0] == '\0')
+					printf("im heeere");
 				printf("\t\t%s\n", s->tlst->ex->str);
 				s->tlst->ex = s->tlst->ex->next;
 			}

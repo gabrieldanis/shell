@@ -6,7 +6,7 @@
 /*   By: gdanis <gdanis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/28 22:27:36 by gdanis            #+#    #+#             */
-/*   Updated: 2023/12/29 10:50:17 by gdanis           ###   ########.fr       */
+/*   Updated: 2023/12/30 17:53:57 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,21 +57,34 @@ int	is_operator(char c)
 void	operator_token(t_shell *s, int *i)
 {
 	t_token	*tmp;
+	char	*ops;
+	int	j;
 
+	ops = "<>|";
 	tmp = (t_token *)malloc(sizeof(t_token));
 	*tmp = (t_token){0};
 	token_addlstlast(&s->tlst, tmp);
+	j = 0;
+	while (ops[j])
+	{
+		if (ops[j] == s->str[*i])
+			break ;
+		j++;
+	}
+	last_token(s->tlst)->type = j;
 	ft_charjoin(&(last_token(s->tlst)->str), s->str[*i], s);
 	(*i)++;
 	if (s->str[*i] == '<' && s->str[(*i) - 1] == '<')
 	{
 		ft_charjoin(&(last_token(s->tlst)->str), s->str[*i], s);
 		(*i)++;
+		last_token(s->tlst)->type = 3;
 	}
 	if (s->str[*i] == '>' && s->str[(*i) - 1] == '>')
 	{
 		ft_charjoin(&(last_token(s->tlst)->str), s->str[*i], s);
 		(*i)++;
+		last_token(s->tlst)->type = 4;
 	}
 }
 
@@ -87,14 +100,14 @@ void	str_to_token(t_shell *s)
 	{
 		while (s->str[i] && (s->str[i] == ' ' || s->str[i] == '\t'))
 			i++;	
-		if (s->str[i] == '<' || s->str[i] == '>' || s->str[i] == '|')
+		if ((s->str[i] == '<' || s->str[i] == '>' || s->str[i] == '|') && !flag)
 			operator_token(s, &i);
 		if (s->str[i] && !is_delimiter(s->str[i]))
 		{
 			tmp = (t_token *)malloc(sizeof(t_token));
 			*tmp = (t_token){0};
 			token_addlstlast(&s->tlst, tmp);
-			while (s->str[i] && !is_operator(s->str[i]))
+			while (s->str[i] && (!is_operator(s->str[i]) || flag))
 			{
 				setqflag(&flag, s->str[i]);
 				ft_charjoin(&(last_token(s->tlst)->str), s->str[i], s);

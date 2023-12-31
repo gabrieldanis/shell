@@ -6,7 +6,7 @@
 /*   By: gdanis <gdanis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 08:08:33 by gdanis            #+#    #+#             */
-/*   Updated: 2023/12/28 14:53:16 by gdanis           ###   ########.fr       */
+/*   Updated: 2023/12/30 22:51:46 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ char    *get_dir(char *str, t_shell *s)
 	if (!dirs)
 		free_and_exit(MALLOC_ERROR, s);
 	i = 0;
-	cmd = ft_strjoin("/", s->lst->fstr);
+	cmd = ft_strjoin("/", s->tlst->ex->str);
 	if (!cmd)
 		free_and_exit(MALLOC_ERROR, s);
 	while (dirs[i] != NULL)
@@ -63,7 +63,7 @@ char    *get_dir(char *str, t_shell *s)
 	return (NULL);
 }
 
-int	p_lstsize(t_parsed *list)
+int	t_lstsize(t_token *list)
 {
 	int	i;	
 
@@ -78,24 +78,32 @@ int	p_lstsize(t_parsed *list)
 
 void	arg_list(t_shell *s)
 {
-	t_parsed	*start;
+	t_token	*start;
+	t_token	*ex_start;
 	int		i;
 
-	s->arglst = (char **)malloc((p_lstsize(s->lst) + 1) * sizeof(char *));
+	s->arglst = (char **)malloc((t_lstsize(s->tlst) + 1) * sizeof(char *));
 	if (!s->arglst)
 			free_and_exit(MALLOC_ERROR, s);
 	i = 0;
-	start = s->lst;
+	start = s->tlst;
 	// after improved parsing we will have to set a limit for this while loop
-	while (s->lst)
+	while (s->tlst)
 	{
-		s->arglst[i] = ft_strdup(s->lst->fstr);
-		if (!s->arglst[i])
-			free_and_exit(MALLOC_ERROR, s);
-		s->lst = s->lst->next;
-		i++;
+		ex_start = s->tlst->ex;
+		while (s->tlst->ex)
+		{
+			s->arglst[i] = ft_strdup(s->tlst->ex->str);
+			if (!s->arglst[i])
+				free_and_exit(MALLOC_ERROR, s);
+			s->tlst->ex = s->tlst->ex->next;
+			i++;
+		}
+		s->tlst->ex = ex_start;
+		s->tlst = s->tlst->next;
 	}
-	s->lst = start;
+	s->arglst[i] = NULL;
+	s->tlst = start;
 }
 
 void	exit_child(int n)
@@ -118,6 +126,7 @@ void	no_pipe(t_shell *s)
 	{
 			cmd = NULL;
 			arg_list(s);
+		printf("%s\n", s->arglst[0]);
 			if (ft_strchr(s->arglst[0], '/'))
 			{
 				if (s->arglst[0][0] == '.' 
@@ -139,7 +148,7 @@ void	no_pipe(t_shell *s)
 			}
 			else
 				cmd = get_dir(get_path(s), s);
-			printf("%s\n", cmd);
+			//printf("%s\n", cmd);
 			if (!cmd)
 				exit_child(CMD_ERROR);
 			if (execve(cmd, s->arglst, s->env) == -1)
@@ -151,21 +160,21 @@ void	no_pipe(t_shell *s)
 
 void	execute_parsed_list(t_shell *s)
 {
-	if (!ft_strncmp(s->lst->fstr, "echo\0", 5))
-		ft_echo(s->lst->next);
-	else if (!ft_strncmp(s->lst->fstr, "exit\0", 5))
+	if (!ft_strncmp(s->tlst->ex->str, "echo\0", 5))
+		ft_echo(s->tlst->ex->next);
+	else if (!ft_strncmp(s->tlst->ex->str, "exit\0", 5))
 		free_and_exit(0, s);
-	else if (!ft_strncmp(s->lst->fstr, "pwd\0", 4))
+	else if (!ft_strncmp(s->tlst->ex->str, "pwd\0", 4))
 		ft_pwd();
-	else if (!ft_strncmp(s->lst->fstr, "cd\0", 3))
+	else if (!ft_strncmp(s->tlst->ex->str, "cd\0", 3))
 		ft_chdir(s);
-	else if (!ft_strncmp(s->lst->fstr, "env\0", 4))
+	else if (!ft_strncmp(s->tlst->ex->str, "env\0", 4))
 		ft_export(s, 1);
-	else if (!ft_strncmp(s->lst->fstr, "export\0", 7))
+	else if (!ft_strncmp(s->tlst->ex->str, "export\0", 7))
 		ft_export(s, 0);
-	else if (!ft_strncmp(s->lst->fstr, "unset\0", 6))
+	else if (!ft_strncmp(s->tlst->ex->str, "unset\0", 6))
 		ft_unset(s);
-	else if (!ft_strncmp(s->lst->fstr, "clear\0", 6))
+	else if (!ft_strncmp(s->tlst->ex->str, "clear\0", 6))
 		clear_screen();
 	else
 			no_pipe(s);
