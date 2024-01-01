@@ -6,7 +6,7 @@
 /*   By: gdanis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/29 10:00:53 by gdanis            #+#    #+#             */
-/*   Updated: 2023/12/30 18:19:55 by gdanis           ###   ########.fr       */
+/*   Updated: 2023/12/31 10:05:22 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,8 @@ void	split_token(t_shell *s)
 	start = s->tlst;
 	while (s->tlst)
 	{
+		if (s->tlst->type == HEREDOC && s->tlst->next)
+			s->tlst->next->type = HEREDOC_DEL; 
 		i = 0;
 		while (s->tlst->str[i])
 		{
@@ -93,9 +95,9 @@ void	split_token(t_shell *s)
 				i++;
 				while (check_is_var(s->tlst->str[i]))	
 				{
-					if (!flag)
+					if (!flag && s->tlst->type != HEREDOC_DEL)
 						last_token(s->tlst->sp)->split = 1;
-					if (flag == 2 || flag == 0)
+					if ((flag == 2 || flag == 0) && s->tlst->type != HEREDOC_DEL)
 						last_token(s->tlst->sp)->expand = 1;
 					ft_charjoin(&(last_token(s->tlst->sp)->str), s->tlst->str[i], s);
 					i++;

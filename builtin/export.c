@@ -6,30 +6,27 @@
 /*   By: gdanis <gdanis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/15 11:28:20 by gdanis            #+#    #+#             */
-/*   Updated: 2023/12/27 22:00:25 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/01/01 19:34:12 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../header/minishell.h"
 
-int	ft_export(t_shell *s, int env)
+int	ft_export(t_shell *s, t_parsed *lst, int env)
 {
-	t_parsed	*start;
+	int	i;
 
-	start = s->lst;
+	i = 0;
 	if (env)
 		return (ft_env(s), 0);
-	////////////////once parsing works the 0 here must be replaced
-	if (!s->lst->next)// || list->next->type != 0)
+	if (!lst->arglst[1])
 		return (ft_print_export(s->env), 0);
-	s->lst = s->lst->next;
-	////////////////once parsing works the 0 here must be replaced
-	while (s->lst)// && list->type == 0)
+	i++;
+	while (lst->arglst[i])
 	{
-		ft_setenv(s, s->lst->fstr);
-		s->lst = s->lst->next;
+		ft_setenv(s, lst->arglst[i]);
+		i++;
 	}
-	s->lst = start;
 	return (0);
 }
 

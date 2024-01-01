@@ -6,7 +6,7 @@
 /*   By: gdanis <gdanis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 14:07:21 by gdanis            #+#    #+#             */
-/*   Updated: 2023/12/28 11:59:41 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/01/01 19:49:02 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,9 @@ int	error_message(int n, char *exe_name, char *str)
 	printf("minishell: ");
 	if (exe_name)
 		printf("%s: ", exe_name);
-	else if (str)
+	if (str && n != 9)
 		printf("`%s': ", str);
-	else if (n == 1)
+	if (n == 1)
 		printf("malloc error\n");
 	else if (n == 2)
 		printf("unclosed quotation mark\n");
@@ -35,6 +35,12 @@ int	error_message(int n, char *exe_name, char *str)
 		printf("execve error\n");
 	else if (n == 8)
 		printf("fork error\n");
+	else if (n == 9)
+	{
+		printf("syntax error near unexpected token `%s'\n", str);
+	}
+	else if (n == ARGNUM_ERROR)
+		printf("too many arguments\n");
 	else
 		printf("unknown error\n");
 	return (n);

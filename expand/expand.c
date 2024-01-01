@@ -6,7 +6,7 @@
 /*   By: gdanis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/29 11:54:47 by gdanis            #+#    #+#             */
-/*   Updated: 2023/12/30 18:32:42 by gdanis           ###   ########.fr       */
+/*   Updated: 2023/12/31 09:34:38 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ void	expand_token(t_shell *s)
 		while (s->tlst->sp)
 		{
 			if (ft_strchr(s->tlst->sp->str, '$')
-					&& ft_strlen(s->tlst->sp->str) != 1 && s->tlst->sp->split)
+				&& ft_strlen(s->tlst->sp->str) != 1 && s->tlst->sp->split)
 			{
 				var = ft_getenv(s->tlst->sp->str + 1, s);
 				i = 0;

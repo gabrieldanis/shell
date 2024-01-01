@@ -6,7 +6,7 @@
 /*   By: gdanis <gdanis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/31 08:44:00 by gdanis            #+#    #+#             */
-/*   Updated: 2023/12/31 15:23:01 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/01/01 18:28:29 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,6 @@ void	addnewlstback(t_shell *s, t_parsed *lst)
 			s->lst = tmp;
 		else
 			lstlast(s->lst)->next = tmp;
-	
 	}
 	else
 	{
@@ -52,8 +51,7 @@ void	init_plst(t_shell *s)
 	start = s->tlst;
 	while (s->tlst)
 	{
-		if (s->tlst->ex->str)
-			addnewlstback(s, NULL);
+		addnewlstback(s, NULL);
 		while (s->tlst && s->tlst->type != PIPE)
 		{
 			ex_start = s->tlst->ex;
@@ -63,6 +61,7 @@ void	init_plst(t_shell *s)
 				{
 					addnewlstback(s, lstlast(s->lst));
 					lstlast(lstlast(s->lst)->lst)->str = s->tlst->ex->str;
+					lstlast(lstlast(s->lst)->lst)->type = s->tlst->type;
 				}
 				s->tlst->ex = s->tlst->ex->next;
 			}
@@ -73,34 +72,63 @@ void	init_plst(t_shell *s)
 		{
 			addnewlstback(s, lstlast(s->lst));
 			lstlast(lstlast(s->lst)->lst)->str = s->tlst->str;
+			lstlast(lstlast(s->lst)->lst)->type = s->tlst->type;
 			s->tlst = s->tlst->next;
 		}
 	}
 	s->tlst = start;
 }
 
-void	printlst(t_shell *s)
+int	parse_isfile(t_parsed *lst)
 {
-	t_parsed	*start;
-	t_parsed	*sub_start;
-	int		i;
-	
-	i = 0;
-	start = s->lst;
-	while (s->lst)
+	if ((lst->type == RED_IN || lst->type == RED_OUT 
+		||lst->type == RED_APP) && lst->next)
 	{
-		printf("\n\n\tNODE %d\n", i);
-		printf("+++++++++++++++++++++++++\n");
-		sub_start = s->lst->lst;
-		while (s->lst->lst)	
+		if (lst->next->type)
 		{
-			printf("type: %d, %s\n", s->lst->lst->type, s->lst->lst->str);
-			s->lst->lst = s->lst->lst->next;
+			error_message(UNEX_TOKEN, NULL, lst->next->str);
+			return (0);
 		}
-		printf("+++++++++++++++++++++++++\n\n");
-		i++;
-		s->lst->lst = sub_start;
-		s->lst = s->lst->next;
 	}
-	s->lst = start;
+	/*
+	 * check here wether file exists or not.
+	 * if not and infile than error: no such file
+	 * if not outfile then create outfile first
+	 */
+	if ((lst->type == RED_IN || lst->type == RED_OUT 
+		||lst->type == RED_APP) && lst->next
+			&& !lst->next->type)
+		lst->next->type = FILE_DIR;
+	return (1);
 }
+
+int	parse_cmdargs(t_parsed *lst)
+{
+	static int	cmd;
+
+	if (!lst->type && !cmd)
+	{
+		lst->type = CMD;
+		cmd = 1;
+	}
+	if (!lst->type && cmd)
+		lst->type = ARG;
+	if (!lst->next)
+		cmd = 0;
+	return (1);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

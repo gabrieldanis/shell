@@ -6,7 +6,7 @@
 /*   By: gdanis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 16:49:31 by gdanis            #+#    #+#             */
-/*   Updated: 2023/12/30 22:22:34 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/01/01 19:51:02 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,24 +37,30 @@
  *********************************/
 
 # define MALLOC_ERROR	1
-# define QUOTE_ERROR	2
+# define QUOTE_ERROR	2 /* unclosed quote */
 # define IDENT_ERROR	3
-# define GEN_ERROR	4
+# define GEN_ERROR		4
 # define NOFILE_ERROR	5
-# define CMD_ERROR	6
+# define CMD_ERROR		6
 # define EXECVE_ERROR	7
-# define FORK_ERROR	8
+# define FORK_ERROR		8
+# define UNEX_TOKEN		9
+# define ARGNUM_ERROR	10
 
 
 /*********************************
  * 	PARSER CATEGORIES
  *********************************/
 
-# define RED_IN		0 /* < */
-# define RED_OUT	1 /* > */
-# define PIPE		2 /* | */
-# define HEREDOC	3 /* << */
-# define RED_APP	4 /* >> */
+# define RED_IN			1 /* < */
+# define RED_OUT		2 /* > */
+# define PIPE			3 /* | */
+# define HEREDOC		4 /* << */
+# define RED_APP		5 /* >> */
+# define HEREDOC_DEL	6 /* << "___" */
+# define CMD			7
+# define ARG			8
+# define FILE_DIR		9
 
 /*********************************
  * 	STRUCTS
@@ -74,14 +80,12 @@ typedef struct s_token
 typedef struct s_parsed
 {
 	struct s_parsed	*next;
-	struct s_parsed	*ex;
+	struct s_parsed	*lst;
+	char			**arglst;
 	char			*str;
-	char			*fstr;
-	char			*expand;
 	int				idx;
 	int				type;
 	int				eof;
-	int				to_ex;
 }	t_parsed;
 
 typedef struct s_shell
@@ -89,7 +93,6 @@ typedef struct s_shell
 	t_parsed	*lst;
 	t_token		*tlst;
 	char		**env;
-	char		**arglst;
 	char		*str;
 }	t_shell;
 
@@ -113,7 +116,7 @@ void		print_parsed_tokens(t_token *list);
 void		type_tokens(t_token *list);
 void		block_tokens(t_token *list);
 void		execute_parsed_list(t_shell *s);
-void		ft_echo(t_token *list);
+void		ft_echo(t_parsed *list);
 void		ft_exit(t_parsed *list);
 void		sort_var_list(char **dup);
 void		ft_print_export_lines(char **dup, int i, int j);
@@ -138,22 +141,33 @@ void		str_to_token(t_shell *s);
 void		setqflag(int *flag, char c);
 void		split_token(t_shell *s);
 void		expand_token(t_shell *s);
+void		exit_child(int n);
+void		arg_list(t_shell *s);
+void		no_pipe(t_shell *s);
+void		init_plst(t_shell *s);
+void		printlst(t_shell *s);
+void		parse_type(t_shell *s);
+void		parse_lstiter(t_shell *s, int (*f)(t_parsed *lst));
+char		*get_path(t_shell *s);
+char		*get_dir(char *str, t_shell *s);
 char		**dup_envp(char **envp);
 char		*token_type(int i);
 char		*expand_var(char *str);
 char		*get_str(t_parsed *list);
 char		*ft_getenv(char *str, t_shell *s);
+int			parse_isfile(t_parsed *lst);
 int			clear_screen(void);
 int			error_message(int n, char *exe_name, char *str);
 int			ft_pwd(void);
 int			ft_setenv(t_shell *s, char *str);
 int			is_varname(char *str);
-int			ft_chdir(t_shell *s);
+int			ft_chdir(t_shell *s, t_parsed *lst);
 int			ft_env(t_shell *s);
-int			ft_export(t_shell *s, int env);
+int			ft_export(t_shell *s, t_parsed *lst, int env);
 int			ft_print_export(char **envp);
 int			delimiter_char(char c);
 int			op_char(char c);
 int			check_is_var(char c);
-int			ft_unset(t_shell *s);
+int			ft_unset(t_shell *s, t_parsed *lst);
+int			parse_cmdargs(t_parsed *lst);
 #endif

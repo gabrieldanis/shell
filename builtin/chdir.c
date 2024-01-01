@@ -6,7 +6,7 @@
 /*   By: gdanis <gdanis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/15 09:17:56 by gdanis            #+#    #+#             */
-/*   Updated: 2023/12/27 19:21:20 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/01/01 19:53:43 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,19 +30,21 @@ void	update_pwd(t_shell *s, char *pwd)
 	free(tmp);
 }
 
-int	ft_chdir(t_shell *s)
+int	ft_chdir(t_shell *s, t_parsed *lst)
 {
-	int	n;
 	char	pwd[500];
+	int	n;
 	int	i;
 
-	// add && list->next->type == ??? after parsing
-	if (s->lst->next)
+	n = 0;
+	if (lst->arglst[1])
 	{
+		if (lst->arglst[2])
+			return(error_message(ARGNUM_ERROR, "cd", NULL));
 		getcwd(pwd, sizeof(pwd));
-		n = chdir(s->lst->next->fstr);
+		n = chdir(lst->arglst[1]);
 		if (n == -1)
-			return(error_message(NOFILE_ERROR, "cd", s->lst->next->fstr));
+			return(error_message(NOFILE_ERROR, "cd", s->lst->next->str));
 		update_pwd(s, pwd);
 	}
 	else

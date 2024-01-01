@@ -6,7 +6,7 @@
 /*   By: gdanis <gdanis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/28 22:27:36 by gdanis            #+#    #+#             */
-/*   Updated: 2023/12/30 17:53:57 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/01/01 14:33:18 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,34 +57,29 @@ int	is_operator(char c)
 void	operator_token(t_shell *s, int *i)
 {
 	t_token	*tmp;
-	char	*ops;
-	int	j;
 
-	ops = "<>|";
 	tmp = (t_token *)malloc(sizeof(t_token));
 	*tmp = (t_token){0};
 	token_addlstlast(&s->tlst, tmp);
-	j = 0;
-	while (ops[j])
-	{
-		if (ops[j] == s->str[*i])
-			break ;
-		j++;
-	}
-	last_token(s->tlst)->type = j;
+	if (s->str[*i] == '<')
+		last_token(s->tlst)->type = RED_IN;
+	if (s->str[*i] == '>')
+		last_token(s->tlst)->type = RED_OUT;
+	if (s->str[*i] == '|')
+		last_token(s->tlst)->type = PIPE;
 	ft_charjoin(&(last_token(s->tlst)->str), s->str[*i], s);
 	(*i)++;
 	if (s->str[*i] == '<' && s->str[(*i) - 1] == '<')
 	{
 		ft_charjoin(&(last_token(s->tlst)->str), s->str[*i], s);
 		(*i)++;
-		last_token(s->tlst)->type = 3;
+		last_token(s->tlst)->type = HEREDOC;
 	}
 	if (s->str[*i] == '>' && s->str[(*i) - 1] == '>')
 	{
 		ft_charjoin(&(last_token(s->tlst)->str), s->str[*i], s);
 		(*i)++;
-		last_token(s->tlst)->type = 4;
+		last_token(s->tlst)->type = RED_APP;
 	}
 }
 

@@ -6,45 +6,51 @@
 /*   By: gdanis <gdanis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 15:29:32 by gdanis            #+#    #+#             */
-/*   Updated: 2023/12/27 22:28:53 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/01/01 23:04:52 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../header/minishell.h"
 
-int	ft_unset(t_shell *s)
+int	isenvar(char *env, char *varname)
 {
-	t_parsed	*start;
+	if (!ft_strncmp(varname, env, ft_strlen(varname))
+		&& (env[ft_strlen(varname)] == '='
+			|| env[ft_strlen(varname)] == '\0'))
+		return (1);
+	return (0);
+}
+
+int	ft_unset(t_shell *s, t_parsed *lst)
+{
 	char		**tmp;
 	int		i;
 	int		j;
+	int		k;
 
-	i = 0;
-	j = 0;
-	start = s->lst;
-	while (s->env[i])
+	k = 1;
+	if (!lst->arglst[1])
+		return (0);
+	while (lst->arglst[k])
 	{
-		i++;
-	}
-	s->lst = s->lst->next;
-	while (s->lst)
-	{
-
-		if (!is_varname(s->lst->fstr))
+		i = 0;
+		j = 0;
+		while (s->env[i])
 		{
-			error_message(IDENT_ERROR, "unset", s->lst->fstr);
+			if (isenvar(s->env[i], lst->arglst[k]))
+				j = 1;
+			i++;
 		}
-		else
+		if (j)
 		{
 			tmp = (char **)malloc(sizeof(char *) * i);
 			if (!tmp)
 				free_and_exit(MALLOC_ERROR, s);
 			i = 0;
+			j = 0;
 			while (s->env[i + j])
 			{
-				if (!ft_strncmp(s->lst->fstr, s->env[i + j], ft_strlen(s->lst->fstr))
-					&& (s->env[i + j][ft_strlen(s->lst->fstr)] == '='
-						|| s->env[i + j][ft_strlen(s->lst->fstr)] == '\0'))
+				if (isenvar(s->env[i + j], lst->arglst[k]))
 				{
 					free(s->env[i]);
 					j++;
@@ -59,8 +65,7 @@ int	ft_unset(t_shell *s)
 			free(s->env);
 			s->env = tmp;
 		}
-		s->lst = s->lst->next;
+		k++;
 	}
-	s->lst = start;
 	return (0);
 }
