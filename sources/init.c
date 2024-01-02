@@ -6,7 +6,7 @@
 /*   By: gdanis <gdanis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/02 07:25:06 by gdanis            #+#    #+#             */
-/*   Updated: 2024/01/02 08:10:58 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/01/02 10:54:25 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,19 @@
 
 void	set_shell(t_shell *s)
 {
-	ft_unset(s, "SHELL");
+	char	*str;
+	char	*old;
+
+	str = ft_strjoin("SHELL=", s->argv[0]);
+	if (!str)
+		free_and_exit(MALLOC_ERROR, s);
+	old = str;
+	str = ft_strjoin(str, " has taken over 💩 💩 💩");
+	free(old);
+	if (!str)
+		free_and_exit(MALLOC_ERROR, s);
+	ft_setenv(s, str);
+	free(str);
 }
 
 t_shell	*init_shell(int argc, char **argv, char **envp)
@@ -31,9 +43,8 @@ t_shell	*init_shell(int argc, char **argv, char **envp)
 	*s = (t_shell){0};
 	s->env = dup_envp(envp);
 	s->argv = argv;
-	set_shell(s);
+	set_shell(s); // not necessary
 	set_shlvl(s);
-	//update shell name here
 	ft_signal(s);
 	s->str = NULL;
 	return (s);

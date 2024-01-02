@@ -6,7 +6,7 @@
 /*   By: gdanis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 16:49:31 by gdanis            #+#    #+#             */
-/*   Updated: 2024/01/02 08:09:41 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/01/02 10:21:23 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,6 +150,7 @@ void		init_plst(t_shell *s);
 void		printlst(t_shell *s);
 void		parse_type(t_shell *s);
 void		parse_lstiter(t_shell *s, int (*f)(t_parsed *lst));
+void		ft_unset_str(t_shell *s, char *str, int i);
 char		*get_path(t_shell *s);
 char		*get_dir(char *str, t_shell *s);
 char		**dup_envp(char **envp);
@@ -157,6 +158,7 @@ char		*token_type(int i);
 char		*expand_var(char *str);
 char		*get_str(t_parsed *list);
 char		*ft_getenv(char *str, t_shell *s);
+int			isenvar(char *env, char *varname);
 int			parse_isfile(t_parsed *lst);
 int			clear_screen(void);
 int			error_message(int n, char *exe_name, char *str);

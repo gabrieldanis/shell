@@ -6,7 +6,7 @@
 /*   By: gdanis <gdanis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 15:29:32 by gdanis            #+#    #+#             */
-/*   Updated: 2024/01/01 23:04:52 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/01/02 10:19:32 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,36 @@ int	isenvar(char *env, char *varname)
 	return (0);
 }
 
+void	ft_unset_str(t_shell *s, char *str, int i)
+{
+	char	**tmp;
+	int		j;
+
+	tmp = (char **)malloc(sizeof(char *) * i);
+	if (!tmp)
+		free_and_exit(MALLOC_ERROR, s);
+	i = 0;
+	j = 0;
+	while (s->env[i + j])
+	{
+		if (isenvar(s->env[i + j], str))
+		{
+			free(s->env[i]);
+			j++;
+		}
+		if (s->env[i + j])
+		{
+			tmp[i] = s->env[i + j];
+			i++;
+		}
+	}
+	tmp[i] = NULL;
+	free(s->env);
+	s->env = tmp;
+}
+
 int	ft_unset(t_shell *s, t_parsed *lst)
 {
-	char		**tmp;
 	int		i;
 	int		j;
 	int		k;
@@ -42,29 +69,7 @@ int	ft_unset(t_shell *s, t_parsed *lst)
 			i++;
 		}
 		if (j)
-		{
-			tmp = (char **)malloc(sizeof(char *) * i);
-			if (!tmp)
-				free_and_exit(MALLOC_ERROR, s);
-			i = 0;
-			j = 0;
-			while (s->env[i + j])
-			{
-				if (isenvar(s->env[i + j], lst->arglst[k]))
-				{
-					free(s->env[i]);
-					j++;
-				}
-				if (s->env[i + j])
-				{
-					tmp[i] = s->env[i + j];
-					i++;
-				}
-			}
-			tmp[i] = NULL;
-			free(s->env);
-			s->env = tmp;
-		}
+			ft_unset_str(s, lst->arglst[k], i);
 		k++;
 	}
 	return (0);
