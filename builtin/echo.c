@@ -6,13 +6,13 @@
 /*   By: gdanis <gdanis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 08:19:56 by gdanis            #+#    #+#             */
-/*   Updated: 2024/01/01 19:18:19 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/01/02 11:11:14 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../header/minishell.h"
 
-void	ft_echo(t_parsed *lst)
+int	ft_echo(t_parsed *lst)
 {
 	int	nl;
 	int	i;
@@ -33,4 +33,5 @@ void	ft_echo(t_parsed *lst)
 	}
 	if (nl)
 		printf("\n");
+	return (0);
 }

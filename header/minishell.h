@@ -6,7 +6,7 @@
 /*   By: gdanis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 16:49:31 by gdanis            #+#    #+#             */
-/*   Updated: 2024/01/02 10:21:23 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/01/02 11:11:34 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,7 @@ typedef struct s_shell
 	char		**argv;
 	char		**env;
 	char		*str;
+	int			rval;
 }	t_shell;
 
 /*********************************
@@ -118,7 +119,6 @@ void		print_parsed_tokens(t_token *list);
 void		type_tokens(t_token *list);
 void		block_tokens(t_token *list);
 void		execute_parsed_list(t_shell *s);
-void		ft_echo(t_parsed *list);
 void		ft_exit(t_parsed *list);
 void		sort_var_list(char **dup);
 void		ft_print_export_lines(char **dup, int i, int j);
@@ -158,6 +158,7 @@ char		*token_type(int i);
 char		*expand_var(char *str);
 char		*get_str(t_parsed *list);
 char		*ft_getenv(char *str, t_shell *s);
+int			ft_echo(t_parsed *list);
 int			isenvar(char *env, char *varname);
 int			parse_isfile(t_parsed *lst);
 int			clear_screen(void);

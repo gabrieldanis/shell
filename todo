@@ -1,13 +1,14 @@
+
+
+
+
+
 *	export "declare -x" hardcoded??
-*	variables notworking correctly
+*	implement $? variable
+*	check for unclodes quotes
+*	free everything
+*	fix bug in error message when command was not found
 
 
 
 
-parsing:
-	*	count pipes
-	*	after redirect must be a file
-	*	
-
-
-expandig should happen right before

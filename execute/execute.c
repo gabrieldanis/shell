@@ -6,7 +6,7 @@
 /*   By: gdanis <gdanis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 08:08:33 by gdanis            #+#    #+#             */
-/*   Updated: 2024/01/01 19:40:41 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/01/02 11:13:40 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,21 +15,19 @@
 void	execute_parsed_list(t_shell *s)
 {
 	if (!ft_strncmp(s->lst->arglst[0], "echo\0", 5))
-		ft_echo(s->lst);
+		s->rval = ft_echo(s->lst);
 	else if (!ft_strncmp(s->lst->arglst[0], "exit\0", 5))
 		free_and_exit(0, s);
 	else if (!ft_strncmp(s->lst->arglst[0], "pwd\0", 4))
-		ft_pwd();
+		s->rval = ft_pwd();
 	else if (!ft_strncmp(s->lst->arglst[0], "cd\0", 3))
-		ft_chdir(s, s->lst);
+		s->rval = ft_chdir(s, s->lst);
 	else if (!ft_strncmp(s->lst->arglst[0], "env\0", 4))
-		ft_export(s, s->lst, 1);
+		s->rval = ft_export(s, s->lst, 1);
 	else if (!ft_strncmp(s->lst->arglst[0], "export\0", 7))
-		ft_export(s, s->lst, 0);
+		s->rval = ft_export(s, s->lst, 0);
 	else if (!ft_strncmp(s->lst->arglst[0], "unset\0", 6))
-		ft_unset(s, s->lst);
-	else if (!ft_strncmp(s->lst->arglst[0], "clear\0", 6))
-		clear_screen();
+		s->rval = ft_unset(s, s->lst);
 	else
 		no_pipe(s);
 }
@@ -70,10 +68,10 @@ void	no_pipe(t_shell *s)
 			cmd = get_dir(get_path(s), s);
 		if (!cmd)
 			exit_child(CMD_ERROR);
-		if (execve(cmd, s->lst->arglst, s->env) == -1)
+		s->rval = execve(cmd, s->lst->arglst, s->env);
+		if ( s->rval == -1)
 			exit_child(EXECVE_ERROR);
 	}
 	else
 		wait(NULL);
 }
-
