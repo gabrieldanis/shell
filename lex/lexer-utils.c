@@ -6,7 +6,7 @@
 /*   By: gdanis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/29 09:52:50 by gdanis            #+#    #+#             */
-/*   Updated: 2023/12/30 18:36:04 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/01/02 11:31:30 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,12 @@ void	setqflag(int *flag, char c)
 		*flag = 0;
 }
 
-void	token_addlstlast(t_token **lst, t_token *tmp)
+void	token_addlstlast(t_token **lst)
 {
+	t_token	*tmp;
+
+	tmp = (t_token *)malloc(sizeof(t_token));
+	*tmp = (t_token){0};
 	if (!(*lst))
 		*lst = tmp;
 	else
@@ -62,7 +66,7 @@ void	print_token(t_shell *s)
 			while (s->tlst->sp)
 			{
 				if (s->tlst->sp->str[0] == '\0')
-					printf("im heeere");
+					printf("string with only null terminator");
 				printf("\t\t%s\n", s->tlst->sp->str);
 				s->tlst->sp = s->tlst->sp->next;
 			}
@@ -76,7 +80,7 @@ void	print_token(t_shell *s)
 			while (s->tlst->ex)
 			{
 				if (s->tlst->ex->str && s->tlst->ex->str[0] == '\0')
-					printf("im heeere");
+					printf("string with only null terminator");
 				printf("\t\t%s\n", s->tlst->ex->str);
 				s->tlst->ex = s->tlst->ex->next;
 			}

@@ -6,7 +6,7 @@
 /*   By: gdanis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 16:48:10 by gdanis            #+#    #+#             */
-/*   Updated: 2024/01/02 10:24:00 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/01/02 16:16:33 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,17 +35,10 @@ int	main(int argc, char **argv, char **envp)
 				init_plst(shell);
 				parse_lstiter(shell, parse_isfile);
 				parse_lstiter(shell, parse_cmdargs);
-				printlst(shell);
+				//printlst(shell);
 				arg_list(shell);
 				execute_parsed_list(shell);
-				free_token_list(shell);
-				//free_parsed_list(shell->lst);
-				shell->lst = NULL;
-				/*
-				if (shell->arglst)
-					free_2d_array((void **)shell->arglst);
-				shell->arglst = NULL;
-				*/
+				free_lsts(shell);
 			}
 		}
 		if (!shell->str)

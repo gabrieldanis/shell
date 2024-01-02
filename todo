@@ -3,11 +3,12 @@
 
 
 
+*	make parsed lst double linked list
 *	export "declare -x" hardcoded??
 *	implement $? variable
-*	check for unclodes quotes
-*	free everything
+*	check for unclosed quotes
 *	fix bug in error message when command was not found
+*	do funcheck stuff
 
 
 

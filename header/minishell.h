@@ -6,7 +6,7 @@
 /*   By: gdanis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 16:49:31 by gdanis            #+#    #+#             */
-/*   Updated: 2024/01/02 11:11:34 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/01/02 14:59:01 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,7 @@ t_parsed	*p_lstlast(t_parsed *list);
 t_token		*last_token(t_token *t);
 void		expander(t_shell *s);
 void		parser(t_shell *s);
-void		token_addlstlast(t_token **lst, t_token *tmp);
+void		token_addlstlast(t_token **lst);
 void		tokenizer(t_shell *s);
 void		print_parsed_list(t_shell *s);
 void		ft_charjoin(char **s1, char c, t_shell *s);
@@ -132,7 +132,7 @@ void		set_q_flag_ex(t_parsed *list, int *q_flag, char *quotes, int *i);
 void		set_sq_flag(int *sq_flag, char c);
 void		set_q_flag_plist(t_parsed *list, int *q_flag, char *quotes);
 void		remove_quotes(t_shell *s);
-void		free_token_list(t_shell *s);
+void		free_token_list(t_token *tlst);
 void		free_parsed_list(t_parsed *list);
 void		handle_sig1(int sig, siginfo_t *info, void *ucontext);
 void		handle_sig2(int sig, siginfo_t *info, void *ucontext);
@@ -151,6 +151,7 @@ void		printlst(t_shell *s);
 void		parse_type(t_shell *s);
 void		parse_lstiter(t_shell *s, int (*f)(t_parsed *lst));
 void		ft_unset_str(t_shell *s, char *str, int i);
+void		free_lsts(t_shell *s);
 char		*get_path(t_shell *s);
 char		*get_dir(char *str, t_shell *s);
 char		**dup_envp(char **envp);

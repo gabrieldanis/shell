@@ -6,7 +6,7 @@
 /*   By: gdanis <gdanis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/31 08:10:22 by gdanis            #+#    #+#             */
-/*   Updated: 2024/01/01 19:09:01 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/01/02 16:54:03 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,23 @@ int	t_lstsize(t_token *list)
 	return (i);
 }
 
+int	arglst_size(t_parsed *lst)
+{
+	t_parsed	*sub_start;
+	int			i;
+
+	i = 0;
+	sub_start = lst->lst;
+	while (lst->lst)
+	{
+		if (lst->lst->type == CMD || lst->lst->type == ARG)
+			i++;
+		lst->lst = lst->lst->next;
+	}
+	lst->lst = sub_start;
+	return (i);
+}
+
 void	arg_list(t_shell *s)
 {
 	t_parsed	*start;
@@ -84,10 +101,9 @@ void	arg_list(t_shell *s)
 
 	i = 0;
 	start = s->lst;
-	// after improved parsing we will have to set a limit for this while loop
 	while (s->lst && s->lst->lst)
 	{
-		s->lst->arglst = (char **)malloc((t_lstsize(s->tlst) + 1) * sizeof(char *));
+		s->lst->arglst = (char **)malloc((arglst_size(s->lst) + 1) * sizeof(char *));
 		if (!s->lst->arglst)
 			free_and_exit(MALLOC_ERROR, s);
 		sub_start = s->lst->lst;

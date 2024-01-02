@@ -6,67 +6,89 @@
 /*   By: gdanis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 13:17:49 by gdanis            #+#    #+#             */
-/*   Updated: 2024/01/02 07:26:37 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/01/02 15:44:39 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../header/minishell.h"
 
-void	free_and_exit(int n, t_shell *shell)
+void	free_and_exit(int n, t_shell *s)
 {
-	(void)shell;
+	int	i;
+	(void)s;
 	if (n != 0)
 		error_message(n, NULL, NULL);
-	/*
-	 * great code that frees everything
-	 * goes here :
-	if (shell->arglst)
-		free_2d_array((void **)shell->arglst);
-	if (shell->tlst)
-		free_token_list(shell);
-	if (shell->lst)
-		free_parsed_list(shell->lst);
-	if (shell->env)
-		free_2d_array((void **)shell->env);
-	 */
+	free_lsts(s);
+	i = 0;
+	free_2d_array((void **)s->env);
+	s->env = NULL;
+	free (s);
 	if (n == 0)
 		printf("exit\n");
 	exit (n);
 }
 
+void	free_lsts(t_shell *s)
+{
+	if (s->tlst)
+		free_token_list(s->tlst);
+	if (s->lst)
+		free_parsed_list(s->lst);
+	s->tlst = NULL;
+	s->lst = NULL;
+}
 
-void	free_token_list(t_shell *s)
+void	free_token_list(t_token *tlst)
 {
 	t_token	*tmp;
 
-	while (s->tlst)
+	while (tlst)
 	{
-		tmp = s->tlst;
-		s->tlst = s->tlst->next;
+		tmp = tlst;
+		tlst = tlst->next;
+		if (tmp->sp)
+		{
+			free_token_list(tmp->sp);
+			tmp->sp = NULL;
+		}
+		if (tmp->ex)
+		{
+			free_token_list(tmp->ex);
+			tmp->ex = NULL;
+		}
 		if (tmp->str)
+		{
 			free(tmp->str);
+			tmp->str = NULL;
+		}
 		free(tmp);
 	}
-	s->tlst = NULL;
 }
 
-/*
-void	free_parsed_list(t_parsed *list)
+void	free_parsed_list(t_parsed *lst)
 {
 	t_parsed	*tmp;
 
-	while (list)
+	while (lst)
 	{
-		tmp = list;
-		list = list->next;
+		tmp = lst;
+		lst = lst->next;
 		if (tmp->str)
+		{
 			free(tmp->str);
-		if (tmp->ex)
-			free_parsed_list(tmp->ex);
+			tmp->str = NULL;
+		}
+		if (tmp->arglst)
+			free_2d_array((void **)tmp->arglst);
+		if (tmp->lst)
+		{
+			free_parsed_list(tmp->lst);
+			tmp->lst = NULL;
+		}
 		free(tmp);
 	}
 }
-*/
+
 void	free_2d_array(void **ptr)
 {
 	int	i;

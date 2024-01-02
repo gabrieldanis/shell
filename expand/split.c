@@ -6,50 +6,15 @@
 /*   By: gdanis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/29 10:00:53 by gdanis            #+#    #+#             */
-/*   Updated: 2023/12/31 10:05:22 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/01/02 11:32:26 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../header/minishell.h"
 
-int	check_is_var(char c)
-{
-	if (ft_isalnum(c) || c == '_')
-		return (1);
-	else
-		return (0);
-}
-
-void	remove_lastsp_if_empty(t_token *lst)
-{
-	t_token	*tmp;
-	t_token	*start;
-
-	start = lst->sp;
-	if (lst->sp && !last_token(lst->sp)->str)
-	{
-		if (!lst->sp->next)
-		{
-			free(lst->sp);
-			lst->sp = NULL;
-		}
-		else
-		{
-			while(lst->sp->next->next)	
-				lst->sp = lst->sp->next;	
-			tmp = lst->sp;
-			lst->sp = lst->sp->next;
-			free(lst->sp);
-			tmp->next = NULL;
-			lst->sp = start;
-		}
-	}
-}
-
 void	split_token(t_shell *s) 
 {
 	t_token *start;
-	t_token	*tmp;
 	int		flag;
 	int		oldflag;
 	int		i;
@@ -68,9 +33,7 @@ void	split_token(t_shell *s)
 			{
 				if (!s->tlst->sp || (s->tlst->sp && last_token(s->tlst->sp)->str))
 				{
-					tmp = (t_token *)malloc(sizeof(t_token));
-					*tmp = (t_token){0};
-					token_addlstlast(&s->tlst->sp, tmp);
+					token_addlstlast(&s->tlst->sp);
 				}
 				while (s->tlst->str[i] && s->tlst->str[i] != '$')
 				{
@@ -87,9 +50,7 @@ void	split_token(t_shell *s)
 			{
 				if (!s->tlst->sp || (s->tlst->sp && last_token(s->tlst->sp)->str))
 				{
-					tmp = (t_token *)malloc(sizeof(t_token));
-					*tmp = (t_token){0};
-					token_addlstlast(&s->tlst->sp, tmp);
+					token_addlstlast(&s->tlst->sp);
 				}
 				ft_charjoin(&(last_token(s->tlst->sp)->str), s->tlst->str[i], s);
 				i++;

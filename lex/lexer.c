@@ -6,7 +6,7 @@
 /*   By: gdanis <gdanis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/28 22:27:36 by gdanis            #+#    #+#             */
-/*   Updated: 2024/01/01 14:33:18 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/01/02 11:31:17 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,11 +56,7 @@ int	is_operator(char c)
 
 void	operator_token(t_shell *s, int *i)
 {
-	t_token	*tmp;
-
-	tmp = (t_token *)malloc(sizeof(t_token));
-	*tmp = (t_token){0};
-	token_addlstlast(&s->tlst, tmp);
+	token_addlstlast(&s->tlst);
 	if (s->str[*i] == '<')
 		last_token(s->tlst)->type = RED_IN;
 	if (s->str[*i] == '>')
@@ -85,7 +81,6 @@ void	operator_token(t_shell *s, int *i)
 
 void	str_to_token(t_shell *s)
 {
-	t_token	*tmp;
 	int	flag;
 	int	i;
 	
@@ -99,9 +94,7 @@ void	str_to_token(t_shell *s)
 			operator_token(s, &i);
 		if (s->str[i] && !is_delimiter(s->str[i]))
 		{
-			tmp = (t_token *)malloc(sizeof(t_token));
-			*tmp = (t_token){0};
-			token_addlstlast(&s->tlst, tmp);
+			token_addlstlast(&s->tlst);
 			while (s->str[i] && (!is_operator(s->str[i]) || flag))
 			{
 				setqflag(&flag, s->str[i]);

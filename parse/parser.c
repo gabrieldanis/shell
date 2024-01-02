@@ -6,7 +6,7 @@
 /*   By: gdanis <gdanis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/31 08:44:00 by gdanis            #+#    #+#             */
-/*   Updated: 2024/01/01 18:28:29 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/01/02 16:29:18 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ void	init_plst(t_shell *s)
 				if (s->tlst->ex->str)
 				{
 					addnewlstback(s, lstlast(s->lst));
-					lstlast(lstlast(s->lst)->lst)->str = s->tlst->ex->str;
+					lstlast(lstlast(s->lst)->lst)->str = ft_strdup(s->tlst->ex->str);
 					lstlast(lstlast(s->lst)->lst)->type = s->tlst->type;
 				}
 				s->tlst->ex = s->tlst->ex->next;
@@ -71,7 +71,7 @@ void	init_plst(t_shell *s)
 		if (s->tlst && s->tlst->type == PIPE)
 		{
 			addnewlstback(s, lstlast(s->lst));
-			lstlast(lstlast(s->lst)->lst)->str = s->tlst->str;
+			lstlast(lstlast(s->lst)->lst)->str = ft_strdup(s->tlst->str);
 			lstlast(lstlast(s->lst)->lst)->type = s->tlst->type;
 			s->tlst = s->tlst->next;
 		}
@@ -117,18 +117,3 @@ int	parse_cmdargs(t_parsed *lst)
 		cmd = 0;
 	return (1);
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

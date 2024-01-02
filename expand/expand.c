@@ -6,35 +6,14 @@
 /*   By: gdanis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/29 11:54:47 by gdanis            #+#    #+#             */
-/*   Updated: 2023/12/31 09:34:38 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/01/02 16:06:18 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../header/minishell.h"
 
-char	*ft_getenv(char *str, t_shell *s)
-{
-	int	i;
-
-	i = 0;
-	if (!str)
-		return (NULL);
-	while (s->env[i])
-	{
-		if (!ft_strncmp(str, s->env[i], ft_strlen(str)) &&
-				s->env[i][ft_strlen(str)] == '='
-				 && s->env[i][ft_strlen(str) + 1] != '\0')
-		{
-			return (s->env[i] + ft_strlen(str) + 1);
-		}
-		i++;
-	}
-	return (NULL);
-}
-
 void	expand_token(t_shell *s)
 {
-	t_token	*tmp;
 	t_token	*start;
 	t_token	*tstart;
 	char	*var;
@@ -45,9 +24,7 @@ void	expand_token(t_shell *s)
 	tstart = s->tlst;
 	while (s->tlst)
 	{
-		tmp = (t_token *)malloc(sizeof(t_token));
-		*tmp = (t_token){0};
-		token_addlstlast(&s->tlst->ex, tmp);
+		token_addlstlast(&s->tlst->ex);
 		while (s->tlst->sp)
 		{
 			if (ft_strchr(s->tlst->sp->str, '$')
@@ -67,11 +44,7 @@ void	expand_token(t_shell *s)
 						while (var[i] == ' ' || var[i] == '\t')
 							i++;
 						if (var[i] && last_token(s->tlst->ex)->str)
-						{
-							tmp = (t_token *)malloc(sizeof(t_token));
-							*tmp = (t_token){0};
-							token_addlstlast(&s->tlst->ex, tmp);
-						}
+							token_addlstlast(&s->tlst->ex);
 					}
 				}
 			}
@@ -81,7 +54,7 @@ void	expand_token(t_shell *s)
 				if (s->tlst->sp->expand)
 					var = ft_getenv(s->tlst->sp->str + 1, s);
 				else
-					var = s->tlst->sp->str;
+					var = ft_strdup(s->tlst->sp->str);
 				old_str = last_token(s->tlst->ex)->str;
 				last_token(s->tlst->ex)->str = ft_strjoin(last_token(s->tlst->ex)->str, var);
 				if (old_str)
@@ -90,7 +63,8 @@ void	expand_token(t_shell *s)
 			else
 			{
 				old_str = last_token(s->tlst->ex)->str;
-				last_token(s->tlst->ex)->str = ft_strjoin(last_token(s->tlst->ex)->str, s->tlst->sp->str);
+				last_token(s->tlst->ex)->str = ft_strjoin(last_token(s->tlst->ex)->str,
+						s->tlst->sp->str);
 				if (old_str)
 					free(old_str);
 			}
