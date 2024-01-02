@@ -6,7 +6,7 @@
 /*   By: gdanis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 15:55:00 by gdanis            #+#    #+#             */
-/*   Updated: 2023/09/13 15:55:02 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/01/02 07:57:32 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ int	ft_atoi(const char *nptr)
 /*
 int main(void)
 {
-	char mystr[] = " --2147483649iu12-345A12";
+	char mystr[] = "";
 
 	printf("%d\n", ft_atoi(mystr));
 	printf("%d\n", atoi(mystr));

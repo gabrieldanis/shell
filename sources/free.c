@@ -6,7 +6,7 @@
 /*   By: gdanis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 13:17:49 by gdanis            #+#    #+#             */
-/*   Updated: 2023/12/31 13:58:48 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/01/02 07:26:37 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,3 +67,19 @@ void	free_parsed_list(t_parsed *list)
 	}
 }
 */
+void	free_2d_array(void **ptr)
+{
+	int	i;
+
+	i = 0;
+	if (ptr)
+	{
+		while (ptr[i])
+		{
+			if (ptr[i])
+				free(ptr[i]);
+			i++;
+		}
+		free(ptr);
+	}
+}

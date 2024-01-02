@@ -6,7 +6,7 @@
 /*   By: gdanis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 16:49:31 by gdanis            #+#    #+#             */
-/*   Updated: 2024/01/01 19:51:02 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/01/02 08:09:41 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,7 @@ typedef struct s_shell
 {
 	t_parsed	*lst;
 	t_token		*tlst;
+	char		**argv;
 	char		**env;
 	char		*str;
 }	t_shell;
@@ -100,6 +101,7 @@ typedef struct s_shell
  * 	FUNCTION PROTOTYPES
  *********************************/
 
+t_shell		*init_shell(int argc, char ** argv, char **envp);
 t_parsed	*info_parsed_list(t_parsed *list);
 t_parsed	*type_parsed_list(t_parsed *list);
 t_parsed	*p_lstlast(t_parsed *list);

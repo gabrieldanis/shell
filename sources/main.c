@@ -6,7 +6,7 @@
 /*   By: gdanis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 16:48:10 by gdanis            #+#    #+#             */
-/*   Updated: 2024/01/01 19:24:49 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/01/02 08:05:38 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,32 +14,12 @@
 
 int	g_signal = 0;
 
-t_shell	*init_shell(char **envp)
-{
-	t_shell	*s;
-
-	s = (t_shell *)malloc(sizeof(t_shell));
-	if (!s)
-	{
-		error_message(MALLOC_ERROR, NULL, NULL);
-		exit(0);
-	}
-	*s = (t_shell){0};
-	s->env = dup_envp(envp);
-	set_shlvl(s);
-	//update shell name here
-	ft_signal(s);
-	s->str = NULL;
-	return (s);
-}
-
 int	main(int argc, char **argv, char **envp)
 {
 	t_shell	*shell;
 
 	(void)argc;
-	(void)argv;
-	shell = init_shell(envp);
+	shell = init_shell(envp, argv);
 	while (1)
 	{
 		shell->str = readline("💻 minishell > ");
