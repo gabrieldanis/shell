@@ -6,7 +6,7 @@
 /*   By: gdanis <gdanis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/31 08:44:00 by gdanis            #+#    #+#             */
-/*   Updated: 2024/01/02 16:29:18 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/01/04 10:50:11 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,14 +79,14 @@ void	init_plst(t_shell *s)
 	s->tlst = start;
 }
 
-int	parse_isfile(t_parsed *lst)
+int	parse_isfile(t_parsed *lst, t_shell *s)
 {
 	if ((lst->type == RED_IN || lst->type == RED_OUT 
 		||lst->type == RED_APP) && lst->next)
 	{
 		if (lst->next->type)
 		{
-			error_message(UNEX_TOKEN, NULL, lst->next->str);
+			error_message(UNEX_TOKEN, NULL, lst->next->str, s);
 			return (0);
 		}
 	}
@@ -102,10 +102,11 @@ int	parse_isfile(t_parsed *lst)
 	return (1);
 }
 
-int	parse_cmdargs(t_parsed *lst)
+int	parse_cmdargs(t_parsed *lst, t_shell *s)
 {
 	static int	cmd;
 
+	(void)s;
 	if (!lst->type && !cmd)
 	{
 		lst->type = CMD;

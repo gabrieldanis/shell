@@ -6,14 +6,15 @@
 /*   By: gdanis <gdanis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 14:07:21 by gdanis            #+#    #+#             */
-/*   Updated: 2024/01/01 19:49:02 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/01/04 10:40:45 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../header/minishell.h"
 
-int	error_message(int n, char *exe_name, char *str)
+int	error_message(int n, char *exe_name, char *str, t_shell *s)
 {
+	free_lsts(s);
 	printf("minishell: ");
 	if (exe_name)
 		printf("%s: ", exe_name);

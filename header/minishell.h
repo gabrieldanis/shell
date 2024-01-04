@@ -6,7 +6,7 @@
 /*   By: gdanis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 16:49:31 by gdanis            #+#    #+#             */
-/*   Updated: 2024/01/02 14:59:01 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/01/04 11:12:11 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,13 +143,13 @@ void		str_to_token(t_shell *s);
 void		setqflag(int *flag, char c);
 void		split_token(t_shell *s);
 void		expand_token(t_shell *s);
-void		exit_child(int n);
+void		exit_child(int n, t_shell *s);
 void		arg_list(t_shell *s);
 void		no_pipe(t_shell *s);
 void		init_plst(t_shell *s);
 void		printlst(t_shell *s);
 void		parse_type(t_shell *s);
-void		parse_lstiter(t_shell *s, int (*f)(t_parsed *lst));
+void		parse_lstiter(t_shell *s, int (*f)(t_parsed *lst, t_shell *s));
 void		ft_unset_str(t_shell *s, char *str, int i);
 void		free_lsts(t_shell *s);
 char		*get_path(t_shell *s);
@@ -161,10 +161,10 @@ char		*get_str(t_parsed *list);
 char		*ft_getenv(char *str, t_shell *s);
 int			ft_echo(t_parsed *list);
 int			isenvar(char *env, char *varname);
-int			parse_isfile(t_parsed *lst);
+int			parse_isfile(t_parsed *lst, t_shell *s);
 int			clear_screen(void);
-int			error_message(int n, char *exe_name, char *str);
-int			ft_pwd(void);
+int			error_message(int n, char *exe_name, char *str, t_shell *s);
+int			ft_pwd(t_shell *s);
 int			ft_setenv(t_shell *s, char *str);
 int			is_varname(char *str);
 int			ft_chdir(t_shell *s, t_parsed *lst);
@@ -175,5 +175,5 @@ int			delimiter_char(char c);
 int			op_char(char c);
 int			check_is_var(char c);
 int			ft_unset(t_shell *s, t_parsed *lst);
-int			parse_cmdargs(t_parsed *lst);
+int			parse_cmdargs(t_parsed *lst, t_shell *s);
 #endif

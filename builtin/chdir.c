@@ -6,7 +6,7 @@
 /*   By: gdanis <gdanis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/15 09:17:56 by gdanis            #+#    #+#             */
-/*   Updated: 2024/01/01 19:53:43 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/01/04 11:10:44 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,11 +40,11 @@ int	ft_chdir(t_shell *s, t_parsed *lst)
 	if (lst->arglst[1])
 	{
 		if (lst->arglst[2])
-			return(error_message(ARGNUM_ERROR, "cd", NULL));
+			return(error_message(ARGNUM_ERROR, "cd", NULL, s));
 		getcwd(pwd, sizeof(pwd));
 		n = chdir(lst->arglst[1]);
 		if (n == -1)
-			return(error_message(NOFILE_ERROR, "cd", s->lst->next->str));
+			return(error_message(NOFILE_ERROR, "cd", s->lst->next->str, s));
 		update_pwd(s, pwd);
 	}
 	else
@@ -55,7 +55,7 @@ int	ft_chdir(t_shell *s, t_parsed *lst)
 		getcwd(pwd, sizeof(pwd));
 		n = chdir(ft_strchr(s->env[i], '=') + 1);
 		if (n == -1)
-			return(error_message(NOFILE_ERROR, "cd", ft_strchr(s->env[i], '=') + 1));
+			return(error_message(NOFILE_ERROR, "cd", ft_strchr(s->env[i], '=') + 1, s));
 		update_pwd(s, pwd);
 	}
 	return (n);

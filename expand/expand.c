@@ -6,7 +6,7 @@
 /*   By: gdanis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/29 11:54:47 by gdanis            #+#    #+#             */
-/*   Updated: 2024/01/02 16:06:18 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/01/03 22:15:14 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,10 @@ void	expand_token(t_shell *s)
 			if (ft_strchr(s->tlst->sp->str, '$')
 				&& ft_strlen(s->tlst->sp->str) != 1 && s->tlst->sp->split)
 			{
-				var = ft_getenv(s->tlst->sp->str + 1, s);
+				if (s->tlst->sp->str[1] == '?' && s->tlst->sp->str[2] == '\0')
+					var = ft_itoa(s->rval); 
+				else
+					var = ft_strdup(ft_getenv(s->tlst->sp->str + 1, s));
 				i = 0;
 				while (var && var[i])
 				{
@@ -47,12 +50,20 @@ void	expand_token(t_shell *s)
 							token_addlstlast(&s->tlst->ex);
 					}
 				}
+				if (var)
+					free(var);
 			}
 			else if (ft_strchr(s->tlst->sp->str, '$')
-					&& ft_strlen(s->tlst->sp->str) != 1)
+					&& (ft_strlen(s->tlst->sp->str) != 1
+						|| (ft_strlen(s->tlst->sp->str) == 1 && !s->tlst->sp->expand)))
 			{
 				if (s->tlst->sp->expand)
-					var = ft_getenv(s->tlst->sp->str + 1, s);
+				{
+					if (s->tlst->sp->str[1] == '?' && s->tlst->sp->str[2] == '\0')
+						var = ft_itoa(s->rval); 
+					else
+						var = ft_getenv(s->tlst->sp->str + 1, s);
+				}
 				else
 					var = ft_strdup(s->tlst->sp->str);
 				old_str = last_token(s->tlst->ex)->str;
@@ -60,7 +71,8 @@ void	expand_token(t_shell *s)
 				if (old_str)
 					free(old_str);
 			}
-			else
+			else if (!(ft_strchr(s->tlst->sp->str, '$')
+					&& ft_strlen(s->tlst->sp->str) == 1))
 			{
 				old_str = last_token(s->tlst->ex)->str;
 				last_token(s->tlst->ex)->str = ft_strjoin(last_token(s->tlst->ex)->str,

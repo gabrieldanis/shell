@@ -6,7 +6,7 @@
 /*   By: gdanis <gdanis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/28 22:27:36 by gdanis            #+#    #+#             */
-/*   Updated: 2024/01/02 11:31:17 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/01/04 10:41:54 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ void	str_to_token(t_shell *s)
 	{
 		while (s->str[i] && (s->str[i] == ' ' || s->str[i] == '\t'))
 			i++;	
-		if ((s->str[i] == '<' || s->str[i] == '>' || s->str[i] == '|') && !flag)
+		if (is_operator(s->str[i]) && !flag)
 			operator_token(s, &i);
 		if (s->str[i] && !is_delimiter(s->str[i]))
 		{
@@ -105,4 +105,6 @@ void	str_to_token(t_shell *s)
 			}
 		}
 	}
+	if (flag)
+		error_message(QUOTE_ERROR, NULL, NULL, s);
 }

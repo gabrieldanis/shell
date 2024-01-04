@@ -1,0 +1,11 @@
+echo hi
+echo how are you
+echo echo
+echo -n noice
+echo noice -n
+echo -n-n
+echo -n -n
+echo -n-n -n
+echo "-n" -n -n
+echo "-n" -n -n hi
+echo

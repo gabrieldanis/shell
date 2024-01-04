@@ -6,7 +6,7 @@
 /*   By: gdanis <gdanis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/31 08:10:22 by gdanis            #+#    #+#             */
-/*   Updated: 2024/01/02 16:54:03 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/01/04 11:09:24 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ char	*get_dir(char *str, t_shell *s)
 		i++;
 	}
 	free_2d_array((void **)dirs);
-	error_message(CMD_ERROR, NULL, cmd + 1);
+	error_message(CMD_ERROR, NULL, cmd + 1, s);
 	free(cmd);
 	return (NULL);
 }
@@ -125,8 +125,8 @@ void	arg_list(t_shell *s)
 	s->lst = start;
 }
 
-void	exit_child(int n)
+void	exit_child(int n, t_shell *s)
 {
-	error_message(n, NULL, NULL);
+	error_message(n, NULL, NULL, s);
 	exit(n);
 }

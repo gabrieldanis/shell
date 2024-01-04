@@ -98,6 +98,14 @@ fclean: clean
 # fclean and then all
 re: fclean all
 
+# run the tester
+test: all
+	@tester/tester.sh
+
+# run the tester with t aswell
+t: all
+	@tester/tester.sh
+
 # shell commands are a set of keystrokes away
 distribute: clean
 	tar zcvf dist.tgz *
@@ -113,4 +121,4 @@ diff:
 -include $(DEPFILES)
 
 # add .PHONY so that the non-targetfile - rules work even if a file with the same name exists.
-.PHONY: all clean fclean re distribute diff
+.PHONY: all clean fclean re distribute diff test t

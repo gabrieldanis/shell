@@ -6,7 +6,7 @@
 /*   By: gdanis <gdanis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/15 11:28:20 by gdanis            #+#    #+#             */
-/*   Updated: 2024/01/01 19:34:12 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/01/04 11:11:17 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,7 +121,7 @@ int	ft_setenv(t_shell *s, char *str)
 	int	i;
 
 	if (!is_varname(str))
-		return (error_message(IDENT_ERROR, "export", str), 1);
+		return (error_message(IDENT_ERROR, "export", str, s), 1);
 	if (update_existing_var(s, str))
 		return (0);
 	if (append_var(s, str))

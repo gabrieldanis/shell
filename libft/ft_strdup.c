@@ -6,7 +6,7 @@
 /*   By: gdanis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 16:12:15 by gdanis            #+#    #+#             */
-/*   Updated: 2023/09/13 16:12:19 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/01/03 19:49:30 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "libft.h"
@@ -18,6 +18,8 @@ char	*ft_strdup(const char *s)
 	char	*dest;
 
 	l = 0;
+	if (!s)
+		return (NULL);
 	while (s[l])
 		l++;
 	dest = (char *) malloc (l + 1);

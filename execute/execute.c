@@ -6,7 +6,7 @@
 /*   By: gdanis <gdanis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 08:08:33 by gdanis            #+#    #+#             */
-/*   Updated: 2024/01/02 11:13:40 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/01/04 11:12:19 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,9 @@ void	execute_parsed_list(t_shell *s)
 	if (!ft_strncmp(s->lst->arglst[0], "echo\0", 5))
 		s->rval = ft_echo(s->lst);
 	else if (!ft_strncmp(s->lst->arglst[0], "exit\0", 5))
-		free_and_exit(0, s);
+		free_and_exit(ft_atoi(s->lst->arglst[1]), s);
 	else if (!ft_strncmp(s->lst->arglst[0], "pwd\0", 4))
-		s->rval = ft_pwd();
+		s->rval = ft_pwd(s);
 	else if (!ft_strncmp(s->lst->arglst[0], "cd\0", 3))
 		s->rval = ft_chdir(s, s->lst);
 	else if (!ft_strncmp(s->lst->arglst[0], "env\0", 4))
@@ -41,7 +41,7 @@ void	no_pipe(t_shell *s)
 
 	pid = fork();
 	if (pid == -1)
-		exit_child(FORK_ERROR);
+		exit_child(FORK_ERROR, s);
 	if (pid == 0)
 	{
 		cmd = NULL;
@@ -51,7 +51,7 @@ void	no_pipe(t_shell *s)
 				&& s->lst->arglst[0][1] == '/')
 			{
 				if (getcwd(path, sizeof(path)) == NULL)
-					exit_child(GEN_ERROR);
+					exit_child(GEN_ERROR, s);
 				cmd = ft_strjoin(path, s->lst->arglst[0] + 1);
 			}
 			else if (s->lst->arglst[0][0] == '/')
@@ -59,7 +59,7 @@ void	no_pipe(t_shell *s)
 			else
 			{
 				if (getcwd(path, sizeof(path)) == NULL)
-					exit_child(GEN_ERROR);
+					exit_child(GEN_ERROR, s);
 				cmd = ft_strjoin(path, "/");
 				cmd = ft_strjoin(cmd, s->lst->arglst[0]);
 			}
@@ -67,10 +67,10 @@ void	no_pipe(t_shell *s)
 		else
 			cmd = get_dir(get_path(s), s);
 		if (!cmd)
-			exit_child(CMD_ERROR);
+			exit_child(CMD_ERROR, s);
 		s->rval = execve(cmd, s->lst->arglst, s->env);
 		if ( s->rval == -1)
-			exit_child(EXECVE_ERROR);
+			exit_child(EXECVE_ERROR, s);
 	}
 	else
 		wait(NULL);

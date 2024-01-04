@@ -1,0 +1,4 @@
+ls -la
+$a
+l$b
+echo $a $b

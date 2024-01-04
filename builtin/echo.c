@@ -6,7 +6,7 @@
 /*   By: gdanis <gdanis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 08:19:56 by gdanis            #+#    #+#             */
-/*   Updated: 2024/01/02 11:11:14 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/01/03 22:30:23 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	ft_echo(t_parsed *lst)
 
 	i = 1;
 	nl = 1;
-	if (lst->arglst[i] && !ft_strncmp(lst->arglst[i], "-n\0", 3))
+	while (lst->arglst[i] && !ft_strncmp(lst->arglst[i], "-n\0", 3))
 	{
 		nl = 0;
 		i++;

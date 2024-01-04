@@ -1,6 +1,6 @@
 
 
-
+TODOOOOOOOOOOO
 
 
 *	make parsed lst double linked list
@@ -9,6 +9,9 @@
 *	check for unclosed quotes
 *	fix bug in error message when command was not found
 *	do funcheck stuff
+*	add the seperate builtin exit function back
+		it should check for isnum exit argument and only
+		one argument 
 
 
 

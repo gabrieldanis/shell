@@ -6,7 +6,7 @@
 /*   By: gdanis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 13:17:49 by gdanis            #+#    #+#             */
-/*   Updated: 2024/01/02 15:44:39 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/01/04 12:01:55 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,9 @@
 
 void	free_and_exit(int n, t_shell *s)
 {
-	int	i;
 	(void)s;
 	if (n != 0)
-		error_message(n, NULL, NULL);
-	free_lsts(s);
-	i = 0;
+		error_message(n, NULL, NULL, s);
 	free_2d_array((void **)s->env);
 	s->env = NULL;
 	free (s);

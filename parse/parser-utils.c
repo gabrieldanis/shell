@@ -6,7 +6,7 @@
 /*   By: gdanis <gdanis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/01 13:47:54 by gdanis            #+#    #+#             */
-/*   Updated: 2024/01/01 19:03:24 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/01/04 10:48:14 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ char	*token_type(int i)
 	return ("unknown       ");
 }
 
-void	parse_lstiter(t_shell *s, int (*f)(t_parsed *lst))
+void	parse_lstiter(t_shell *s, int (*f)(t_parsed *lst, t_shell *s))
 {
 	t_parsed	*start;
 	t_parsed	*sub_start;
@@ -73,7 +73,7 @@ void	parse_lstiter(t_shell *s, int (*f)(t_parsed *lst))
 		sub_start = s->lst->lst;
 		while (s->lst->lst)	
 		{
-			if (!f(s->lst->lst))
+			if (!f(s->lst->lst, s))
 				return ;
 			s->lst->lst = s->lst->lst->next;
 		}

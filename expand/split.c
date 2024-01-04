@@ -6,7 +6,7 @@
 /*   By: gdanis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/29 10:00:53 by gdanis            #+#    #+#             */
-/*   Updated: 2024/01/02 11:32:26 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/01/03 21:58:19 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,9 +32,7 @@ void	split_token(t_shell *s)
 			if (s->tlst->str[i] && s->tlst->str[i] != '$')
 			{
 				if (!s->tlst->sp || (s->tlst->sp && last_token(s->tlst->sp)->str))
-				{
 					token_addlstlast(&s->tlst->sp);
-				}
 				while (s->tlst->str[i] && s->tlst->str[i] != '$')
 				{
 					setqflag(&flag, s->tlst->str[i]);
@@ -49,19 +47,23 @@ void	split_token(t_shell *s)
 			if (s->tlst->str[i] == '$')
 			{
 				if (!s->tlst->sp || (s->tlst->sp && last_token(s->tlst->sp)->str))
-				{
 					token_addlstlast(&s->tlst->sp);
-				}
 				ft_charjoin(&(last_token(s->tlst->sp)->str), s->tlst->str[i], s);
 				i++;
-				while (check_is_var(s->tlst->str[i]))	
-				{
 					if (!flag && s->tlst->type != HEREDOC_DEL)
 						last_token(s->tlst->sp)->split = 1;
-					if ((flag == 2 || flag == 0) && s->tlst->type != HEREDOC_DEL)
+					if ((flag == 2 || flag == 0) && s->tlst->type != HEREDOC_DEL
+						&& (check_is_var(s->tlst->str[i]) || s->tlst->str[i] == '?'))
 						last_token(s->tlst->sp)->expand = 1;
+					if (flag == 0 && !check_is_var(s->tlst->str[i]))
+						last_token(s->tlst->sp)->expand = 1;
+				while (check_is_var(s->tlst->str[i]) || (s->tlst->str[i] == '?'
+						&& s->tlst->str[i - 1] == '$'))	
+				{
 					ft_charjoin(&(last_token(s->tlst->sp)->str), s->tlst->str[i], s);
 					i++;
+					if (s->tlst->str[i - 1] == '?' && s->tlst->str[i - 2] == '$')
+						break;
 				}
 			}
 		}

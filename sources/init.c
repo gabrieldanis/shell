@@ -6,7 +6,7 @@
 /*   By: gdanis <gdanis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/02 07:25:06 by gdanis            #+#    #+#             */
-/*   Updated: 2024/01/02 10:54:25 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/01/04 10:42:55 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ t_shell	*init_shell(int argc, char **argv, char **envp)
 	s = (t_shell *)malloc(sizeof(t_shell));
 	if (!s)
 	{
-		error_message(MALLOC_ERROR, NULL, NULL);
+		error_message(MALLOC_ERROR, NULL, NULL, s);
 		exit(0);
 	}
 	*s = (t_shell){0};
