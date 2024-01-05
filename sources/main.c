@@ -6,7 +6,7 @@
 /*   By: gdanis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 16:48:10 by gdanis            #+#    #+#             */
-/*   Updated: 2024/01/04 10:47:06 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/01/04 16:24:45 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,8 @@ int	main(int argc, char **argv, char **envp)
 			s->str = readline("💻 minishell > ");
 		if (s->str && s->str[0] != '\0')
 		{
-			add_history(s->str);
+			if (loop)
+				add_history(s->str);
 			str_to_token(s);
 			if (s->tlst)
 			{

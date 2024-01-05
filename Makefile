@@ -104,7 +104,10 @@ test: all
 
 # run the tester with t aswell
 t: all
-	@tester/tester.sh
+	@VAL=0 tester/tester.sh
+
+val: all
+	@VAL=1 tester/tester.sh
 
 # shell commands are a set of keystrokes away
 distribute: clean
@@ -121,4 +124,4 @@ diff:
 -include $(DEPFILES)
 
 # add .PHONY so that the non-targetfile - rules work even if a file with the same name exists.
-.PHONY: all clean fclean re distribute diff test t
+.PHONY: all clean fclean re distribute diff test t val
