@@ -6,7 +6,7 @@
 /*   By: gdanis <gdanis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/31 08:10:22 by gdanis            #+#    #+#             */
-/*   Updated: 2024/01/04 11:09:24 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/01/05 18:07:56 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,6 @@ void	arg_list(t_shell *s)
 	t_parsed	*sub_start;
 	int		i;
 
-	i = 0;
 	start = s->lst;
 	while (s->lst && s->lst->lst)
 	{
@@ -107,6 +106,7 @@ void	arg_list(t_shell *s)
 		if (!s->lst->arglst)
 			free_and_exit(MALLOC_ERROR, s);
 		sub_start = s->lst->lst;
+		i = 0;
 		while (s->lst->lst)
 		{
 			if (s->lst->lst->type == CMD || s->lst->lst->type == ARG)

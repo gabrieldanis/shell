@@ -6,7 +6,7 @@
 /*   By: gdanis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 16:49:31 by gdanis            #+#    #+#             */
-/*   Updated: 2024/01/04 14:24:16 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/01/05 15:06:35 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@
 # define FORK_ERROR		8
 # define UNEX_TOKEN		9
 # define ARGNUM_ERROR	10
+# define NUM_ERROR	11
 
 
 /*********************************
@@ -119,7 +120,6 @@ void		print_parsed_tokens(t_token *list);
 void		type_tokens(t_token *list);
 void		block_tokens(t_token *list);
 void		execute_parsed_list(t_shell *s);
-void		ft_exit(int n);
 void		sort_var_list(char **dup);
 void		ft_print_export_lines(char **dup, int i, int j);
 void		free_2d_array(void **ptr);
@@ -152,6 +152,7 @@ void		parse_type(t_shell *s);
 void		parse_lstiter(t_shell *s, int (*f)(t_parsed *lst, t_shell *s));
 void		ft_unset_str(t_shell *s, char *str, int i);
 void		free_lsts(t_shell *s);
+void		ft_exit(t_shell *s, t_parsed *lst);
 char		*get_path(t_shell *s);
 char		*get_dir(char *str, t_shell *s);
 char		**dup_envp(char **envp);
@@ -159,11 +160,11 @@ char		*token_type(int i);
 char		*expand_var(char *str);
 char		*get_str(t_parsed *list);
 char		*ft_getenv(char *str, t_shell *s);
+int			error_message(int n, char *exe_name, char *str, t_shell *s);
 int			ft_echo(t_parsed *list);
 int			isenvar(char *env, char *varname);
 int			parse_isfile(t_parsed *lst, t_shell *s);
 int			clear_screen(void);
-int			error_message(int n, char *exe_name, char *str, t_shell *s);
 int			ft_pwd(t_shell *s);
 int			ft_setenv(t_shell *s, char *str);
 int			is_varname(char *str);

@@ -6,7 +6,7 @@
 /*   By: gdanis <gdanis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 08:08:33 by gdanis            #+#    #+#             */
-/*   Updated: 2024/01/04 11:12:19 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/01/05 17:55:29 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	execute_parsed_list(t_shell *s)
 	if (!ft_strncmp(s->lst->arglst[0], "echo\0", 5))
 		s->rval = ft_echo(s->lst);
 	else if (!ft_strncmp(s->lst->arglst[0], "exit\0", 5))
-		free_and_exit(ft_atoi(s->lst->arglst[1]), s);
+		ft_exit(s, s->lst);
 	else if (!ft_strncmp(s->lst->arglst[0], "pwd\0", 4))
 		s->rval = ft_pwd(s);
 	else if (!ft_strncmp(s->lst->arglst[0], "cd\0", 3))
@@ -67,7 +67,7 @@ void	no_pipe(t_shell *s)
 		else
 			cmd = get_dir(get_path(s), s);
 		if (!cmd)
-			exit_child(CMD_ERROR, s);
+			exit(1);
 		s->rval = execve(cmd, s->lst->arglst, s->env);
 		if ( s->rval == -1)
 			exit_child(EXECVE_ERROR, s);

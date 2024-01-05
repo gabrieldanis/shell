@@ -17,7 +17,7 @@ export a="ls -la"
 export b="s -la"
 
 # Array of input files
-input_files=("echo.txt" "expand.txt" "split.txt")
+input_files=("echo.txt" "expand.txt" "split.txt" "exit.txt")
 
 # subfolder that contains this script and input_files relative to the
 # minishell executable.
@@ -39,11 +39,14 @@ sub_folder=tester
 
 for file in "${input_files[@]}"; do
 
-    printf "$BP $file: $NC\n"
+    printf "$BP $file: $NC\n\n"
 
 	while IFS= read -r line; do
 		c_output=$(./minishell "$line")
-		bash_output=$(bash --posix -c "$line")
+		c_return=$(echo $?)
+		# bash_output=$(bash --posix -c "$line")
+		bash_output=$(echo "$line" | bash --posix)
+		bash_return=$(echo $?)
 
 		leak="1"
 
@@ -56,14 +59,24 @@ for file in "${input_files[@]}"; do
 		fi
 
 		if [ "$c_output" = "$bash_output" ] && [ "$leak" == "1" ]; then
-			printf "$GREEN OK $NC - Line: $line \n"
+			printf " [$GREEN OK $NC] "
 
 		elif [ "$c_output" = "$bash_output" ] && [ "$leak" == "0" ]; then
-			printf "$Y OK but leak $NC - Line: $line \n"
+			printf " [$Y OK $NC] but leak "
 
+		elif [ "$c_output" != "$bash_output" ] && [ "$leak" == "0" ]; then
+			printf " [$RED KO $NC] and leak "
 		else
-			printf "$RED KO $NC - Line: $line \n"
+			printf " [$RED KO $NC] "
 		fi
+
+		# checking exit status match
+		if [ "$c_return" = "$bash_return" ]; then
+			printf ": $line \n"
+		else
+			printf "$RED \$? mismatch $NC : $line \n"
+		fi
+		
 	done < $sub_folder/$file
 	printf "\n"
 	printf "\n"

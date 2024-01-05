@@ -17,3 +17,4 @@ echo $?hi
 echo hi$?$?$?$?ho
 echo "$'$?a'"
 echo '$"$?ab"'
+echo "$"?USER

@@ -1,0 +1,7 @@
+exit
+exit 23
+exit 1 2
+exit 1 a
+exit a a
+exit a 2
+exit a 2 3

@@ -6,7 +6,7 @@
 /*   By: gdanis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/29 11:54:47 by gdanis            #+#    #+#             */
-/*   Updated: 2024/01/03 22:15:14 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/01/05 11:40:51 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,12 +62,14 @@ void	expand_token(t_shell *s)
 					if (s->tlst->sp->str[1] == '?' && s->tlst->sp->str[2] == '\0')
 						var = ft_itoa(s->rval); 
 					else
-						var = ft_getenv(s->tlst->sp->str + 1, s);
+						var = ft_strdup(ft_getenv(s->tlst->sp->str + 1, s));
 				}
 				else
 					var = ft_strdup(s->tlst->sp->str);
 				old_str = last_token(s->tlst->ex)->str;
 				last_token(s->tlst->ex)->str = ft_strjoin(last_token(s->tlst->ex)->str, var);
+				if (var)
+					free (var);
 				if (old_str)
 					free(old_str);
 			}
