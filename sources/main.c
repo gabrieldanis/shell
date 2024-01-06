@@ -6,7 +6,7 @@
 /*   By: gdanis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 16:48:10 by gdanis            #+#    #+#             */
-/*   Updated: 2024/01/05 17:44:25 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/01/06 13:04:21 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,9 +51,7 @@ int	main(int argc, char **argv, char **envp)
 			}
 		}
 		if (!s->str)
-		{
 			ft_exit(s, NULL);
-		}
 		if (loop)
 			free(s->str);
 	}

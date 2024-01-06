@@ -6,7 +6,7 @@
 /*   By: gdanis <gdanis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 08:08:33 by gdanis            #+#    #+#             */
-/*   Updated: 2024/01/05 17:55:29 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/01/06 16:28:29 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	execute_parsed_list(t_shell *s)
 	else if (!ft_strncmp(s->lst->arglst[0], "pwd\0", 4))
 		s->rval = ft_pwd(s);
 	else if (!ft_strncmp(s->lst->arglst[0], "cd\0", 3))
-		s->rval = ft_chdir(s, s->lst);
+		ft_chdir(s, s->lst);
 	else if (!ft_strncmp(s->lst->arglst[0], "env\0", 4))
 		s->rval = ft_export(s, s->lst, 1);
 	else if (!ft_strncmp(s->lst->arglst[0], "export\0", 7))
@@ -37,6 +37,7 @@ void	no_pipe(t_shell *s)
 	pid_t	pid;
 	char	*cmd;
 	char	path[500];
+	int		status;
 
 
 	pid = fork();
@@ -68,10 +69,13 @@ void	no_pipe(t_shell *s)
 			cmd = get_dir(get_path(s), s);
 		if (!cmd)
 			exit(1);
-		s->rval = execve(cmd, s->lst->arglst, s->env);
-		if ( s->rval == -1)
+		if ( execve(cmd, s->lst->arglst, s->env) == -1)
 			exit_child(EXECVE_ERROR, s);
 	}
 	else
-		wait(NULL);
+	{
+		waitpid(pid, &status, 0);
+		if (WIFEXITED(status))
+			s->rval = WEXITSTATUS(status);
+	}
 }

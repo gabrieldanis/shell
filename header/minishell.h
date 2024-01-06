@@ -6,7 +6,7 @@
 /*   By: gdanis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 16:49:31 by gdanis            #+#    #+#             */
-/*   Updated: 2024/01/05 15:06:35 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/01/06 16:28:51 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -160,8 +160,8 @@ char		*token_type(int i);
 char		*expand_var(char *str);
 char		*get_str(t_parsed *list);
 char		*ft_getenv(char *str, t_shell *s);
-int			error_message(int n, char *exe_name, char *str, t_shell *s);
 int			ft_echo(t_parsed *list);
+int			error_message(int n, char *exe_name, char *str, t_shell *s);
 int			isenvar(char *env, char *varname);
 int			parse_isfile(t_parsed *lst, t_shell *s);
 int			clear_screen(void);

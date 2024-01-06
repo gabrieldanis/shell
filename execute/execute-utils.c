@@ -6,7 +6,7 @@
 /*   By: gdanis <gdanis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/31 08:10:22 by gdanis            #+#    #+#             */
-/*   Updated: 2024/01/05 18:07:56 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/01/06 13:58:48 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,5 +128,5 @@ void	arg_list(t_shell *s)
 void	exit_child(int n, t_shell *s)
 {
 	error_message(n, NULL, NULL, s);
-	exit(n);
+	exit(0);
 }
