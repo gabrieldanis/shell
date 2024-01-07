@@ -1,0 +1,17 @@
+Makefile
+builtin
+execute
+expand
+header
+lex
+libft
+minishell
+objects
+old
+parse
+pipe
+sources
+test-env
+tester
+testi
+todo
