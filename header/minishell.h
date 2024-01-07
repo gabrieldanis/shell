@@ -6,7 +6,7 @@
 /*   By: gdanis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 16:49:31 by gdanis            #+#    #+#             */
-/*   Updated: 2024/01/06 16:28:51 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/01/06 23:13:08 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,8 @@
 # define FORK_ERROR		8
 # define UNEX_TOKEN		9
 # define ARGNUM_ERROR	10
-# define NUM_ERROR	11
+# define NUM_ERROR		11
+# define PIPE_ERROR		12
 
 
 /*********************************
