@@ -1,0 +1,13 @@
+
+
+
+
+* count pipes 
+* need processes: pipes + 1
+* need as many pipes as there are pipes
+
+per node:
+* if there is infile, look for the rightmost infile, dup2(stdin)
+* if there is no infile then redirect out of previous pipe to stdin
+* if there is outfile, redirect stdout to rightmost outfile. empty all other outfiles
+* if there is no outfile, redirect stdout to next pipe
