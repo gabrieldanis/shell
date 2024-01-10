@@ -6,7 +6,7 @@
 /*   By: gdanis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 16:48:10 by gdanis            #+#    #+#             */
-/*   Updated: 2024/01/06 13:04:21 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/01/10 08:08:02 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,11 @@ int	main(int argc, char **argv, char **envp)
 				parse_lstiter(s, parse_cmdargs);
 				//printlst(s);
 				arg_list(s);
+				multipipe(s);
+				/*
 				if (s->lst->arglst[0])
 					execute_parsed_list(s);
+					*/
 				free_lsts(s);
 			}
 		}

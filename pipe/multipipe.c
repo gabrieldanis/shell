@@ -6,7 +6,7 @@
 /*   By: gdanis <gdanis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 11:32:13 by gdanis            #+#    #+#             */
-/*   Updated: 2024/01/09 22:02:12 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/01/10 13:21:14 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,36 +93,46 @@ void	multipipe(t_shell *s)
 		i++;
 	}
 	i = 0;
-	while (s->lst)
+	if (s->cmds == 1 && check_builtin(s->lst))
+		execute_builtin(s, s->lst);
+	else
 	{
-		pid[i] = fork();	
-		if (pid[i] == 0)
+		while (s->lst)
 		{
-			printf("im am process %d my arglst[0] is %s\n", i, s->lst->arglst[0]);
-			if (s->lst->cmd)
+			pid[i] = fork();	
+			if (pid[i] == 0)
 			{
-				close_unused_pipes(pipes, i, s->cmds);
-				if (i > 0)
-					ft_read_from_pipe(pipes[i - 1][0]);
-				if (i != (s->cmds - 1))
-					ft_write_to_pipe(pipes[i][1]);
-				if (execve(s->lst->cmd, s->lst->arglst, s->env) == -1)
-					ft_putstr_fd("execve failed\n", 2);
-			}
-			else
-			{
-				i = 0;
-				while (i < s->cmds - 1)
+				printf("im am process %d my arglst[0] is %s\n", i, s->lst->arglst[0]);
+				if (s->lst->arglst[0])
 				{
-					close(pipes[i][0]);
-					close(pipes[i][1]);
-					i++;
+					close_unused_pipes(pipes, i, s->cmds);
+					if (i > 0)
+						ft_read_from_pipe(pipes[i - 1][0]);
+					if (i != (s->cmds - 1))
+						ft_write_to_pipe(pipes[i][1]);
+					if (check_builtin(s->lst))
+					{
+						execute_builtin(s, s->lst);
+						exit (s->rval);
+					}
+					if (execve(s->lst->cmd, s->lst->arglst, s->env) == -1)
+						ft_putstr_fd("execve failed\n", 2);
 				}
-				return ;
+				else
+				{
+					i = 0;
+					while (i < s->cmds - 1)
+					{
+						close(pipes[i][0]);
+						close(pipes[i][1]);
+						i++;
+					}
+					return ;
+				}
 			}
+			i++;
+			s->lst = s->lst->next;
 		}
-		i++;
-		s->lst = s->lst->next;
 	}
 	i = 0;
 	while (i < s->cmds - 1)

@@ -6,7 +6,7 @@
 /*   By: gdanis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 16:49:31 by gdanis            #+#    #+#             */
-/*   Updated: 2024/01/09 14:27:02 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/01/10 08:30:42 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,7 +125,7 @@ void		idx_tokens(t_token *list);
 void		print_parsed_tokens(t_token *list);
 void		type_tokens(t_token *list);
 void		block_tokens(t_token *list);
-void		execute_parsed_list(t_shell *s);
+void		execute_builtin(t_shell *s, t_parsed *lst);
 void		sort_var_list(char **dup);
 void		ft_print_export_lines(char **dup, int i, int j);
 void		free_2d_array(void **ptr);
@@ -168,6 +168,7 @@ char		*token_type(int i);
 char		*expand_var(char *str);
 char		*get_str(t_parsed *list);
 char		*ft_getenv(char *str, t_shell *s);
+int			check_builtin(t_parsed *lst);
 int			ft_echo(t_parsed *list);
 int			error_message(int n, char *exe_name, char *str, t_shell *s);
 int			isenvar(char *env, char *varname);
