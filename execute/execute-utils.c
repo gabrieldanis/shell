@@ -6,75 +6,11 @@
 /*   By: gdanis <gdanis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/31 08:10:22 by gdanis            #+#    #+#             */
-/*   Updated: 2024/01/06 13:58:48 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/01/09 11:44:55 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../header/minishell.h"
-
-char	*get_path(t_shell *s)
-{
-	int        i;
-
-	i = 0;
-	while (s->env[i] != NULL)
-	{
-		if (ft_strncmp(s->env[i], "PATH=", 5) == 0)
-			return (s->env[i]);
-		i++;
-	}
-	return (NULL);
-}
-
-char	*get_dir(char *str, t_shell *s)
-{
-	char    **dirs;
-	char    *dir;
-	char    *cmd;
-	int        i;
-
-	dirs = ft_split(str, 58);
-	if (!dirs)
-		free_and_exit(MALLOC_ERROR, s);
-	i = 0;
-	cmd = ft_strjoin("/", s->tlst->ex->str);
-	if (!cmd)
-		free_and_exit(MALLOC_ERROR, s);
-	while (dirs[i] != NULL)
-	{
-		dir = ft_strjoin(dirs[i], cmd);
-		if (!dir)
-		{
-			free(cmd);
-			free_and_exit(MALLOC_ERROR, s);
-		}
-		if (access(dir, F_OK) == 0)
-		{
-			free_2d_array((void **)dirs);
-			free(cmd);
-			return (dir);
-		}
-		free(dir);
-		i++;
-	}
-	free_2d_array((void **)dirs);
-	error_message(CMD_ERROR, NULL, cmd + 1, s);
-	free(cmd);
-	return (NULL);
-}
-
-int	t_lstsize(t_token *list)
-{
-	int	i;	
-
-	i = 0;
-	while (list)
-	{
-		list = list->next;	
-		i++;
-	}
-	return (i);
-}
 
 int	arglst_size(t_parsed *lst)
 {

@@ -46,7 +46,10 @@ objects/builtin/env.o: builtin/env.c /usr/include/stdc-predef.h \
  /usr/include/x86_64-linux-gnu/bits/atomic_wide_counter.h \
  /usr/include/x86_64-linux-gnu/bits/struct_mutex.h \
  /usr/include/x86_64-linux-gnu/bits/struct_rwlock.h /usr/include/alloca.h \
- /usr/include/x86_64-linux-gnu/bits/stdlib-float.h /usr/include/signal.h \
+ /usr/include/x86_64-linux-gnu/bits/stdlib-float.h /usr/include/string.h \
+ /usr/include/x86_64-linux-gnu/bits/types/locale_t.h \
+ /usr/include/x86_64-linux-gnu/bits/types/__locale_t.h \
+ /usr/include/strings.h /usr/include/signal.h \
  /usr/include/x86_64-linux-gnu/bits/signum-generic.h \
  /usr/include/x86_64-linux-gnu/bits/signum-arch.h \
  /usr/include/x86_64-linux-gnu/bits/types/sig_atomic_t.h \
@@ -83,13 +86,14 @@ objects/builtin/env.o: builtin/env.c /usr/include/stdc-predef.h \
  /usr/include/x86_64-linux-gnu/bits/termios-c_lflag.h \
  /usr/include/x86_64-linux-gnu/bits/termios-tcflow.h \
  /usr/include/x86_64-linux-gnu/bits/termios-misc.h \
- /usr/include/x86_64-linux-gnu/sys/ttydefaults.h \
+ /usr/include/x86_64-linux-gnu/sys/ttydefaults.h /usr/include/fcntl.h \
+ /usr/include/x86_64-linux-gnu/bits/fcntl.h \
+ /usr/include/x86_64-linux-gnu/bits/fcntl-linux.h \
+ /usr/include/x86_64-linux-gnu/bits/stat.h \
+ /usr/include/x86_64-linux-gnu/bits/struct_stat.h \
  /usr/include/readline/readline.h /usr/include/readline/rlstdc.h \
  /usr/include/readline/rltypedefs.h /usr/include/readline/keymaps.h \
  /usr/include/readline/chardefs.h /usr/include/ctype.h \
- /usr/include/x86_64-linux-gnu/bits/types/locale_t.h \
- /usr/include/x86_64-linux-gnu/bits/types/__locale_t.h \
- /usr/include/string.h /usr/include/strings.h \
  /usr/include/readline/tilde.h /usr/include/readline/history.h \
  /usr/include/time.h /usr/include/x86_64-linux-gnu/bits/time.h \
  /usr/include/x86_64-linux-gnu/bits/types/struct_tm.h \
@@ -151,6 +155,10 @@ builtin/../header/minishell.h:
 /usr/include/x86_64-linux-gnu/bits/struct_rwlock.h:
 /usr/include/alloca.h:
 /usr/include/x86_64-linux-gnu/bits/stdlib-float.h:
+/usr/include/string.h:
+/usr/include/x86_64-linux-gnu/bits/types/locale_t.h:
+/usr/include/x86_64-linux-gnu/bits/types/__locale_t.h:
+/usr/include/strings.h:
 /usr/include/signal.h:
 /usr/include/x86_64-linux-gnu/bits/signum-generic.h:
 /usr/include/x86_64-linux-gnu/bits/signum-arch.h:
@@ -191,16 +199,17 @@ builtin/../header/minishell.h:
 /usr/include/x86_64-linux-gnu/bits/termios-tcflow.h:
 /usr/include/x86_64-linux-gnu/bits/termios-misc.h:
 /usr/include/x86_64-linux-gnu/sys/ttydefaults.h:
+/usr/include/fcntl.h:
+/usr/include/x86_64-linux-gnu/bits/fcntl.h:
+/usr/include/x86_64-linux-gnu/bits/fcntl-linux.h:
+/usr/include/x86_64-linux-gnu/bits/stat.h:
+/usr/include/x86_64-linux-gnu/bits/struct_stat.h:
 /usr/include/readline/readline.h:
 /usr/include/readline/rlstdc.h:
 /usr/include/readline/rltypedefs.h:
 /usr/include/readline/keymaps.h:
 /usr/include/readline/chardefs.h:
 /usr/include/ctype.h:
-/usr/include/x86_64-linux-gnu/bits/types/locale_t.h:
-/usr/include/x86_64-linux-gnu/bits/types/__locale_t.h:
-/usr/include/string.h:
-/usr/include/strings.h:
 /usr/include/readline/tilde.h:
 /usr/include/readline/history.h:
 /usr/include/time.h:

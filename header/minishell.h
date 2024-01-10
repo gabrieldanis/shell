@@ -6,7 +6,7 @@
 /*   By: gdanis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 16:49:31 by gdanis            #+#    #+#             */
-/*   Updated: 2024/01/07 11:47:18 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/01/09 14:27:02 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,7 @@ typedef struct s_parsed
 	struct s_parsed	*next;
 	struct s_parsed	*lst;
 	char			**arglst;
+	char			*cmd;
 	char			*str;
 	int				idx;
 	int				type;
@@ -101,6 +102,7 @@ typedef struct s_shell
 	char		**env;
 	char		*str;
 	int			rval;
+	int			cmds;
 }	t_shell;
 
 /*********************************
@@ -157,6 +159,8 @@ void		parse_lstiter(t_shell *s, int (*f)(t_parsed *lst, t_shell *s));
 void		ft_unset_str(t_shell *s, char *str, int i);
 void		free_lsts(t_shell *s);
 void		ft_exit(t_shell *s, t_parsed *lst);
+void		multipipe(t_shell *s);
+void		add_path_to_cmd(t_shell *s);
 char		*get_path(t_shell *s);
 char		*get_dir(char *str, t_shell *s);
 char		**dup_envp(char **envp);

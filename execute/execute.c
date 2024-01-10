@@ -6,7 +6,7 @@
 /*   By: gdanis <gdanis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 08:08:33 by gdanis            #+#    #+#             */
-/*   Updated: 2024/01/06 16:28:29 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/01/09 15:08:54 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,10 @@ void	execute_parsed_list(t_shell *s)
 	else if (!ft_strncmp(s->lst->arglst[0], "unset\0", 6))
 		s->rval = ft_unset(s, s->lst);
 	else
-		no_pipe(s);
+	{
+		//no_pipe(s);
+		multipipe(s);
+	}
 }
 
 void	no_pipe(t_shell *s)

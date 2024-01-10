@@ -6,7 +6,7 @@
 /*   By: gdanis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 13:17:49 by gdanis            #+#    #+#             */
-/*   Updated: 2024/01/06 13:03:45 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/01/09 16:46:27 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ void	free_lsts(t_shell *s)
 		free_parsed_list(s->lst);
 	s->tlst = NULL;
 	s->lst = NULL;
+	s->cmds = 0;
 }
 
 void	free_token_list(t_token *tlst)

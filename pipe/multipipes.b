@@ -6,7 +6,7 @@
 /*   By: gdanis <gdanis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 11:32:13 by gdanis            #+#    #+#             */
-/*   Updated: 2024/01/08 22:04:55 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/01/09 11:41:51 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,9 +96,9 @@ int	main(int argc, char *argv[])
 		{
 			close_unused_pipes(pipes, i, argc);
 			if (i > 0)
-				ft_read_from_pipe(pipes[i - 1][0], i);
+				ft_read_from_pipe(pipes[i - 1][0]);
 			if (i != (argc - 2))
-				ft_write_to_pipe(pipes[i][1], i);
+				ft_write_to_pipe(pipes[i][1]);
 			if (execvp(cmds[i][0], cmds[i]) == -1)
 			{
 				ft_putstr_fd("execvp failed\n", 2);
