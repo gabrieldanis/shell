@@ -6,7 +6,7 @@
 /*   By: gdanis <gdanis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/28 22:27:36 by gdanis            #+#    #+#             */
-/*   Updated: 2024/01/04 10:41:54 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/01/12 17:47:24 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,15 @@ void	ft_charjoin(char **s1, char c, t_shell *s)
 		len = 0;
 	str = (char *) malloc ((sizeof(char)) * (len + 2));
 	if (str == NULL)
+	{
+		if (s->ex_start && s->tlst->ex)
+			s->tlst->ex = s->ex_start;
+		if (s->sp_start && s->tlst->sp)
+			s->tlst->sp = s->sp_start;
+		if (s->t_start && s->tlst)
+			s->tlst = s->t_start;
 		free_and_exit(MALLOC_ERROR, s);
+	}
 	i = 0;
 	while (*s1 && (*s1)[i])
 	{
@@ -56,7 +64,9 @@ int	is_operator(char c)
 
 void	operator_token(t_shell *s, int *i)
 {
-	token_addlstlast(&s->tlst);
+	if (s->tlst && s->tlst->next == NULL)
+		s->t_start = s->tlst; 	
+	token_addlstlast(&s->tlst, s);
 	if (s->str[*i] == '<')
 		last_token(s->tlst)->type = RED_IN;
 	if (s->str[*i] == '>')
@@ -94,12 +104,13 @@ void	str_to_token(t_shell *s)
 			operator_token(s, &i);
 		if (s->str[i] && !is_delimiter(s->str[i]))
 		{
-			token_addlstlast(&s->tlst);
+			if (s->tlst && s->tlst->next == NULL)
+				s->t_start = s->tlst; 	
+			token_addlstlast(&s->tlst, s);
 			while (s->str[i] && (!is_operator(s->str[i]) || flag))
 			{
 				setqflag(&flag, s->str[i]);
-				ft_charjoin(&(last_token(s->tlst)->str), s->str[i], s);
-				i++;
+				ft_charjoin(&(last_token(s->tlst)->str), s->str[i++], s);
 				if (!flag && (s->str[i] == ' ' || s->str[i] == '\t'))
 					break;
 			}

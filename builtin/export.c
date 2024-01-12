@@ -6,7 +6,7 @@
 /*   By: gdanis <gdanis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/15 11:28:20 by gdanis            #+#    #+#             */
-/*   Updated: 2024/01/04 11:11:17 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/01/12 15:51:49 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,12 @@ int	ft_export(t_shell *s, t_parsed *lst, int env)
 	if (env)
 		return (ft_env(s), 0);
 	if (!lst->arglst[1])
-		return (ft_print_export(s->env), 0);
+		return (ft_print_export(s->env, s), 0);
 	i++;
 	while (lst->arglst[i])
 	{
-		ft_setenv(s, lst->arglst[i]);
+		if (ft_setenv(s, lst->arglst[i]))
+			return (1);
 		i++;
 	}
 	return (0);
@@ -35,6 +36,7 @@ int	update_existing_var(t_shell *s, char *str)
 	int	i;
 	int	len;
 	char	*tmp;
+	char	*malloced_str;
 
 	len = 0;
 	while (str[len] && str[len] != '=')
@@ -48,9 +50,13 @@ int	update_existing_var(t_shell *s, char *str)
 			if (str[len] == '\0')
 				return (1);
 			tmp = s->env[i];
-			s->env[i] = ft_strdup(str);
-			if (!s->env[i])
+			malloced_str = ft_strdup(str);
+			if (!malloced_str)
+			{
+				free(str);
 				free_and_exit(MALLOC_ERROR, s);
+			}
+			s->env[i] = malloced_str;
 			free(tmp);
 			return (1);
 		}
@@ -136,21 +142,28 @@ int	ft_setenv(t_shell *s, char *str)
 	i = 0;
 	while (tmp[i] && ft_strncmp(tmp[i], "_=", 2))
 	{
-		s->env[i] = tmp[i]; 
+		s->env[i] = ft_strdup(tmp[i]); 
+		if (!s->env[i])
+		{
+			free_2d_array_i((void ***)&s->env, i);
+			free_and_exit(MALLOC_ERROR, s);
+		}
 		i++;
 	}
 	s->env[i] = ft_strdup(str);
 	if (!s->env)
 		free_and_exit(MALLOC_ERROR, s);
 	i++;
-	s->env[i] = tmp[i - 1];
+	s->env[i] = ft_strdup(tmp[i - 1]);
+	if (!s->env)
+		free_and_exit(MALLOC_ERROR, s);
 	i++;
 	s->env[i] = NULL;
-	free(tmp);
+	free_2d_array((void **)tmp);
 	return (0);
 }
 
-int	ft_print_export(char **s_envp)
+int	ft_print_export(char **s_envp, t_shell *s)
 {
 	char	**dup;
 	int	i;
@@ -158,7 +171,7 @@ int	ft_print_export(char **s_envp)
 
 	i = 0;
 	j = 0;
-	dup = dup_envp(s_envp);
+	dup = dup_envp(s_envp, s);
 	sort_var_list(dup);
 	ft_print_export_lines(dup, i, j);
 	free_2d_array((void **)dup);

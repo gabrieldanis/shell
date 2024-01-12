@@ -6,7 +6,7 @@
 /*   By: gdanis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/29 10:00:53 by gdanis            #+#    #+#             */
-/*   Updated: 2024/01/03 21:58:19 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/01/12 17:29:02 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,13 @@
 
 void	split_token(t_shell *s) 
 {
-	t_token *start;
 	int		flag;
 	int		oldflag;
 	int		i;
 
 	flag = 0;
 	oldflag = 0;
-	start = s->tlst;
+	s->t_start = s->tlst;
 	while (s->tlst)
 	{
 		if (s->tlst->type == HEREDOC && s->tlst->next)
@@ -32,7 +31,7 @@ void	split_token(t_shell *s)
 			if (s->tlst->str[i] && s->tlst->str[i] != '$')
 			{
 				if (!s->tlst->sp || (s->tlst->sp && last_token(s->tlst->sp)->str))
-					token_addlstlast(&s->tlst->sp);
+					token_addlstlast(&s->tlst->sp, s);
 				while (s->tlst->str[i] && s->tlst->str[i] != '$')
 				{
 					setqflag(&flag, s->tlst->str[i]);
@@ -42,12 +41,16 @@ void	split_token(t_shell *s)
 					i++;
 				}
 				if (!last_token(s->tlst->sp)->str)
+				{
 					last_token(s->tlst->sp)->str = ft_strdup("");
+					if (!last_token(s->tlst->sp)->str)
+						free_and_exit(MALLOC_ERROR, s);
+				}
 	 		}
 			if (s->tlst->str[i] == '$')
 			{
 				if (!s->tlst->sp || (s->tlst->sp && last_token(s->tlst->sp)->str))
-					token_addlstlast(&s->tlst->sp);
+					token_addlstlast(&s->tlst->sp, s);
 				ft_charjoin(&(last_token(s->tlst->sp)->str), s->tlst->str[i], s);
 				i++;
 					if (!flag && s->tlst->type != HEREDOC_DEL)
@@ -69,5 +72,5 @@ void	split_token(t_shell *s)
 		}
 		s->tlst = s->tlst->next;
 	}
-	s->tlst = start;
+	s->tlst = s->t_start;
 }

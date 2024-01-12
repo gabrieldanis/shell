@@ -6,7 +6,7 @@
 /*   By: gdanis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 13:17:49 by gdanis            #+#    #+#             */
-/*   Updated: 2024/01/06 13:03:45 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/01/12 14:42:38 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,21 +18,30 @@ void	free_and_exit(int n, t_shell *s)
 
 	if (n != 0)
 		error_message(n, NULL, NULL, s);
-	free_2d_array((void **)s->env);
+	if (s && s->env)
+		free_2d_array((void **)s->env);
 	free_lsts(s);
-	exitval = s->rval;
-	free(s);
+	if (s)
+	{
+		exitval = s->rval;
+		free(s);
+	}
+	else
+		exitval = MALLOC_ERROR;
 	exit (exitval);
 }
 
 void	free_lsts(t_shell *s)
 {
-	if (s->tlst)
-		free_token_list(s->tlst);
-	if (s->lst)
-		free_parsed_list(s->lst);
-	s->tlst = NULL;
-	s->lst = NULL;
+	if (s)
+	{
+		if (s->tlst)
+			free_token_list(s->tlst);
+		if (s->lst)
+			free_parsed_list(s->lst);
+		s->tlst = NULL;
+		s->lst = NULL;
+	}
 }
 
 void	free_token_list(t_token *tlst)
@@ -76,7 +85,10 @@ void	free_parsed_list(t_parsed *lst)
 			tmp->str = NULL;
 		}
 		if (tmp->arglst)
+		{
 			free_2d_array((void **)tmp->arglst);
+			tmp->arglst = NULL;
+		}
 		if (tmp->lst)
 		{
 			free_parsed_list(tmp->lst);
@@ -101,4 +113,15 @@ void	free_2d_array(void **ptr)
 		}
 		free(ptr);
 	}
+}
+
+void	free_2d_array_i(void ***arr, int i)
+{
+	int	j;
+
+	j = 0;
+	while (j < i)
+		free((*arr)[j++]);
+	free(*arr);
+	*arr = NULL;
 }

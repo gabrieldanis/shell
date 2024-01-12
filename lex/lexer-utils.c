@@ -6,7 +6,7 @@
 /*   By: gdanis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/29 09:52:50 by gdanis            #+#    #+#             */
-/*   Updated: 2024/01/03 15:18:19 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/01/12 17:45:26 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,11 +32,21 @@ void	setqflag(int *flag, char c)
 		*flag = 0;
 }
 
-void	token_addlstlast(t_token **lst)
+void	token_addlstlast(t_token **lst, t_shell *s)
 {
 	t_token	*tmp;
 
 	tmp = (t_token *)malloc(sizeof(t_token));
+	if (!tmp)
+	{
+		if (s->ex_start && s->tlst->ex)
+			s->tlst->ex = s->ex_start;
+		if (s->sp_start && s->tlst->sp)
+			s->tlst->sp = s->sp_start;
+		if (s->t_start && s->tlst)
+			s->tlst = s->t_start;
+		free_and_exit(MALLOC_ERROR, s);
+	}
 	*tmp = (t_token){0};
 	if (!(*lst))
 		*lst = tmp;

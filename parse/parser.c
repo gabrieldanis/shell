@@ -6,7 +6,7 @@
 /*   By: gdanis <gdanis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/31 08:44:00 by gdanis            #+#    #+#             */
-/*   Updated: 2024/01/04 10:50:11 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/01/12 18:08:02 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,15 @@ void	addnewlstback(t_shell *s, t_parsed *lst)
 	t_parsed	*tmp;
 
 	tmp = (t_parsed *)malloc(sizeof(t_parsed));
-	*tmp = (t_parsed){0};
 	if (!tmp)
+	{
+		if (s->ex_start && s->tlst->ex)
+			s->tlst->ex = s->ex_start;
+		if (s->t_start && s->tlst)
+			s->tlst = s->t_start;
 		free_and_exit(MALLOC_ERROR, s);
+	}
+	*tmp = (t_parsed){0};
 	if (!lst)
 	{
 		if (!s->lst)
@@ -45,38 +51,48 @@ void	addnewlstback(t_shell *s, t_parsed *lst)
 
 void	init_plst(t_shell *s)
 {
-	t_token	*start;
-	t_token	*ex_start;
-	
-	start = s->tlst;
+	s->t_start = s->tlst;
 	while (s->tlst)
 	{
 		addnewlstback(s, NULL);
 		while (s->tlst && s->tlst->type != PIPE)
 		{
-			ex_start = s->tlst->ex;
+			s->ex_start = s->tlst->ex;
 			while (s->tlst->ex)	
 			{
 				if (s->tlst->ex->str)
 				{
 					addnewlstback(s, lstlast(s->lst));
-					lstlast(lstlast(s->lst)->lst)->str = ft_strdup(s->tlst->ex->str);
-					lstlast(lstlast(s->lst)->lst)->type = s->tlst->type;
+					node_dup(lstlast(lstlast(s->lst)->lst), s->tlst->ex->str, s);
 				}
 				s->tlst->ex = s->tlst->ex->next;
 			}
-			s->tlst->ex = ex_start;
+			s->tlst->ex = s->ex_start;
 			s->tlst = s->tlst->next;
 		}
 		if (s->tlst && s->tlst->type == PIPE)
 		{
 			addnewlstback(s, lstlast(s->lst));
-			lstlast(lstlast(s->lst)->lst)->str = ft_strdup(s->tlst->str);
-			lstlast(lstlast(s->lst)->lst)->type = s->tlst->type;
+			node_dup(lstlast(lstlast(s->lst)->lst), s->tlst->str, s);
 			s->tlst = s->tlst->next;
 		}
 	}
-	s->tlst = start;
+	s->tlst = s->t_start;
+}
+
+void	node_dup(t_parsed *lst, char *s2, t_shell *s)
+{
+	lst->str = ft_strdup(s2);
+	if (!lst->str)
+	{
+		if (s->ex_start && s->tlst->ex)
+			s->tlst->ex = s->ex_start;
+		if (s->t_start && s->tlst)
+			s->tlst = s->t_start;
+		free_and_exit(MALLOC_ERROR, s);
+	}
+	lst->type = s->tlst->type;
+
 }
 
 int	parse_isfile(t_parsed *lst, t_shell *s)

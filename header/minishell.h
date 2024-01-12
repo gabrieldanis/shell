@@ -6,7 +6,7 @@
 /*   By: gdanis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 16:49:31 by gdanis            #+#    #+#             */
-/*   Updated: 2024/01/06 23:13:08 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/01/12 18:11:20 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@
 # define CMD			7
 # define ARG			8
 # define FILE_DIR		9
+# define EXIT_VALUE		10
 
 /*********************************
  * 	STRUCTS
@@ -93,7 +94,12 @@ typedef struct s_parsed
 typedef struct s_shell
 {
 	t_parsed	*lst;
+	t_parsed	*p_start;
+	t_parsed	*pp_start;
 	t_token		*tlst;
+	t_token		*t_start;
+	t_token		*sp_start;
+	t_token		*ex_start;
 	char		**argv;
 	char		**env;
 	char		*str;
@@ -109,9 +115,10 @@ t_parsed	*info_parsed_list(t_parsed *list);
 t_parsed	*type_parsed_list(t_parsed *list);
 t_parsed	*p_lstlast(t_parsed *list);
 t_token		*last_token(t_token *t);
+void		token_strjoin(char **s1, char **s2, t_shell *s);
 void		expander(t_shell *s);
 void		parser(t_shell *s);
-void		token_addlstlast(t_token **lst);
+void		token_addlstlast(t_token **lst, t_shell *s);
 void		tokenizer(t_shell *s);
 void		print_parsed_list(t_shell *s);
 void		ft_charjoin(char **s1, char c, t_shell *s);
@@ -154,13 +161,16 @@ void		parse_lstiter(t_shell *s, int (*f)(t_parsed *lst, t_shell *s));
 void		ft_unset_str(t_shell *s, char *str, int i);
 void		free_lsts(t_shell *s);
 void		ft_exit(t_shell *s, t_parsed *lst);
+void		free_2d_array_i(void ***arr, int i);
+void		node_dup(t_parsed *lst, char *s2, t_shell *s);
 char		*get_path(t_shell *s);
 char		*get_dir(char *str, t_shell *s);
-char		**dup_envp(char **envp);
+char		**dup_envp(char **envp, t_shell *s);
 char		*token_type(int i);
 char		*expand_var(char *str);
 char		*get_str(t_parsed *list);
 char		*ft_getenv(char *str, t_shell *s);
+char		*token_vardup(char *s1, t_shell *s, int itoa);
 int			ft_echo(t_parsed *list);
 int			error_message(int n, char *exe_name, char *str, t_shell *s);
 int			isenvar(char *env, char *varname);
@@ -172,7 +182,7 @@ int			is_varname(char *str);
 int			ft_chdir(t_shell *s, t_parsed *lst);
 int			ft_env(t_shell *s);
 int			ft_export(t_shell *s, t_parsed *lst, int env);
-int			ft_print_export(char **envp);
+int			ft_print_export(char **envp, t_shell *s);
 int			delimiter_char(char c);
 int			op_char(char c);
 int			check_is_var(char c);

@@ -6,7 +6,7 @@
 /*   By: gdanis <gdanis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/31 08:10:22 by gdanis            #+#    #+#             */
-/*   Updated: 2024/01/06 13:58:48 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/01/12 18:12:28 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,17 +95,15 @@ int	arglst_size(t_parsed *lst)
 
 void	arg_list(t_shell *s)
 {
-	t_parsed	*start;
-	t_parsed	*sub_start;
 	int		i;
 
-	start = s->lst;
+	s->p_start = s->lst;
 	while (s->lst && s->lst->lst)
 	{
 		s->lst->arglst = (char **)malloc((arglst_size(s->lst) + 1) * sizeof(char *));
 		if (!s->lst->arglst)
 			free_and_exit(MALLOC_ERROR, s);
-		sub_start = s->lst->lst;
+		s->pp_start = s->lst->lst;
 		i = 0;
 		while (s->lst->lst)
 		{
@@ -113,16 +111,20 @@ void	arg_list(t_shell *s)
 			{
 				s->lst->arglst[i] = ft_strdup(s->lst->lst->str);
 				if (!s->lst->arglst[i])
+				{
+					s->lst->lst = s->pp_start;
+					s->lst = s->p_start;
 					free_and_exit(MALLOC_ERROR, s);
+				}
 				i++;
 			}
 			s->lst->lst = s->lst->lst->next;
 		}
 		s->lst->arglst[i] = NULL;
-		s->lst->lst = sub_start;
+		s->lst->lst = s->pp_start;
 		s->lst = s->lst->next;
 	}
-	s->lst = start;
+	s->lst = s->p_start;
 }
 
 void	exit_child(int n, t_shell *s)

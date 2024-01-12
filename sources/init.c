@@ -6,7 +6,7 @@
 /*   By: gdanis <gdanis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/02 07:25:06 by gdanis            #+#    #+#             */
-/*   Updated: 2024/01/04 10:42:55 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/01/12 15:53:43 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,12 +36,9 @@ t_shell	*init_shell(int argc, char **argv, char **envp)
 	(void)argc;
 	s = (t_shell *)malloc(sizeof(t_shell));
 	if (!s)
-	{
-		error_message(MALLOC_ERROR, NULL, NULL, s);
-		exit(0);
-	}
+		exit(error_message(MALLOC_ERROR, NULL, NULL, s));
 	*s = (t_shell){0};
-	s->env = dup_envp(envp);
+	s->env = dup_envp(envp, s);
 	s->argv = argv;
 	set_shell(s); // not necessary
 	set_shlvl(s);
@@ -80,7 +77,7 @@ void	set_shlvl(t_shell *s)
 		ft_setenv(s, "SHLVL=1");
 }
 
-char	**dup_envp(char **envp)
+char	**dup_envp(char **envp, t_shell *s)
 {
 	char	**dup;
 	int	i;
@@ -90,11 +87,16 @@ char	**dup_envp(char **envp)
 		i++;
 	dup = (char **)malloc(sizeof(char *) * (i + 1));
 	if (!dup)
-		free_and_exit(MALLOC_ERROR, NULL);
+		free_and_exit(MALLOC_ERROR, s);
 	i = 0;
 	while (envp[i])
 	{
 		dup[i] = ft_strdup(envp[i]);
+		if (!dup[i])
+		{
+			free_2d_array_i((void ***)&dup, i);
+			free_and_exit(MALLOC_ERROR, s);
+		}
 		i++;
 	}
 	dup[i] = NULL;
