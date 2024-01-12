@@ -6,7 +6,7 @@
 /*   By: gdanis <gdanis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/09 11:43:35 by gdanis            #+#    #+#             */
-/*   Updated: 2024/01/10 08:45:40 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/01/11 13:31:05 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,11 @@ void	add_path_to_cmd(t_shell *s)
 			}
 		}
 		else if (s->lst->arglst[0] && !check_builtin(s->lst))
+		{
 			s->lst->cmd = get_dir(get_path(s), s);
+			if (!s->lst->cmd)
+				return ;
+		}
 		s->lst = s->lst->next;
 	}
 	s->lst = start;

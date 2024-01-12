@@ -6,7 +6,7 @@
 /*   By: gdanis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 16:49:31 by gdanis            #+#    #+#             */
-/*   Updated: 2024/01/10 08:30:42 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/01/10 18:26:48 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,9 @@
 # define CMD			7
 # define ARG			8
 # define FILE_DIR		9
+# define INFILE			10
+# define OUTFILE		11
+# define OUTF_APP		12
 
 /*********************************
  * 	STRUCTS
@@ -87,10 +90,13 @@ typedef struct s_parsed
 	struct s_parsed	*next;
 	struct s_parsed	*lst;
 	char			**arglst;
+	char			**outfiles;
+	char			*infile;
 	char			*cmd;
 	char			*str;
 	int				idx;
 	int				type;
+	int				append;
 	int				eof;
 }	t_parsed;
 
@@ -161,6 +167,7 @@ void		free_lsts(t_shell *s);
 void		ft_exit(t_shell *s, t_parsed *lst);
 void		multipipe(t_shell *s);
 void		add_path_to_cmd(t_shell *s);
+void		appln_chararr(t_parsed *lst, char *str, t_shell *s);
 char		*get_path(t_shell *s);
 char		*get_dir(char *str, t_shell *s);
 char		**dup_envp(char **envp);

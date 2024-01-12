@@ -6,7 +6,7 @@
 /*   By: gdanis <gdanis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/31 08:44:00 by gdanis            #+#    #+#             */
-/*   Updated: 2024/01/04 10:50:11 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/01/10 18:34:28 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,15 +90,21 @@ int	parse_isfile(t_parsed *lst, t_shell *s)
 			return (0);
 		}
 	}
-	/*
-	 * check here wether file exists or not.
-	 * if not and infile than error: no such file
-	 * if not outfile then create outfile first
-	 */
-	if ((lst->type == RED_IN || lst->type == RED_OUT 
-		||lst->type == RED_APP) && lst->next
+	if (lst->type == RED_IN && lst->next && !lst->next->type)
+	{
+		lst->next->type = INFILE;
+		s->lst->infile = lst->next->str;
+	}
+	if ((lst->type == RED_OUT || lst->type == RED_APP) && lst->next
 			&& !lst->next->type)
-		lst->next->type = FILE_DIR;
+	{
+		lst->next->type = OUTFILE;
+		appln_chararr(s->lst, lst->next->str, s);
+		if (lst->type == RED_OUT)
+			s->lst->append = 0;
+		else
+			s->lst->append = 1;
+	}
 	return (1);
 }
 

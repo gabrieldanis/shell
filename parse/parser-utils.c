@@ -6,7 +6,7 @@
 /*   By: gdanis <gdanis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/01 13:47:54 by gdanis            #+#    #+#             */
-/*   Updated: 2024/01/04 10:48:14 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/01/10 18:26:16 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,3 +82,37 @@ void	parse_lstiter(t_shell *s, int (*f)(t_parsed *lst, t_shell *s))
 	}
 	s->lst = start;
 }
+
+void	appln_chararr(t_parsed *lst, char *str, t_shell *s)
+{
+	char	**tmp;
+	int		i;
+
+
+	i = 0;
+	while (lst->outfiles && lst->outfiles[i] != NULL)	
+		i++;
+	tmp = (char **)malloc(sizeof(char *) * (i + 2));
+	if (!tmp)
+		free_and_exit(MALLOC_ERROR, s);
+	i = 0;
+	while (lst->outfiles && lst->outfiles[i])
+	{
+		tmp[i] = lst->outfiles[i];
+		i++;
+	}
+	tmp[i] = str;
+	i++;
+	tmp[i] = NULL;
+	if (lst->outfiles)
+		free(lst->outfiles);
+	lst->outfiles = tmp;
+}
+
+
+
+
+
+
+
+
