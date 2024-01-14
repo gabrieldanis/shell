@@ -6,7 +6,7 @@
 /*   By: gdanis <gdanis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/15 11:28:20 by gdanis            #+#    #+#             */
-/*   Updated: 2024/01/12 15:51:49 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/01/12 21:29:50 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,6 +124,7 @@ int	append_var(t_shell *s, char *str)
 int	ft_setenv(t_shell *s, char *str)
 {
 	char	**tmp;
+	char	*tmp_str;
 	int	i;
 
 	if (!is_varname(str))
@@ -138,25 +139,38 @@ int	ft_setenv(t_shell *s, char *str)
 		i++;
 	s->env = (char **)malloc(sizeof(char *) * (i + 2));
 	if (!s->env)
+	{
+		free_2d_array((void **)tmp);
 		free_and_exit(MALLOC_ERROR, s);
+	}
 	i = 0;
 	while (tmp[i] && ft_strncmp(tmp[i], "_=", 2))
 	{
-		s->env[i] = ft_strdup(tmp[i]); 
-		if (!s->env[i])
+		tmp_str = ft_strdup(tmp[i]); 
+		if (!tmp_str)
 		{
+			free_2d_array((void **)tmp);
 			free_2d_array_i((void ***)&s->env, i);
 			free_and_exit(MALLOC_ERROR, s);
 		}
+		s->env[i] = tmp_str;
 		i++;
 	}
-	s->env[i] = ft_strdup(str);
-	if (!s->env)
+	tmp_str = ft_strdup(str);
+	if (!tmp_str)
+	{
+		free_2d_array((void **)tmp);
 		free_and_exit(MALLOC_ERROR, s);
+	}
+	s->env[i] = tmp_str; 
 	i++;
-	s->env[i] = ft_strdup(tmp[i - 1]);
-	if (!s->env)
+	tmp_str = ft_strdup(tmp[i - 1]);
+	if (!tmp_str)
+	{	
+		free_2d_array((void **)tmp);
 		free_and_exit(MALLOC_ERROR, s);
+	}
+	s->env[i] = tmp_str; 
 	i++;
 	s->env[i] = NULL;
 	free_2d_array((void **)tmp);
