@@ -6,7 +6,7 @@
 /*   By: gdanis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/29 09:52:50 by gdanis            #+#    #+#             */
-/*   Updated: 2024/01/12 17:45:26 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/01/14 12:07:05 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 t_token	*last_token(t_token *t)
 {
-	while(t && t->next)
-		t = t->next;	
+	while (t && t->next)
+		t = t->next;
 	return (t);
 }
 
@@ -23,12 +23,12 @@ void	setqflag(int *flag, char c)
 {
 	if (!(*flag) && (c == '"' || c == 39))
 	{
-		if (c == '"')	
+		if (c == '"')
 			*flag = 2;
 		if (c == 39)
 			*flag = 1;
 	}
-	else if((*flag == 2 && c == '"') || (*flag == 1 && c == 39))
+	else if ((*flag == 2 && c == '"') || (*flag == 1 && c == 39))
 		*flag = 0;
 }
 
@@ -100,4 +100,18 @@ void	print_token(t_shell *s)
 		s->tlst = s->tlst->next;
 	}
 	s->tlst = start;
+}
+
+int	is_delimiter(char c)
+{
+	if (c == '<' || c == '>' || c == '|' || c == ' ' || c == '\t')
+		return (1);
+	return (0);
+}
+
+int	is_operator(char c)
+{
+	if (c == '<' || c == '>' || c == '|')
+		return (1);
+	return (0);
 }
