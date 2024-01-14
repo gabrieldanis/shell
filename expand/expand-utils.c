@@ -6,7 +6,7 @@
 /*   By: gdanis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/02 11:24:27 by gdanis            #+#    #+#             */
-/*   Updated: 2024/01/12 17:20:15 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/01/14 14:50:13 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,9 @@ char	*ft_getenv(char *str, t_shell *s)
 		return (NULL);
 	while (s->env[i])
 	{
-		if (!ft_strncmp(str, s->env[i], ft_strlen(str)) &&
-				s->env[i][ft_strlen(str)] == '='
-				 && s->env[i][ft_strlen(str) + 1] != '\0')
+		if (!ft_strncmp(str, s->env[i], ft_strlen(str))
+			&& s->env[i][ft_strlen(str)] == '='
+				&& s->env[i][ft_strlen(str) + 1] != '\0')
 		{
 			return (s->env[i] + ft_strlen(str) + 1);
 		}
@@ -53,7 +53,7 @@ char	*token_vardup(char *s1, t_shell *s, int itoa)
 	char	*str;
 
 	if (itoa)
-		str = ft_itoa(s->rval); 
+		str = ft_itoa(s->rval);
 	else
 		str = ft_strdup(s1);
 	if (!str)

@@ -6,7 +6,7 @@
 /*   By: gdanis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 16:49:31 by gdanis            #+#    #+#             */
-/*   Updated: 2024/01/14 11:48:29 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/01/14 14:56:42 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -190,4 +190,5 @@ int			ft_unset(t_shell *s, t_parsed *lst);
 int			parse_cmdargs(t_parsed *lst, t_shell *s);
 int			is_delimiter(char c);
 int			is_operator(char c);
+int			arglst_size(t_parsed *lst);
 #endif

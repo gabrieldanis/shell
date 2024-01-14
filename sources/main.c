@@ -6,7 +6,7 @@
 /*   By: gdanis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 16:48:10 by gdanis            #+#    #+#             */
-/*   Updated: 2024/01/14 12:11:35 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/01/14 19:16:20 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,11 +39,11 @@ int	main(int argc, char **argv, char **envp)
 			{
 				split_token(s);
 				expand_token(s);
-				//print_token(s);
+				print_token(s);
 				init_plst(s);
 				parse_lstiter(s, parse_isfile);
 				parse_lstiter(s, parse_cmdargs);
-				//printlst(s);
+				printlst(s);
 				arg_list(s);
 				if (s->lst->arglst[0])
 					execute_parsed_list(s);

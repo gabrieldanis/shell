@@ -6,7 +6,7 @@
 /*   By: gdanis <gdanis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/02 07:25:06 by gdanis            #+#    #+#             */
-/*   Updated: 2024/01/12 15:53:43 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/01/14 18:42:40 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,6 @@ void	set_shell(t_shell *s)
 	if (!str)
 		free_and_exit(MALLOC_ERROR, s);
 	ft_setenv(s, str);
-	free(str);
 }
 
 t_shell	*init_shell(int argc, char **argv, char **envp)
@@ -69,12 +68,16 @@ void	set_shlvl(t_shell *s)
 					free_and_exit(MALLOC_ERROR, s);
 				ft_setenv(s, tmp);
 				checker = 1;
-				free(tmp);
 		}
 		i++;
 	}
 	if (!checker)
-		ft_setenv(s, "SHLVL=1");
+	{
+		tmp = ft_strdup("SHLVL=1");
+		if (!tmp)
+			free_and_exit(MALLOC_ERROR, s);
+		ft_setenv(s, tmp);
+	}
 }
 
 char	**dup_envp(char **envp, t_shell *s)

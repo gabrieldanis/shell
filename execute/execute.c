@@ -6,7 +6,7 @@
 /*   By: gdanis <gdanis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 08:08:33 by gdanis            #+#    #+#             */
-/*   Updated: 2024/01/06 16:28:29 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/01/14 14:53:16 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,6 @@ void	no_pipe(t_shell *s)
 	char	path[500];
 	int		status;
 
-
 	pid = fork();
 	if (pid == -1)
 		exit_child(FORK_ERROR, s);
@@ -48,7 +47,7 @@ void	no_pipe(t_shell *s)
 		cmd = NULL;
 		if (ft_strchr(s->lst->arglst[0], '/'))
 		{
-			if (s->lst->arglst[0][0] == '.' 
+			if (s->lst->arglst[0][0] == '.'
 				&& s->lst->arglst[0][1] == '/')
 			{
 				if (getcwd(path, sizeof(path)) == NULL)
@@ -56,7 +55,7 @@ void	no_pipe(t_shell *s)
 				cmd = ft_strjoin(path, s->lst->arglst[0] + 1);
 			}
 			else if (s->lst->arglst[0][0] == '/')
-					cmd = s->lst->arglst[0];
+				cmd = s->lst->arglst[0];
 			else
 			{
 				if (getcwd(path, sizeof(path)) == NULL)
@@ -69,7 +68,7 @@ void	no_pipe(t_shell *s)
 			cmd = get_dir(get_path(s), s);
 		if (!cmd)
 			exit(1);
-		if ( execve(cmd, s->lst->arglst, s->env) == -1)
+		if (execve(cmd, s->lst->arglst, s->env) == -1)
 			exit_child(EXECVE_ERROR, s);
 	}
 	else

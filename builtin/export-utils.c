@@ -6,7 +6,7 @@
 /*   By: gdanis <gdanis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/16 17:13:51 by gdanis            #+#    #+#             */
-/*   Updated: 2023/12/27 15:36:46 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/01/14 15:31:40 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,8 @@ int	alpha_smlr(char *i, char *j)
 void	sort_var_list(char **dup)
 {
 	char	*swap;
-	int	i;
-	int	j;	
+	int		i;
+	int		j;	
 
 	i = 0;
 	while (dup[i] && dup[i + 1])
@@ -37,7 +37,7 @@ void	sort_var_list(char **dup)
 		j = i + 1;
 		while (dup[j])
 		{
-			if (alpha_smlr(dup[i], dup[j]))	
+			if (alpha_smlr(dup[i], dup[j]))
 			{
 				swap = dup[i];
 				dup[i] = dup[j];
@@ -58,14 +58,14 @@ void	ft_print_export_lines(char **dup, int i, int j)
 			write(1, "declare -x ", 11);
 			j = 0;
 			while (dup[i][j] && dup[i][j] != '=')
-				write(1, &(dup[i][j++]), 1);	
+				write(1, &(dup[i][j++]), 1);
 			if (dup[i][j] == '=')
 			{
 				write(1, "=\"", 2);
 				j++;
-				while(dup[i][j])
+				while (dup[i][j])
 				{
-					write(1, &(dup[i][j]), 1);	
+					write(1, &(dup[i][j]), 1);
 					j++;
 				}
 				write(1, "\"", 1);
@@ -80,7 +80,7 @@ int	is_varname(char *str)
 {
 	int	i;
 
-	i = 0;	
+	i = 0;
 	if (!ft_isalpha(str[i]))
 		return (0);
 	while (str[i] && str[i] != '+' && str[i] != '=')

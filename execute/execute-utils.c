@@ -6,7 +6,7 @@
 /*   By: gdanis <gdanis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/31 08:10:22 by gdanis            #+#    #+#             */
-/*   Updated: 2024/01/12 18:12:28 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/01/14 15:22:51 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 char	*get_path(t_shell *s)
 {
-	int        i;
+	int	i;
 
 	i = 0;
 	while (s->env[i] != NULL)
@@ -26,26 +26,19 @@ char	*get_path(t_shell *s)
 	return (NULL);
 }
 
-char	*get_dir(char *str, t_shell *s)
+char	*find_dir(t_shell *s, char *cmd, char **dirs)
 {
-	char    **dirs;
-	char    *dir;
-	char    *cmd;
-	int        i;
+	char	*dir;
+	int		i;
 
-	dirs = ft_split(str, 58);
-	if (!dirs)
-		free_and_exit(MALLOC_ERROR, s);
 	i = 0;
-	cmd = ft_strjoin("/", s->tlst->ex->str);
-	if (!cmd)
-		free_and_exit(MALLOC_ERROR, s);
 	while (dirs[i] != NULL)
 	{
 		dir = ft_strjoin(dirs[i], cmd);
 		if (!dir)
 		{
 			free(cmd);
+			free_2d_array((void **)dirs);
 			free_and_exit(MALLOC_ERROR, s);
 		}
 		if (access(dir, F_OK) == 0)
@@ -57,6 +50,27 @@ char	*get_dir(char *str, t_shell *s)
 		free(dir);
 		i++;
 	}
+	return (NULL);
+}
+
+char	*get_dir(char *str, t_shell *s)
+{
+	char	**dirs;
+	char	*cmd;
+	char	*dir;
+
+	dirs = ft_split(str, 58);
+	if (!dirs)
+		free_and_exit(MALLOC_ERROR, s);
+	cmd = ft_strjoin("/", s->tlst->ex->str);
+	if (!cmd)
+	{
+		free_2d_array((void **)dirs);
+		free_and_exit(MALLOC_ERROR, s);
+	}
+	dir = find_dir(s, cmd, dirs);
+	if (dir)
+		return (dir);
 	free_2d_array((void **)dirs);
 	error_message(CMD_ERROR, NULL, cmd + 1, s);
 	free(cmd);
@@ -70,61 +84,10 @@ int	t_lstsize(t_token *list)
 	i = 0;
 	while (list)
 	{
-		list = list->next;	
+		list = list->next;
 		i++;
 	}
 	return (i);
-}
-
-int	arglst_size(t_parsed *lst)
-{
-	t_parsed	*sub_start;
-	int			i;
-
-	i = 0;
-	sub_start = lst->lst;
-	while (lst->lst)
-	{
-		if (lst->lst->type == CMD || lst->lst->type == ARG)
-			i++;
-		lst->lst = lst->lst->next;
-	}
-	lst->lst = sub_start;
-	return (i);
-}
-
-void	arg_list(t_shell *s)
-{
-	int		i;
-
-	s->p_start = s->lst;
-	while (s->lst && s->lst->lst)
-	{
-		s->lst->arglst = (char **)malloc((arglst_size(s->lst) + 1) * sizeof(char *));
-		if (!s->lst->arglst)
-			free_and_exit(MALLOC_ERROR, s);
-		s->pp_start = s->lst->lst;
-		i = 0;
-		while (s->lst->lst)
-		{
-			if (s->lst->lst->type == CMD || s->lst->lst->type == ARG)
-			{
-				s->lst->arglst[i] = ft_strdup(s->lst->lst->str);
-				if (!s->lst->arglst[i])
-				{
-					s->lst->lst = s->pp_start;
-					s->lst = s->p_start;
-					free_and_exit(MALLOC_ERROR, s);
-				}
-				i++;
-			}
-			s->lst->lst = s->lst->lst->next;
-		}
-		s->lst->arglst[i] = NULL;
-		s->lst->lst = s->pp_start;
-		s->lst = s->lst->next;
-	}
-	s->lst = s->p_start;
 }
 
 void	exit_child(int n, t_shell *s)

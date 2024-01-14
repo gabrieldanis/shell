@@ -6,7 +6,7 @@
 /*   By: gdanis <gdanis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/15 11:28:20 by gdanis            #+#    #+#             */
-/*   Updated: 2024/01/12 21:29:50 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/01/14 20:51:43 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,8 @@
 
 int	ft_export(t_shell *s, t_parsed *lst, int env)
 {
-	int	i;
+	char	*tmp;
+	int		i;
 
 	i = 0;
 	if (env)
@@ -24,7 +25,12 @@ int	ft_export(t_shell *s, t_parsed *lst, int env)
 	i++;
 	while (lst->arglst[i])
 	{
-		if (ft_setenv(s, lst->arglst[i]))
+		if (!is_varname(lst->arglst[i]))
+			return (error_message(IDENT_ERROR, "export", lst->arglst[i], s), 1);
+		tmp = ft_strdup(lst->arglst[i]);
+		if (!tmp)
+			free_and_exit(MALLOC_ERROR, s);
+		if (ft_setenv(s, tmp))
 			return (1);
 		i++;
 	}
@@ -33,10 +39,9 @@ int	ft_export(t_shell *s, t_parsed *lst, int env)
 
 int	update_existing_var(t_shell *s, char *str)
 {
-	int	i;
-	int	len;
 	char	*tmp;
-	char	*malloced_str;
+	int		i;
+	int		len;
 
 	len = 0;
 	while (str[len] && str[len] != '=')
@@ -50,15 +55,9 @@ int	update_existing_var(t_shell *s, char *str)
 			if (str[len] == '\0')
 				return (1);
 			tmp = s->env[i];
-			malloced_str = ft_strdup(str);
-			if (!malloced_str)
-			{
-				free(str);
-				free_and_exit(MALLOC_ERROR, s);
-			}
-			s->env[i] = malloced_str;
+			s->env[i] = str;
 			free(tmp);
-			return (1);
+ 			return (1);
 		}
 		i++;
 	}
@@ -67,10 +66,11 @@ int	update_existing_var(t_shell *s, char *str)
 
 int	append_var(t_shell *s, char *str)
 {
-	int	len;
-	int	i;
 	char	*tmp;
+	char	*tmp_join;
 	char	**split_str;
+	int		len;
+	int		i;
 
 	i = 0;
 	len = 0;
@@ -83,39 +83,60 @@ int	append_var(t_shell *s, char *str)
 			if (!ft_strncmp(s->env[i], str, len)
 				&& s->env[i][len] == '=')
 			{
-				tmp = s->env[i];
-				s->env[i] = ft_strjoin(s->env[i], str + len + 2);
-				if (!s->env[i])
-					free_and_exit(MALLOC_ERROR, s);
-				free(tmp);
+				if (str[len + 2])
+				{
+					tmp = s->env[i];
+					tmp_join = ft_strjoin(s->env[i], str + len + 2);
+					if (!tmp_join)
+					{
+						free(str);
+						free_and_exit(MALLOC_ERROR, s);
+					}
+					s->env[i] = tmp_join;
+					free(tmp);
+				}
+				free(str);
 				return (1);
 			}
 			if (!ft_strncmp(s->env[i], str, len)
 				&& s->env[i][len] == '\0')
 			{
 				tmp = s->env[i];
-				s->env[i] = ft_strjoin(s->env[i], "=");
-				if (!s->env[i])
+				tmp_join = ft_strjoin(s->env[i], "=");
+				if (!tmp_join)
+				{
+					free(str);
 					free_and_exit(MALLOC_ERROR, s);
-				free(tmp);
-				tmp = s->env[i];
-				s->env[i] = ft_strjoin(s->env[i], str + len + 2);
-				if (!s->env[i])
+				}
+				s->env[i] = tmp_join;
+				tmp_join = ft_strjoin(s->env[i], str + len + 2);
+				if (!tmp_join)
+				{
+					free(str);
 					free_and_exit(MALLOC_ERROR, s);
+				}
+				s->env[i] = tmp_join;
 				free(tmp);
+				free(str);
 				return (1);
 			}
 			i++;
 		}
 		split_str = ft_split(str, '+');
 		if (!split_str)
+		{
+			free(str);
 			free_and_exit(MALLOC_ERROR, s);
+		}
 		tmp = ft_strjoin(split_str[0], split_str[1]);
 		if (!tmp)
+		{
+			free(str);
 			free_and_exit(MALLOC_ERROR, s);
+		}
 		ft_setenv(s, tmp);
-		free(tmp);
 		free_2d_array((void **)split_str);
+		free(str);
 		return (1);
 	}
 	return (0);
@@ -125,10 +146,8 @@ int	ft_setenv(t_shell *s, char *str)
 {
 	char	**tmp;
 	char	*tmp_str;
-	int	i;
+	int		i;
 
-	if (!is_varname(str))
-		return (error_message(IDENT_ERROR, "export", str, s), 1);
 	if (update_existing_var(s, str))
 		return (0);
 	if (append_var(s, str))
@@ -140,15 +159,17 @@ int	ft_setenv(t_shell *s, char *str)
 	s->env = (char **)malloc(sizeof(char *) * (i + 2));
 	if (!s->env)
 	{
+		free(str);
 		free_2d_array((void **)tmp);
 		free_and_exit(MALLOC_ERROR, s);
 	}
 	i = 0;
 	while (tmp[i] && ft_strncmp(tmp[i], "_=", 2))
 	{
-		tmp_str = ft_strdup(tmp[i]); 
+		tmp_str = ft_strdup(tmp[i]);
 		if (!tmp_str)
 		{
+			free(str);
 			free_2d_array((void **)tmp);
 			free_2d_array_i((void ***)&s->env, i);
 			free_and_exit(MALLOC_ERROR, s);
@@ -156,21 +177,16 @@ int	ft_setenv(t_shell *s, char *str)
 		s->env[i] = tmp_str;
 		i++;
 	}
-	tmp_str = ft_strdup(str);
-	if (!tmp_str)
-	{
-		free_2d_array((void **)tmp);
-		free_and_exit(MALLOC_ERROR, s);
-	}
-	s->env[i] = tmp_str; 
+	s->env[i] = str;
 	i++;
 	tmp_str = ft_strdup(tmp[i - 1]);
 	if (!tmp_str)
-	{	
+	{
 		free_2d_array((void **)tmp);
+		free_2d_array_i((void ***)&s->env, i);
 		free_and_exit(MALLOC_ERROR, s);
 	}
-	s->env[i] = tmp_str; 
+	s->env[i] = tmp_str;
 	i++;
 	s->env[i] = NULL;
 	free_2d_array((void **)tmp);
@@ -180,8 +196,8 @@ int	ft_setenv(t_shell *s, char *str)
 int	ft_print_export(char **s_envp, t_shell *s)
 {
 	char	**dup;
-	int	i;
-	int	j;
+	int		i;
+	int		j;
 
 	i = 0;
 	j = 0;
