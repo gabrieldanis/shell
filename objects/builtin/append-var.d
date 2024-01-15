@@ -1,5 +1,5 @@
-objects/sources/signal.o: sources/signal.c sources/../header/minishell.h \
-  /usr/include/stdio.h \
+objects/builtin/append-var.o: builtin/append-var.c \
+  builtin/../header/minishell.h /usr/include/stdio.h \
   /usr/include/x86_64-linux-gnu/bits/libc-header-start.h \
   /usr/include/features.h /usr/include/features-time64.h \
   /usr/include/x86_64-linux-gnu/bits/wordsize.h \
@@ -98,7 +98,7 @@ objects/sources/signal.o: sources/signal.c sources/../header/minishell.h \
   /usr/include/x86_64-linux-gnu/bits/types/struct_itimerspec.h \
   /usr/include/x86_64-linux-gnu/sys/wait.h header/../libft/libft.h
 
-sources/../header/minishell.h:
+builtin/../header/minishell.h:
 
 /usr/include/stdio.h:
 
