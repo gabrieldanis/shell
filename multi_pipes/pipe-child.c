@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   child_processes.c                                  :+:      :+:    :+:   */
+/*   pipe-child.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dberes <dberes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/01 10:51:32 by dberes            #+#    #+#             */
-/*   Updated: 2024/01/15 15:40:41 by dberes           ###   ########.fr       */
+/*   Updated: 2024/01/15 18:06:04 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 void	multi_child_process(t_parsed *lst, t_shell *s, int ind)
 {
 	t_parsed	*node;
-	char		**args;
 
 	node = lst;
 	node = get_to_node(node, ind);
@@ -48,7 +47,10 @@ void	fd_opener(t_parsed *lst, t_shell *s)
 		*ex = 1;
 	}*/
 	if (dup2(lst->fd_inf, STDIN_FILENO) == -1)
-			dup_fail(args, s, node->fd[1], lst);
+	{
+			//dup_fail(args, s, node->fd[1], lst);
+			free_and_exit(DUP_ERROR, s);
+	}
 }
 
 void	fd_closer(t_shell *s)
@@ -64,19 +66,18 @@ void	fd_closer(t_shell *s)
 	}
 }
 
-t_plist	*get_to_node(t_plist *node, int ind)
+void	file_create(t_data *data)
 {
-	int	i;
-
-	i = 0;
-	while (i < ind - 1)
+	data->fd_outf = open(data->argv[data->argc - 1],
+			O_WRONLY | O_CREAT | O_TRUNC, 0666);
+	if (data->fd_outf == -1)
 	{
-		node = node->next;
-		i++;
+		perror("pipex: failed to open outfile");
+		close(data->fd_outf);
+		exit(EXIT_FAILURE);
 	}
-	return (node);
+	close(data->fd_outf);
 }
-
 /*
 void	last_child_process(t_plist **lst, t_data *data, int ind)
 {
@@ -103,7 +104,6 @@ void	last_child_process(t_plist **lst, t_data *data, int ind)
 		free_exit(args, data, NULL, 1);
 }
 
-
 void	first_child_process(t_parsed *lst, t_shell *s, int ind)
 {
 	if (lst->infile)
@@ -118,5 +118,3 @@ void	first_child_process(t_parsed *lst, t_shell *s, int ind)
 		free_exit(args, data, NULL, 1);
 }
 */
-
-

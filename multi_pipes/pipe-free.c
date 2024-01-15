@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   multi_pipes_utils.c                                :+:      :+:    :+:   */
+/*   pipe-free.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dberes <dberes@student.42.fr>              +#+  +:+       +#+        */
+/*   By: gdanis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/01 10:51:56 by dberes            #+#    #+#             */
-/*   Updated: 2024/01/15 15:28:41 by dberes           ###   ########.fr       */
+/*   Created: 2024/01/15 18:08:13 by gdanis            #+#    #+#             */
+/*   Updated: 2024/01/15 18:08:39 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,57 +66,4 @@ void	free_list(t_parsed *lst)
 		free(current);
 		current = next;
 	}
-}
-
-void	wait_for_child(t_plist *lst)
-{
-	t_plist	*node;
-
-	node = lst;
-	while (node->next != NULL)
-	{
-		waitpid(node->pid, NULL, 0);
-		node = node->next;
-	}
-	waitpid(node->pid, NULL, 0);
-}
-
-char	*get_dir_multi(char *str, t_shell *s)
-{
-	char	**dirs;
-	char	*dir;
-	char	*cmd;
-	int		i;
-
-	dirs = ft_split(str, 58);
-	if (!dirs)
-		free_and_exit(MALLOC_ERROR, s);
-	i = 0;
-	cmd = ft_strjoin("/", s->lst->arglst[0]);
-	if (!cmd)
-		free_and_exit(MALLOC_ERROR, s);
-	while (dirs[i] != NULL)
-	{
-		dir = ft_strjoin(dirs[i], cmd);
-		if (!dirs)
-			free_and_exit(MALLOC_ERROR, s);
-		if (access(dir, F_OK) == 0)
-			return (free(cmd), free_array(dirs), dir);
-		free (dir);
-		i++;
-	}
-	return (free(cmd), free_array(dirs), NULL);
-}
-
-void	count_parsed_nodes(t_shell *s)
-{
-	t_parsed *start;
-
-	start = s->lst;
-	while (s->lst)
-	{
-		s->cmds++;
-		s->lst = s->lst->next;	
-	}
-	s->lst = start;
 }

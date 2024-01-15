@@ -1,16 +1,14 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   command_errors_bonus.c                             :+:      :+:    :+:   */
+/*   pipe-error.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dberes <dberes@student.42.fr>              +#+  +:+       +#+        */
+/*   By: gdanis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/01 11:21:06 by dberes            #+#    #+#             */
-/*   Updated: 2024/01/15 10:53:22 by dberes           ###   ########.fr       */
+/*   Created: 2024/01/15 18:07:17 by gdanis            #+#    #+#             */
+/*   Updated: 2024/01/15 18:07:48 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-#include "../header/minishell.h"
 
 void	path_error(t_data *data)
 {
@@ -78,23 +76,3 @@ void	check_commands_bonus(t_data *data, int *ex)
 	}
 }
 
-void	set_data_bonus(t_data *data, int pipes, char **argv, char **env)
-{
-	data->path = get_path(env);
-	data->env = env;
-	data->pipes = pipes;
-	data->argv = argv;
-}
-
-void	file_create(t_data *data)
-{
-	data->fd_outf = open(data->argv[data->argc - 1],
-			O_WRONLY | O_CREAT | O_TRUNC, 0666);
-	if (data->fd_outf == -1)
-	{
-		perror("pipex: failed to open outfile");
-		close(data->fd_outf);
-		exit(EXIT_FAILURE);
-	}
-	close(data->fd_outf);
-}
