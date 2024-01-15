@@ -6,11 +6,11 @@
 /*   By: dberes <dberes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/04 13:55:12 by dberes            #+#    #+#             */
-/*   Updated: 2024/01/05 14:26:00 by dberes           ###   ########.fr       */
+/*   Updated: 2024/01/15 16:03:50 by dberes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex_bonus.h"
+#include "../header/minishell.h"
 
 char	*ft_strjoin3(char *str1, char *str2, char *str3)
 {
@@ -44,17 +44,7 @@ char	*get_path(char **env)
 	}
 	return (NULL);
 }
-
-void	dirs_calloc(t_data *data)
-{
-	data->dirs = (char **)ft_calloc(sizeof(char *), (data->argc - 2));
-	if (data->dirs == NULL)
-	{
-		ft_printf("malloc failed");
-		exit(EXIT_FAILURE);
-	}
-}
-
+/*
 void	dup_fail(char **args, t_data *data, int fd, t_plist **lst)
 {
 	perror("Error duplicating file descriptor");
@@ -81,3 +71,4 @@ void	fd_fail(char **args, t_data *data, int fd, t_plist **lst)
 	free_list(*lst);
 	exit(EXIT_FAILURE);
 }
+*/

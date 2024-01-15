@@ -6,11 +6,11 @@
 /*   By: dberes <dberes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/01 11:21:06 by dberes            #+#    #+#             */
-/*   Updated: 2024/01/05 15:28:28 by dberes           ###   ########.fr       */
+/*   Updated: 2024/01/15 10:53:22 by dberes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex_bonus.h"
+#include "../header/minishell.h"
 
 void	path_error(t_data *data)
 {

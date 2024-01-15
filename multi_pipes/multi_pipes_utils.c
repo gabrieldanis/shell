@@ -6,11 +6,11 @@
 /*   By: dberes <dberes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/01 10:51:56 by dberes            #+#    #+#             */
-/*   Updated: 2024/01/05 12:47:01 by dberes           ###   ########.fr       */
+/*   Updated: 2024/01/15 15:28:41 by dberes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex_bonus.h"
+#include "../header/minishell.h"
 
 void	free_array(char **arr)
 {
@@ -54,10 +54,10 @@ void	free_exit(char **args, t_data *data, char **dirs, int ex_code)
 	}
 }
 
-void	free_list(t_plist *lst)
+void	free_list(t_parsed *lst)
 {
-	t_plist	*current;
-	t_plist	*next;
+	t_parsed	*current;
+	t_parsed	*next;
 
 	current = lst;
 	while (current)
@@ -81,7 +81,7 @@ void	wait_for_child(t_plist *lst)
 	waitpid(node->pid, NULL, 0);
 }
 
-char	*get_dir_multi(char *str, char **args, t_data *data)
+char	*get_dir_multi(char *str, t_shell *s)
 {
 	char	**dirs;
 	char	*dir;
@@ -90,20 +90,33 @@ char	*get_dir_multi(char *str, char **args, t_data *data)
 
 	dirs = ft_split(str, 58);
 	if (!dirs)
-		free_exit(args, data, NULL, 4);
+		free_and_exit(MALLOC_ERROR, s);
 	i = 0;
-	cmd = ft_strjoin("/", args[0]);
+	cmd = ft_strjoin("/", s->lst->arglst[0]);
 	if (!cmd)
-		free_exit(args, data, dirs, 4);
+		free_and_exit(MALLOC_ERROR, s);
 	while (dirs[i] != NULL)
 	{
 		dir = ft_strjoin(dirs[i], cmd);
 		if (!dirs)
-			free_exit(dirs, NULL, NULL, 4);
+			free_and_exit(MALLOC_ERROR, s);
 		if (access(dir, F_OK) == 0)
 			return (free(cmd), free_array(dirs), dir);
 		free (dir);
 		i++;
 	}
 	return (free(cmd), free_array(dirs), NULL);
+}
+
+void	count_parsed_nodes(t_shell *s)
+{
+	t_parsed *start;
+
+	start = s->lst;
+	while (s->lst)
+	{
+		s->cmds++;
+		s->lst = s->lst->next;	
+	}
+	s->lst = start;
 }

@@ -6,61 +6,41 @@
 /*   By: dberes <dberes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 14:03:50 by dberes            #+#    #+#             */
-/*   Updated: 2024/01/05 15:32:08 by dberes           ###   ########.fr       */
+/*   Updated: 2024/01/15 16:05:01 by dberes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex_bonus.h"
+#include "../header/minishell.h"
 
-void	fd_closer(int end, t_plist **lst)
+
+
+void	dir_copy(t_shell *s, int *ex, int i)
 {
-	t_plist	*node;
+	char		*directory;
+	t_parsed	*node;
 
-	node = *lst;
-	if (list_size(lst) == 1)
-	{
-		close (node->fd[0]);
-		close (node->fd[1]);
-	}
-	else
-	{
-		while (node->next->next != NULL)
-		{
-			close (node->fd[0]);
-			close (node->fd[1]);
-			node = node->next;
-		}
-	}
-	if (end == 1)
-		close (node->fd[1]);
-	else
-	{
-		close (node->fd[0]);
-		close (node->fd[1]);
-	}
-}
-
-void	dir_copy(char **args, t_data *data, int *ex, int i)
-{
-	char	*directory;
-
+	node = s->lst;
 	directory = NULL;
-	if (access(args[0], F_OK) == 0)
-		data->dirs[i - 2] = ft_strdup(args[0]);
-	else
+	while(node)
 	{
-		directory = get_dir_multi(data->path, args, data);
-		if (directory == NULL)
+		if (access(node->arglst[0], F_OK) == 0)
+			node->cmd = ft_strdup(node->arglst[0]);
+		else
 		{
-			ft_printf("pipex: %s: command not found\n", args[0]);
-			*ex = 1;
+			directory = get_dir_multi(data->path, args, data);
+			if (directory == NULL)
+			{
+				ft_printf("pipex: %s: command not found\n", args[0]);
+				*ex = 1;
+			}
+			else if (*ex == 0)
+				data->dirs[i - 2] = ft_strdup(directory);
+			free(directory);
 		}
-		else if (*ex == 0)
-			data->dirs[i - 2] = ft_strdup(directory);
-		free(directory);
+		node = node->next;
 	}
 }
-
+/*
 void	print_fd_error(t_data *data)
 {
 	char	*error_msg;
@@ -71,3 +51,4 @@ void	print_fd_error(t_data *data)
 	perror(error_msg);
 	free(error_msg);
 }
+*/

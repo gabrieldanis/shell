@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gdanis <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: dberes <dberes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 16:49:31 by gdanis            #+#    #+#             */
-/*   Updated: 2024/01/15 08:50:11 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/01/15 16:08:28 by dberes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,14 @@
 # include <readline/history.h>
 # include <sys/wait.h>
 # include "../libft/libft.h"
+# include "../multi_pipes/pipex_bonus.h"
+# include <string.h> 
+# include <limits.h>
+# include <ctype.h>
+# include <stdarg.h>
+# include <fcntl.h>
+# include <sys/types.h> 
+
 
 /*********************************
  * 	GLOBAL VARIABLE
@@ -48,6 +56,8 @@
 # define ARGNUM_ERROR	10
 # define NUM_ERROR		11
 # define PIPE_ERROR		12
+# define PID_ERROR		13
+# define DUP_ERROR		14
 
 
 /*********************************
@@ -85,10 +95,20 @@ typedef struct s_parsed
 	struct s_parsed	*next;
 	struct s_parsed	*lst;
 	char			**arglst;
+	char			**outfiles;
+	char			*infile;
 	char			*str;
 	int				idx;
 	int				type;
 	int				eof;
+	int				fd_inf;
+	int				fd_outf;
+	char			**dirs;
+	char			*cmd;
+	int				index;
+	int				append;
+	pid_t			pid;
+	char			**dirs2;
 }	t_parsed;
 
 typedef struct s_shell
@@ -102,8 +122,11 @@ typedef struct s_shell
 	t_token		*ex_start;
 	char		**argv;
 	char		**env;
+	char		*path;
 	char		*str;
+	int			**pipes;
 	int			rval;
+	int			cmds;
 }	t_shell;
 
 /*********************************
@@ -193,4 +216,31 @@ int			parse_cmdargs(t_parsed *lst, t_shell *s);
 int			is_delimiter(char c);
 int			is_operator(char c);
 int			arglst_size(t_parsed *lst);
+void		multi_child_process(t_parsed *lst, t_shell *s, int ind);
+void		multi_parent_process(t_plist **lst, t_data *data, int ind);
+char		*get_path(char **env);
+void		free_array(char **arr);
+int			multi_pipe(t_shell *s);
+void		fd_closer(t_shell *s);
+void		fd_opener(t_parsed *lst, t_shell *s);
+void		multi_parent(t_parsed *lst);
+void		child_processes(t_parsed *lst, t_shell *s, int ind);
+void		wait_for_child(t_plist *lst);
+void		free_list(t_parsed *lst);
+char		*get_dir_multi(char *str, t_shell *s);
+t_plist		*get_to_node(t_plist *node, int ind);
+void		path_error(t_data *data);
+void		check_args(t_data *data, int *ex);
+void		set_data_bonus(t_data *data, int pipes, char **argv, char **env);
+void		file_create(t_data *data);
+char		*ft_strjoin3(char *str1, char *str2, char *str3);
+void		dir_copy(t_shell *s, int *ex, int i);
+
+/*
+void		check_commands_bonus(t_data *data, int *ex);
+void		free_exit(char **args, t_data *data, char **dirs, int ex_code);
+void		dup_fail(char **args, t_data *data, int fd, t_plist **lst);
+void		fd_fail(char **args, t_data *data, int fd, t_plist **lst);
+void		print_fd_error(t_data *data);
+*/
 #endif

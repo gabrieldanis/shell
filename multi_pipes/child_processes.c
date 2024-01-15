@@ -6,48 +6,78 @@
 /*   By: dberes <dberes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/01 10:51:32 by dberes            #+#    #+#             */
-/*   Updated: 2024/01/05 15:18:27 by dberes           ###   ########.fr       */
+/*   Updated: 2024/01/15 15:40:41 by dberes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex_bonus.h"
+#include "../header/minishell.h"
 
-void	first_child_process(t_plist **lst, t_data *data, int ind)
+void	multi_child_process(t_parsed *lst, t_shell *s, int ind)
 {
-	t_plist	*node;
-	char	**args;
+	t_parsed	*node;
+	char		**args;
 
-	node = *lst;
-	args = ft_split(data->argv[ind + 2], 32);
-	if (dup2(data->fd_inf, STDIN_FILENO) == -1)
-		dup_fail(args, data, node->fd[1], lst);
-	if (dup2(node->fd[1], STDOUT_FILENO) == -1)
-		dup_fail(args, data, node->fd[1], lst);
-	close(data->fd_inf);
-	fd_closer(0, lst);
-	if (execve(data->dirs[ind], args, data->env) == -1)
-		free_exit(args, data, NULL, 1);
+	node = lst;
+	node = get_to_node(node, ind);
+	if (node->infile)
+		fd_opener(node, s);
+	else if (ind > 0)
+	{
+		if (dup2(s->pipes[ind -1][0], STDIN_FILENO) == -1)
+		{
+			/*fd_closer(0, lst);*/
+			free_and_exit(DUP_ERROR, s);
+		}
+	}
+	if (dup2(s->pipes[ind][1], STDOUT_FILENO) == -1)
+	{
+			/*fd_closer(0, lst);*/
+			free_and_exit(DUP_ERROR, s);
+	}	
+	fd_closer(s);
+	if (execve(node->cmd, node->arglst, s->env) == -1)
+		free_and_exit(EXECVE_ERROR, s);
 }
 
-void	multi_child_process(t_plist **lst, t_data *data, int ind)
+void	fd_opener(t_parsed *lst, t_shell *s)
 {
-	t_plist	*node;
-	char	**args;
-
-	node = *lst;
-	node = get_to_node(node, ind + 1);
-	if (dup2(node->fd[0], STDIN_FILENO) == -1)
-		dup_fail(NULL, data, node->fd[0], NULL);
-	if (dup2(node->next->fd[1], STDOUT_FILENO) == -1)
-		dup_fail(NULL, data, node->next->fd[1], NULL);
-	fd_closer(0, lst);
-	args = ft_split(data->argv[ind + 3], 32);
-	if (!args)
-		free_exit(args, data, NULL, 4);
-	if (execve(data->dirs[ind + 1], args, data->env) == -1)
-		free_exit(args, data, NULL, 1);
+	lst->fd_inf = open(lst->infile, O_RDONLY);
+	/*if (lst->fd_inf == -1)
+	{
+		print_fd_error(data);
+		*ex = 1;
+	}*/
+	if (dup2(lst->fd_inf, STDIN_FILENO) == -1)
+			dup_fail(args, s, node->fd[1], lst);
 }
 
+void	fd_closer(t_shell *s)
+{
+	int	i;
+
+	i = 0;
+	while (i < s->cmds - 1)
+	{
+		close(s->pipes[i][0]);
+		close(s->pipes[i][1]);
+		i++;
+	}
+}
+
+t_plist	*get_to_node(t_plist *node, int ind)
+{
+	int	i;
+
+	i = 0;
+	while (i < ind - 1)
+	{
+		node = node->next;
+		i++;
+	}
+	return (node);
+}
+
+/*
 void	last_child_process(t_plist **lst, t_data *data, int ind)
 {
 	t_plist	*node;
@@ -72,3 +102,21 @@ void	last_child_process(t_plist **lst, t_data *data, int ind)
 	if (execve(data->dirs[ind], args, data->env) == -1)
 		free_exit(args, data, NULL, 1);
 }
+
+
+void	first_child_process(t_parsed *lst, t_shell *s, int ind)
+{
+	if (lst->infile)
+		fd_opener(lst, s);
+	if (dup2(lst->fd_inf, STDIN_FILENO) == -1)
+		dup_fail(args, data, node->fd[1], lst);
+	if (dup2(node->fd[1], STDOUT_FILENO) == -1)
+		dup_fail(args, data, node->fd[1], lst);
+	close(data->fd_inf);
+	fd_closer(0, lst);
+	if (execve(data->dirs[ind], args, data->env) == -1)
+		free_exit(args, data, NULL, 1);
+}
+*/
+
+
