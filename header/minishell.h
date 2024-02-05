@@ -6,7 +6,7 @@
 /*   By: dberes <dberes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 16:49:31 by gdanis            #+#    #+#             */
-/*   Updated: 2024/02/05 12:22:46 by dberes           ###   ########.fr       */
+/*   Updated: 2024/02/05 14:39:47 by dberes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -237,7 +237,7 @@ t_parsed	*get_to_node(t_parsed *node, int ind);
 void		pipe_array(t_shell *s);
 char		*ft_strjoin3(char *str1, char *str2, char *str3);
 void		dir_copy(t_shell *s, int *ex, int i);
-void		pipe_fork(t_parsed *lst, t_shell *s, int ind);
+void		pipe_fork(t_parsed *lst, t_shell *s);
 void		close_all_pipes(t_shell *s);
 void		appln_chararr(t_parsed *lst, char *str, t_shell *s);
 void		count_parsed_nodes(t_shell *s);

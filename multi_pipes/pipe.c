@@ -6,7 +6,7 @@
 /*   By: dberes <dberes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 17:14:11 by gdanis            #+#    #+#             */
-/*   Updated: 2024/02/05 13:39:30 by dberes           ###   ########.fr       */
+/*   Updated: 2024/02/05 16:00:16 by dberes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,6 @@
 
 int	multi_pipe(t_shell *s)
 {
-	int		i;
-	/*int		ex;
-
-	ex = 0;*/
 	s->path = get_path(s->env);
 	get_dir_multi(s);
 	/*file_create(&data);
@@ -26,14 +22,11 @@ int	multi_pipe(t_shell *s)
 	check_args(&data, &ex);
 	check_commands_bonus(&data, &ex);*/
 	pipe_array(s);
-	i = 0;
-	while (i < s->cmds)
+	if (s->cmds)
 	{
-		pipe_fork(s->lst, s, i);
-		printf("5\n");
-		i++;
+		pipe_fork(s->lst, s);
 	}
-	close_all_pipes(s);
+	fd_closer(s);
 	wait_for_child(s);
 	//return (free_list(s), free_array(s->lst->dirs), 0);
 	return (0);
@@ -78,32 +71,22 @@ void	pipe_array(t_shell *s)
 	}
 }
 
-void	pipe_fork(t_parsed *lst, t_shell *s, int ind)
+void	pipe_fork(t_parsed *lst, t_shell *s)
 {
+	int			ind;
 	t_parsed	*node;
 
 	node = lst;
+	ind = 0;
 	while (node)
 	{
-		
 		lst->pid = fork();
 		if (lst->pid == -1)
 			free_and_exit(PID_ERROR, s);
 		if (lst->pid == 0)
 			multi_child_process(lst, s, ind);
+		ind++;
 		node = node->next;
 	}
 }
 
-void	close_all_pipes(t_shell *s)
-{
-	int	i;
-
-	i = 0;
-	while (i < s->cmds - 1)
-	{
-		close(s->pipes[i][0]);
-		close(s->pipes[i][1]);
-		i++;
-	}
-}

@@ -6,7 +6,7 @@
 /*   By: dberes <dberes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 18:01:22 by gdanis            #+#    #+#             */
-/*   Updated: 2024/02/05 12:28:23 by dberes           ###   ########.fr       */
+/*   Updated: 2024/02/05 16:17:13 by dberes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void	*get_dir_multi(t_shell *s)
 	while (node)
 	{
 		i = 0;
-		cmd = ft_strjoin("/", s->lst->arglst[0]);
+		cmd = ft_strjoin("/", node->arglst[0]);
 		if (!cmd)
 			free_and_exit(MALLOC_ERROR, s);
 		while (dirs[i] != NULL)
@@ -39,8 +39,8 @@ void	*get_dir_multi(t_shell *s)
 			{
 				node->cmd = dir;
 				free(cmd);
-				free_2d_array((void **)dirs);
-				return (dir);
+				//free_2d_array((void **)dirs);
+				break ;
 			}
 			free (dir);
 			i++;
@@ -122,7 +122,7 @@ t_parsed	*get_to_node(t_parsed *node, int ind)
 
 	i = 0;
 	// should this - 1 still be here?
-	while (i < ind - 1)
+	while (i < ind)
 	{
 		node = node->next;
 		i++;

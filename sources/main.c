@@ -6,7 +6,7 @@
 /*   By: dberes <dberes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 16:48:10 by gdanis            #+#    #+#             */
-/*   Updated: 2024/02/05 12:26:54 by dberes           ###   ########.fr       */
+/*   Updated: 2024/02/05 15:41:05 by dberes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,6 @@ int	main(int argc, char **argv, char **envp)
 				parse_lstiter(s, parse_cmdargs);
 				count_parsed_nodes(s);
 				//printlst(s);
-				printf("%d\n", s->cmds);
 				arg_list(s);
 				if (s->lst->arglst[0])
 					execute_parsed_list(s);
