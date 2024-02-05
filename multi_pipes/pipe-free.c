@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe-free.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gdanis <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: dberes <dberes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 18:08:13 by gdanis            #+#    #+#             */
-/*   Updated: 2024/01/15 18:08:39 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/02/05 11:31:01 by dberes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	free_array(char **arr)
 	}
 	free(arr);
 }
-
+/*
 void	free_exit(char **args, t_data *data, char **dirs, int ex_code)
 {
 	if (ex_code == 1)
@@ -49,10 +49,10 @@ void	free_exit(char **args, t_data *data, char **dirs, int ex_code)
 			free_array(data->dirs);
 		if (args)
 			free_array(args);
-		ft_printf("malloc failed");
+		printf("malloc failed");
 		exit(EXIT_FAILURE);
 	}
-}
+}*/
 
 void	free_list(t_parsed *lst)
 {

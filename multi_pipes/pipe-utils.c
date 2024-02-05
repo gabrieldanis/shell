@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe-utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gdanis <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: dberes <dberes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 18:01:22 by gdanis            #+#    #+#             */
-/*   Updated: 2024/01/15 18:23:19 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/02/05 12:28:23 by dberes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,9 @@ void	*get_dir_multi(t_shell *s)
 	char		*cmd;
 	int			i;
 
-
 	dirs = ft_split(s->path, 58);
 	if (!dirs)
 		free_and_exit(MALLOC_ERROR, s);
-
 	node = s->lst;
 	while (node)
 	{
@@ -47,9 +45,10 @@ void	*get_dir_multi(t_shell *s)
 			free (dir);
 			i++;
 		}
-		return (free(cmd), free_array(dirs), NULL);
+		/*return (free(cmd), free_array(dirs), NULL);*/
 		node = node->next;
 	}
+	return (NULL);
 }
 
 /*
@@ -74,14 +73,14 @@ void	dir_copy(t_shell *s, int *ex, int i)
 			node->cmd = ft_strdup(node->arglst[0]);
 		else
 		{
-			directory = get_dir_multi(data->path, args, data);
+			directory = get_dir_multi(s);
 			if (directory == NULL)
 			{
-				printf("pipex: %s: command not found\n", args[0]);
+				printf("pipex: %s: command not found\n", node->arglst[0]);
 				*ex = 1;
 			}
 			else if (*ex == 0)
-				data->dirs[i - 2] = ft_strdup(directory);
+				node->dirs[i - 2] = ft_strdup(directory);
 			free(directory);
 		}
 		node = node->next;
@@ -106,6 +105,7 @@ void	count_parsed_nodes(t_shell *s)
 {
 	t_parsed *start;
 
+	s->cmds = 0;
 	start = s->lst;
 	while (s->lst)
 	{

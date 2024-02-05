@@ -6,12 +6,12 @@
 /*   By: dberes <dberes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/31 08:10:22 by gdanis            #+#    #+#             */
-/*   Updated: 2024/01/15 13:41:10 by dberes           ###   ########.fr       */
+/*   Updated: 2024/02/05 11:27:52 by dberes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../header/minishell.h"
-
+/*
 char	*get_path(t_shell *s)
 {
 	int	i;
@@ -25,6 +25,7 @@ char	*get_path(t_shell *s)
 	}
 	return (NULL);
 }
+*/
 
 char	*find_dir(t_shell *s, char *cmd, char **dirs)
 {
@@ -95,7 +96,7 @@ void	exit_child(int n, t_shell *s)
 	error_message(n, NULL, NULL, s);
 	exit(0);
 }
-
+/*
 void	arg_list(t_shell *s)
 {
 	t_parsed	*start;
@@ -126,4 +127,4 @@ void	arg_list(t_shell *s)
 		s->lst = s->lst->next;
 	}
 	s->lst = start;
-}
+}*/

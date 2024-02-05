@@ -6,7 +6,7 @@
 /*   By: dberes <dberes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 16:48:10 by gdanis            #+#    #+#             */
-/*   Updated: 2024/01/15 09:38:41 by dberes           ###   ########.fr       */
+/*   Updated: 2024/02/05 12:26:54 by dberes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,11 +39,13 @@ int	main(int argc, char **argv, char **envp)
 			{
 				split_token(s);
 				expand_token(s);
-				print_token(s);
+				//print_token(s);
 				init_plst(s);
 				parse_lstiter(s, parse_isfile);
 				parse_lstiter(s, parse_cmdargs);
-				printlst(s);
+				count_parsed_nodes(s);
+				//printlst(s);
+				printf("%d\n", s->cmds);
 				arg_list(s);
 				if (s->lst->arglst[0])
 					execute_parsed_list(s);

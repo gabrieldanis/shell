@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gdanis <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: dberes <dberes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 17:14:11 by gdanis            #+#    #+#             */
-/*   Updated: 2024/01/15 17:51:48 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/02/05 11:29:40 by dberes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,9 @@
 int	multi_pipe(t_shell *s)
 {
 	int		i;
-	int		ex;
+	/*int		ex;
 
-	ex = 0;
+	ex = 0;*/
 	s->path = get_path(s->env);
 	/*file_create(&data);
 	if (s.path == NULL)
@@ -34,6 +34,7 @@ int	multi_pipe(t_shell *s)
 	close_all_pipes(s);
 	wait_for_child(s);
 	//return (free_list(s), free_array(s->lst->dirs), 0);
+	return (0);
 }
 
 void	wait_for_child(t_shell *s)
@@ -52,7 +53,7 @@ void	wait_for_child(t_shell *s)
 void	pipe_array(t_shell *s)
 {
 	int	i;
-
+	
 	if (s->cmds > 1)
 	{
 		s->pipes =(int **)malloc(sizeof(int *) * (s->cmds - 1));

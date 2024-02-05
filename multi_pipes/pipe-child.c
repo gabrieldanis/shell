@@ -6,7 +6,7 @@
 /*   By: dberes <dberes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/01 10:51:32 by dberes            #+#    #+#             */
-/*   Updated: 2024/01/15 18:06:04 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/02/05 11:13:39 by dberes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ void	fd_closer(t_shell *s)
 	}
 }
 
-void	file_create(t_data *data)
+/*void	file_create(t_data *data)
 {
 	data->fd_outf = open(data->argv[data->argc - 1],
 			O_WRONLY | O_CREAT | O_TRUNC, 0666);
@@ -77,7 +77,7 @@ void	file_create(t_data *data)
 		exit(EXIT_FAILURE);
 	}
 	close(data->fd_outf);
-}
+}*/
 /*
 void	last_child_process(t_plist **lst, t_data *data, int ind)
 {

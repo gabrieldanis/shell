@@ -1,5 +1,5 @@
-objects/builtin/env.o: builtin/env.c builtin/../header/minishell.h \
-  /usr/include/stdio.h \
+objects/multi_pipes/pipe-child.o: multi_pipes/pipe-child.c \
+  multi_pipes/../header/minishell.h /usr/include/stdio.h \
   /usr/include/x86_64-linux-gnu/bits/libc-header-start.h \
   /usr/include/features.h /usr/include/features-time64.h \
   /usr/include/x86_64-linux-gnu/bits/wordsize.h \
@@ -109,7 +109,7 @@ objects/builtin/env.o: builtin/env.c builtin/../header/minishell.h \
   /usr/include/x86_64-linux-gnu/bits/stat.h \
   /usr/include/x86_64-linux-gnu/bits/struct_stat.h
 
-builtin/../header/minishell.h:
+multi_pipes/../header/minishell.h:
 
 /usr/include/stdio.h:
 

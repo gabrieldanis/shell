@@ -6,7 +6,7 @@
 /*   By: dberes <dberes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 16:49:31 by gdanis            #+#    #+#             */
-/*   Updated: 2024/01/15 18:17:53 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/02/05 12:22:46 by dberes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,8 @@
 # define ARG			8
 # define FILE_DIR		9
 # define EXIT_VALUE		10
+# define INFILE			11
+# define OUTFILE		12
 
 /*********************************
  * 	STRUCTS
@@ -216,7 +218,7 @@ int			is_delimiter(char c);
 int			is_operator(char c);
 int			arglst_size(t_parsed *lst);
 void		multi_child_process(t_parsed *lst, t_shell *s, int ind);
-void		multi_parent_process(t_plist **lst, t_data *data, int ind);
+//void		multi_parent_process(t_plist **lst, t_data *data, int ind);
 char		*get_path(char **env);
 void		free_array(char **arr);
 int			multi_pipe(t_shell *s);
@@ -228,15 +230,17 @@ void		wait_for_child(t_shell *s);
 void		free_list(t_parsed *lst);
 void		*get_dir_multi(t_shell *s);
 t_parsed	*get_to_node(t_parsed *node, int ind);
-void		path_error(t_data *data);
-void		check_args(t_data *data, int *ex);
-void		set_data_bonus(t_data *data, int pipes, char **argv, char **env);
-void		file_create(t_data *data);
+//void		path_error(t_data *data);
+//void		check_args(t_data *data, int *ex);
+//void		set_data_bonus(t_data *data, int pipes, char **argv, char **env);
+//void		file_create(t_data *data);
 void		pipe_array(t_shell *s);
 char		*ft_strjoin3(char *str1, char *str2, char *str3);
 void		dir_copy(t_shell *s, int *ex, int i);
 void		pipe_fork(t_parsed *lst, t_shell *s, int ind);
 void		close_all_pipes(t_shell *s);
+void		appln_chararr(t_parsed *lst, char *str, t_shell *s);
+void		count_parsed_nodes(t_shell *s);
 
 /*
 void		check_commands_bonus(t_data *data, int *ex);
