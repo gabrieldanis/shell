@@ -6,7 +6,7 @@
 /*   By: dberes <dberes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 17:14:11 by gdanis            #+#    #+#             */
-/*   Updated: 2024/02/05 11:29:40 by dberes           ###   ########.fr       */
+/*   Updated: 2024/02/05 13:39:30 by dberes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ int	multi_pipe(t_shell *s)
 
 	ex = 0;*/
 	s->path = get_path(s->env);
+	get_dir_multi(s);
 	/*file_create(&data);
 	if (s.path == NULL)
 		path_error(&data);
@@ -26,9 +27,10 @@ int	multi_pipe(t_shell *s)
 	check_commands_bonus(&data, &ex);*/
 	pipe_array(s);
 	i = 0;
-	while (i < s->cmds - 1)
+	while (i < s->cmds)
 	{
 		pipe_fork(s->lst, s, i);
+		printf("5\n");
 		i++;
 	}
 	close_all_pipes(s);
@@ -83,11 +85,12 @@ void	pipe_fork(t_parsed *lst, t_shell *s, int ind)
 	node = lst;
 	while (node)
 	{
+		
 		lst->pid = fork();
 		if (lst->pid == -1)
 			free_and_exit(PID_ERROR, s);
 		if (lst->pid == 0)
-			multi_child_process(lst, s, ind - 1);
+			multi_child_process(lst, s, ind);
 		node = node->next;
 	}
 }
