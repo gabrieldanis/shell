@@ -6,7 +6,7 @@
 /*   By: dberes <dberes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 16:49:31 by gdanis            #+#    #+#             */
-/*   Updated: 2024/02/08 13:10:00 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/02/08 22:30:57 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,9 @@
 # define PIPE_ERROR		12
 # define PID_ERROR		13
 # define DUP_ERROR		14
+# define WRITE_ERROR	15
+# define PERM_ERROR		16
+# define READ_ERROR		17
 
 
 /*********************************
@@ -156,7 +159,7 @@ void		sort_var_list(char **dup);
 void		ft_print_export_lines(char **dup, int i, int j);
 void		free_2d_array(void **ptr);
 void		set_q_flag(t_token *list, int *q_flag, char *quotes);
-void		free_and_exit(int n, t_shell *shell);
+void		free_and_exit(int n, t_shell *s, char *exe, char *str);
 void		plist_strjoin(t_shell *s, int *q_flag, char *quotes);
 void		plist_add_to_last(t_parsed **tmp, t_shell *s);
 void		plist_add_to_last_ex(t_parsed **tmp, t_shell *s);
@@ -217,7 +220,8 @@ int			parse_cmdargs(t_parsed *lst, t_shell *s);
 int			is_delimiter(char c);
 int			is_operator(char c);
 int			arglst_size(t_parsed *lst);
-int			execute_builtin(t_shell *s);
+int			execute_builtin(t_shell *s, t_parsed *node);
+void		check_infiles(t_shell *s, t_parsed *lst);
 void		multi_child_process(t_parsed *lst, t_shell *s, int ind);
 //void		multi_parent_process(t_plist **lst, t_data *data, int ind);
 char		*get_path(char **env);
@@ -242,6 +246,7 @@ void		pipe_fork(t_parsed *lst, t_shell *s);
 void		close_all_pipes(t_shell *s);
 void		appln_chararr(t_parsed *lst, char *str, t_shell *s);
 void		count_parsed_nodes(t_shell *s);
+void		ft_write_to_file(t_shell *s, t_parsed *node);
 
 /*
 void		check_commands_bonus(t_data *data, int *ex);

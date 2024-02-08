@@ -6,7 +6,7 @@
 /*   By: dberes <dberes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/14 14:56:02 by gdanis            #+#    #+#             */
-/*   Updated: 2024/02/05 15:50:08 by dberes           ###   ########.fr       */
+/*   Updated: 2024/02/08 19:45:11 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	fill_arglst(t_shell *s, int *i)
 		{
 			s->lst->lst = s->pp_start;
 			s->lst = s->p_start;
-			free_and_exit(MALLOC_ERROR, s);
+			free_and_exit(MALLOC_ERROR, s, NULL, NULL);
 		}
 		(*i)++;
 	}
@@ -38,7 +38,7 @@ void	arg_list(t_shell *s)
 		s->lst->arglst = (char **)malloc
 			((arglst_size(s->lst) + 1) * sizeof(char *));
 		if (!s->lst->arglst)
-			free_and_exit(MALLOC_ERROR, s);
+			free_and_exit(MALLOC_ERROR, s, NULL, NULL);
 		s->pp_start = s->lst->lst;
 		i = 0;
 		while (s->lst->lst)

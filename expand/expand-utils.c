@@ -6,7 +6,7 @@
 /*   By: gdanis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/02 11:24:27 by gdanis            #+#    #+#             */
-/*   Updated: 2024/01/14 14:50:13 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/02/08 19:49:29 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ void	token_strjoin(char **s1, char **s2, t_shell *s)
 	{
 		s->tlst->sp = s->sp_start;
 		s->tlst = s->t_start;
-		free_and_exit(MALLOC_ERROR, s);
+		free_and_exit(MALLOC_ERROR, s, NULL, NULL);
 	}
 }
 
@@ -60,7 +60,7 @@ char	*token_vardup(char *s1, t_shell *s, int itoa)
 	{
 		s->tlst->sp = s->sp_start;
 		s->tlst = s->t_start;
-		free_and_exit(MALLOC_ERROR, s);
+		free_and_exit(MALLOC_ERROR, s, NULL, NULL);
 	}
 	return (str);
 }

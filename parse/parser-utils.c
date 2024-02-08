@@ -6,7 +6,7 @@
 /*   By: dberes <dberes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/01 13:47:54 by gdanis            #+#    #+#             */
-/*   Updated: 2024/02/05 12:24:27 by dberes           ###   ########.fr       */
+/*   Updated: 2024/02/08 19:47:37 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ void	appln_chararr(t_parsed *lst, char *str, t_shell *s)
 		i++;
 	tmp = (char **)malloc(sizeof(char *) * (i + 2));
 	if (!tmp)
-		free_and_exit(MALLOC_ERROR, s);
+		free_and_exit(MALLOC_ERROR, s, NULL, NULL);
 	i = 0;
 	while (lst->outfiles && lst->outfiles[i])
 	{

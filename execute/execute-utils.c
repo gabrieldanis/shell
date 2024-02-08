@@ -6,7 +6,7 @@
 /*   By: dberes <dberes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/31 08:10:22 by gdanis            #+#    #+#             */
-/*   Updated: 2024/02/05 11:27:52 by dberes           ###   ########.fr       */
+/*   Updated: 2024/02/08 19:45:27 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ char	*find_dir(t_shell *s, char *cmd, char **dirs)
 		{
 			free(cmd);
 			free_2d_array((void **)dirs);
-			free_and_exit(MALLOC_ERROR, s);
+			free_and_exit(MALLOC_ERROR, s, NULL, NULL);
 		}
 		if (access(dir, F_OK) == 0)
 		{
@@ -62,12 +62,12 @@ char	*get_dir(char *str, t_shell *s)
 
 	dirs = ft_split(str, 58);
 	if (!dirs)
-		free_and_exit(MALLOC_ERROR, s);
+		free_and_exit(MALLOC_ERROR, s, NULL, NULL);
 	cmd = ft_strjoin("/", s->tlst->ex->str);
 	if (!cmd)
 	{
 		free_2d_array((void **)dirs);
-		free_and_exit(MALLOC_ERROR, s);
+		free_and_exit(MALLOC_ERROR, s, NULL, NULL);
 	}
 	dir = find_dir(s, cmd, dirs);
 	if (dir)

@@ -6,18 +6,18 @@
 /*   By: gdanis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 13:17:49 by gdanis            #+#    #+#             */
-/*   Updated: 2024/01/12 14:42:38 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/02/08 19:41:41 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../header/minishell.h"
 
-void	free_and_exit(int n, t_shell *s)
+void	free_and_exit(int n, t_shell *s, char *exe_name, char *str)
 {
 	int	exitval;
 
 	if (n != 0)
-		error_message(n, NULL, NULL, s);
+		error_message(n, exe_name, str, s);
 	if (s && s->env)
 		free_2d_array((void **)s->env);
 	free_lsts(s);

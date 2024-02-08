@@ -6,7 +6,7 @@
 /*   By: dberes <dberes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/01 10:51:32 by dberes            #+#    #+#             */
-/*   Updated: 2024/02/08 14:48:35 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/02/08 22:36:05 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,36 +18,66 @@ void	multi_child_process(t_parsed *lst, t_shell *s, int ind)
 
 	node = lst;
 	node = get_to_node(node, ind);
-	//printf("%s\n", node->cmd);
 	if (node->infile)
 		fd_opener(node, s);
 	else if (ind > 0)
 	{
 		if (dup2(s->pipes[ind -1][0], STDIN_FILENO) == -1)
-		{
-			fd_closer(s);
-			free_and_exit(DUP_ERROR, s);
-		}
+			free_and_exit(DUP_ERROR, s, NULL, NULL);
 	}
-	if (outfile)
-	{
-	}
+	if (node->outfiles)
+		ft_write_to_file(s, node);
+
 	else if (s->cmds > 1 && ind < s->cmds -1)
 	{
 		if(dup2(s->pipes[ind][1], STDOUT_FILENO) == -1)
-		{
-			fd_closer(s);
-			free_and_exit(DUP_ERROR, s);
-		}
+			free_and_exit(DUP_ERROR, s, NULL, NULL);
 	}	
 	fd_closer(s);
-	if (execute_builtin(s))
-		free_and_exit(0, s);
+	if (execute_builtin(s, node))
+		free_and_exit(0, s, NULL, NULL);
 	if (execve(node->cmd, node->arglst, s->env) == -1)
-		free_and_exit(EXECVE_ERROR, s);
+		free_and_exit(EXECVE_ERROR, s, NULL, NULL);
 }
 
-void	fd_opener(t_parsed *lst, t_shell *s)
+void	ft_write_to_file(t_shell *s, t_parsed *node)
+{
+	int			file;
+	int			old;
+	int			i;
+
+	i = 0;
+	while (node->outfiles && node->outfiles[i])
+	{
+		if (access(node->outfiles[i], W_OK) != 0)
+			free_and_exit(PERM_ERROR, s, NULL, node->outfiles[i]);
+		if (node->outfiles[i + 1] != NULL)
+		{
+			old = open(node->outfiles[i], O_WRONLY | O_TRUNC | O_CREAT, 0644);
+			if (old == -1)
+				free_and_exit(WRITE_ERROR, s, NULL, node->outfiles[i]);
+			close(old);
+		}
+		if (node->outfiles[i + 1] == NULL)
+		{
+			if (!node->append)
+				file = open(node->outfiles[i], O_WRONLY | O_TRUNC | O_CREAT, 0644);
+			if (node->append)
+				file = open(node->outfiles[i], O_WRONLY | O_APPEND | O_CREAT, 0644);
+			if (file == -1)
+				free_and_exit(WRITE_ERROR, s, NULL, node->outfiles[i]);
+			if (dup2(file, STDOUT_FILENO) == -1)
+			{
+				fd_closer(s);
+				free_and_exit(DUP_ERROR, s, NULL, NULL);
+			}
+			close(file);
+		}
+		i++;
+	}
+}
+
+void	check_infiles(t_shell *s, t_parsed *lst)
 {
 	t_parsed	*node;
 
@@ -55,19 +85,21 @@ void	fd_opener(t_parsed *lst, t_shell *s)
 	while (node)
 	{
 		if (node->type == INFILE && access(node->str, F_OK) != 0)
-			free_and_exit(NOFILE_ERROR, s);
+			free_and_exit(NOFILE_ERROR, s, NULL, node->str);
+		if (node->type == INFILE && access(node->str, R_OK) != 0)
+			free_and_exit(PERM_ERROR, s, NULL, node->str);
 		node = node->next;
 	}
+}
+
+void	fd_opener(t_parsed *lst, t_shell *s)
+{
+	check_infiles(s, lst);
 	lst->fd_inf = open(lst->infile, O_RDONLY);
 	if (lst->fd_inf == -1)
-	{
-		free_and_exit(NOFILE_ERROR, s);
-	}
+		free_and_exit(NOFILE_ERROR, s, NULL, lst->infile);
 	if (dup2(lst->fd_inf, STDIN_FILENO) == -1)
-	{
-			//dup_fail(args, s, node->fd[1], lst);
-			free_and_exit(DUP_ERROR, s);
-	}
+		free_and_exit(DUP_ERROR, s, NULL, NULL);
 }
 
 void	fd_closer(t_shell *s)
@@ -82,56 +114,3 @@ void	fd_closer(t_shell *s)
 		i++;
 	}
 }
-
-/*void	file_create(t_data *data)
-{
-	data->fd_outf = open(data->argv[data->argc - 1],
-			O_WRONLY | O_CREAT | O_TRUNC, 0666);
-	if (data->fd_outf == -1)
-	{
-		perror("pipex: failed to open outfile");
-		close(data->fd_outf);
-		exit(EXIT_FAILURE);
-	}
-	close(data->fd_outf);
-}*/
-/*
-void	last_child_process(t_plist **lst, t_data *data, int ind)
-{
-	t_plist	*node;
-	char	**args;
-
-	args = ft_split(data->argv[ind + 2], 32);
-	if (!args)
-		free_exit(args, data, NULL, 4);
-	node = *lst;
-	node = get_to_node(node, ind);
-	fd_closer(1, lst);
-	data->fd_outf = open(data->argv[data->argc - 1],
-			O_WRONLY | O_CREAT | O_TRUNC, 0666);
-	if (data->fd_outf == -1)
-		fd_fail(args, data, node->fd[0], lst);
-	if (dup2(data->fd_outf, STDOUT_FILENO) == -1)
-		dup_fail(args, data, node->fd[0], lst);
-	if (dup2(node->fd[0], STDIN_FILENO) == -1)
-		dup_fail(args, data, node->fd[0], lst);
-	close (node->fd[0]);
-	close(data->fd_outf);
-	if (execve(data->dirs[ind], args, data->env) == -1)
-		free_exit(args, data, NULL, 1);
-}
-
-void	first_child_process(t_parsed *lst, t_shell *s, int ind)
-{
-	if (lst->infile)
-		fd_opener(lst, s);
-	if (dup2(lst->fd_inf, STDIN_FILENO) == -1)
-		dup_fail(args, data, node->fd[1], lst);
-	if (dup2(node->fd[1], STDOUT_FILENO) == -1)
-		dup_fail(args, data, node->fd[1], lst);
-	close(data->fd_inf);
-	fd_closer(0, lst);
-	if (execve(data->dirs[ind], args, data->env) == -1)
-		free_exit(args, data, NULL, 1);
-}
-*/

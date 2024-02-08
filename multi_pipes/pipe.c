@@ -6,7 +6,7 @@
 /*   By: dberes <dberes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 17:14:11 by gdanis            #+#    #+#             */
-/*   Updated: 2024/02/08 12:05:36 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/02/08 19:47:24 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ void	pipe_array(t_shell *s)
 	{
 		s->pipes =(int **)malloc(sizeof(int *) * (s->cmds - 1));
 		if (!s->pipes)
-			free_and_exit(MALLOC_ERROR, s);
+			free_and_exit(MALLOC_ERROR, s, NULL, NULL);
 	}
 	i = 0;
 	while (i < s->cmds - 1)
@@ -67,7 +67,7 @@ void	pipe_array(t_shell *s)
 	while (i < s->cmds - 1)
 	{
 		if (pipe(s->pipes[i]) == -1)
-			free_and_exit(PIPE_ERROR, s);
+			free_and_exit(PIPE_ERROR, s, NULL, NULL);
 		i++;
 	}
 }
@@ -83,7 +83,7 @@ void	pipe_fork(t_parsed *lst, t_shell *s)
 	{
 		lst->pid = fork();
 		if (lst->pid == -1)
-			free_and_exit(PID_ERROR, s);
+			free_and_exit(PID_ERROR, s, NULL, NULL);
 		if (lst->pid == 0)
 			multi_child_process(lst, s, ind);
 		ind++;

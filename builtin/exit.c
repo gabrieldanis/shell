@@ -6,7 +6,7 @@
 /*   By: gdanis <gdanis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/04 14:23:00 by gdanis            #+#    #+#             */
-/*   Updated: 2024/01/14 15:35:48 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/02/08 19:44:09 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	ft_exit(t_shell *s, t_parsed *lst)
 			{
 				s->rval = 2;
 				error_message(NUM_ERROR, "exit", lst->lst->next->str, s);
-				free_and_exit(0, s);
+				free_and_exit(0, s, NULL, NULL);
 			}
 			i++;
 		}
@@ -38,5 +38,5 @@ void	ft_exit(t_shell *s, t_parsed *lst)
 		}
 		s->rval = ft_atoi(lst->lst->next->str);
 	}
-	free_and_exit(0, s);
+	free_and_exit(0, s, NULL, NULL);
 }

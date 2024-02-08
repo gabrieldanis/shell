@@ -6,7 +6,7 @@
 /*   By: gdanis <gdanis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/28 22:27:36 by gdanis            #+#    #+#             */
-/*   Updated: 2024/01/14 11:37:55 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/02/08 19:45:52 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	reset_token_lsts(t_shell *s)
 		s->tlst->sp = s->sp_start;
 	if (s->t_start && s->tlst)
 		s->tlst = s->t_start;
-	free_and_exit(MALLOC_ERROR, s);
+	free_and_exit(MALLOC_ERROR, s, NULL, NULL);
 }
 
 void	ft_charjoin(char **s1, char c, t_shell *s)

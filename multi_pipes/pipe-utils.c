@@ -6,7 +6,7 @@
 /*   By: dberes <dberes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 18:01:22 by gdanis            #+#    #+#             */
-/*   Updated: 2024/02/05 16:17:13 by dberes           ###   ########.fr       */
+/*   Updated: 2024/02/08 19:47:02 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,19 +22,19 @@ void	*get_dir_multi(t_shell *s)
 
 	dirs = ft_split(s->path, 58);
 	if (!dirs)
-		free_and_exit(MALLOC_ERROR, s);
+		free_and_exit(MALLOC_ERROR, s, NULL, NULL);
 	node = s->lst;
 	while (node)
 	{
 		i = 0;
 		cmd = ft_strjoin("/", node->arglst[0]);
 		if (!cmd)
-			free_and_exit(MALLOC_ERROR, s);
+			free_and_exit(MALLOC_ERROR, s, NULL, NULL);
 		while (dirs[i] != NULL)
 		{
 			dir = ft_strjoin(dirs[i], cmd);
 			if (!dir)
-				free_and_exit(MALLOC_ERROR, s);
+				free_and_exit(MALLOC_ERROR, s, NULL, NULL);
 			if (access(dir, F_OK) == 0)
 			{
 				node->cmd = dir;

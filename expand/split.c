@@ -6,7 +6,7 @@
 /*   By: gdanis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/29 10:00:53 by gdanis            #+#    #+#             */
-/*   Updated: 2024/01/14 12:19:44 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/02/08 19:49:42 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	create_nonvar_token(t_shell *s, int *i, int *flag)
 	{
 		last_token(s->tlst->sp)->str = ft_strdup("");
 		if (!last_token(s->tlst->sp)->str)
-			free_and_exit(MALLOC_ERROR, s);
+			free_and_exit(MALLOC_ERROR, s, NULL, NULL);
 	}
 }
 

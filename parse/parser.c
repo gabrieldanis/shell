@@ -6,7 +6,7 @@
 /*   By: dberes <dberes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/31 08:44:00 by gdanis            #+#    #+#             */
-/*   Updated: 2024/02/08 14:35:10 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/02/08 19:47:55 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	addnewlstback(t_shell *s, t_parsed *lst)
 			s->tlst->ex = s->ex_start;
 		if (s->t_start && s->tlst)
 			s->tlst = s->t_start;
-		free_and_exit(MALLOC_ERROR, s);
+		free_and_exit(MALLOC_ERROR, s, NULL, NULL);
 	}
 	*tmp = (t_parsed){0};
 	if (!lst)
@@ -89,7 +89,7 @@ void	node_dup(t_parsed *lst, char *s2, t_shell *s)
 			s->tlst->ex = s->ex_start;
 		if (s->t_start && s->tlst)
 			s->tlst = s->t_start;
-		free_and_exit(MALLOC_ERROR, s);
+		free_and_exit(MALLOC_ERROR, s, NULL, NULL);
 	}
 	lst->type = s->tlst->type;
 

@@ -6,7 +6,7 @@
 /*   By: dberes <dberes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 16:48:10 by gdanis            #+#    #+#             */
-/*   Updated: 2024/02/08 13:46:11 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/02/08 19:48:44 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,5 +56,5 @@ int	main(int argc, char **argv, char **envp)
 		if (loop)
 			free(s->str);
 	}
-	free_and_exit(0, s);
+	free_and_exit(0, s, NULL, NULL);
 }

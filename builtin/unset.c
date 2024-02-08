@@ -6,7 +6,7 @@
 /*   By: gdanis <gdanis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 15:29:32 by gdanis            #+#    #+#             */
-/*   Updated: 2024/01/02 10:19:32 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/02/08 19:44:55 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	ft_unset_str(t_shell *s, char *str, int i)
 
 	tmp = (char **)malloc(sizeof(char *) * i);
 	if (!tmp)
-		free_and_exit(MALLOC_ERROR, s);
+		free_and_exit(MALLOC_ERROR, s, NULL, NULL);
 	i = 0;
 	j = 0;
 	while (s->env[i + j])

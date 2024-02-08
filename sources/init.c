@@ -6,7 +6,7 @@
 /*   By: gdanis <gdanis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/02 07:25:06 by gdanis            #+#    #+#             */
-/*   Updated: 2024/01/14 18:42:40 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/02/08 19:48:34 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,12 @@ void	set_shell(t_shell *s)
 
 	str = ft_strjoin("SHELL=", s->argv[0]);
 	if (!str)
-		free_and_exit(MALLOC_ERROR, s);
+		free_and_exit(MALLOC_ERROR, s, NULL, NULL);
 	old = str;
 	str = ft_strjoin(str, " has taken over 💩 💩 💩");
 	free(old);
 	if (!str)
-		free_and_exit(MALLOC_ERROR, s);
+		free_and_exit(MALLOC_ERROR, s, NULL, NULL);
 	ft_setenv(s, str);
 }
 
@@ -61,11 +61,11 @@ void	set_shlvl(t_shell *s)
 		{
 				num = ft_itoa(ft_atoi(ft_strchr(s->env[i], '=') + 1) + 1);
 				if (!num)
-					free_and_exit(MALLOC_ERROR, s);
+					free_and_exit(MALLOC_ERROR, s, NULL, NULL);
 				tmp = ft_strjoin("SHLVL=", num);
 				free(num);
 				if (!tmp)
-					free_and_exit(MALLOC_ERROR, s);
+					free_and_exit(MALLOC_ERROR, s, NULL, NULL);
 				ft_setenv(s, tmp);
 				checker = 1;
 		}
@@ -75,7 +75,7 @@ void	set_shlvl(t_shell *s)
 	{
 		tmp = ft_strdup("SHLVL=1");
 		if (!tmp)
-			free_and_exit(MALLOC_ERROR, s);
+			free_and_exit(MALLOC_ERROR, s, NULL, NULL);
 		ft_setenv(s, tmp);
 	}
 }
@@ -90,7 +90,7 @@ char	**dup_envp(char **envp, t_shell *s)
 		i++;
 	dup = (char **)malloc(sizeof(char *) * (i + 1));
 	if (!dup)
-		free_and_exit(MALLOC_ERROR, s);
+		free_and_exit(MALLOC_ERROR, s, NULL, NULL);
 	i = 0;
 	while (envp[i])
 	{
@@ -98,7 +98,7 @@ char	**dup_envp(char **envp, t_shell *s)
 		if (!dup[i])
 		{
 			free_2d_array_i((void ***)&dup, i);
-			free_and_exit(MALLOC_ERROR, s);
+			free_and_exit(MALLOC_ERROR, s, NULL, NULL);
 		}
 		i++;
 	}
