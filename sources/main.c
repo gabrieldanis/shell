@@ -6,7 +6,7 @@
 /*   By: dberes <dberes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 16:48:10 by gdanis            #+#    #+#             */
-/*   Updated: 2024/02/05 15:41:05 by dberes           ###   ########.fr       */
+/*   Updated: 2024/02/08 13:46:11 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ int	main(int argc, char **argv, char **envp)
 				//printlst(s);
 				arg_list(s);
 				if (s->lst->arglst[0])
-					execute_parsed_list(s);
+					execute(s);
 				free_lsts(s);
 			}
 		}

@@ -6,7 +6,7 @@
 /*   By: dberes <dberes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/01 10:51:32 by dberes            #+#    #+#             */
-/*   Updated: 2024/02/05 16:00:22 by dberes           ###   ########.fr       */
+/*   Updated: 2024/02/08 14:48:35 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,10 @@ void	multi_child_process(t_parsed *lst, t_shell *s, int ind)
 			free_and_exit(DUP_ERROR, s);
 		}
 	}
-	if (s->cmds > 1 && ind < s->cmds -1)
+	if (outfile)
+	{
+	}
+	else if (s->cmds > 1 && ind < s->cmds -1)
 	{
 		if(dup2(s->pipes[ind][1], STDOUT_FILENO) == -1)
 		{
@@ -38,18 +41,28 @@ void	multi_child_process(t_parsed *lst, t_shell *s, int ind)
 		}
 	}	
 	fd_closer(s);
+	if (execute_builtin(s))
+		free_and_exit(0, s);
 	if (execve(node->cmd, node->arglst, s->env) == -1)
 		free_and_exit(EXECVE_ERROR, s);
 }
 
 void	fd_opener(t_parsed *lst, t_shell *s)
 {
-	lst->fd_inf = open(lst->infile, O_RDONLY);
-	/*if (lst->fd_inf == -1)
+	t_parsed	*node;
+
+	node = lst->lst;
+	while (node)
 	{
-		print_fd_error(data);
-		*ex = 1;
-	}*/
+		if (node->type == INFILE && access(node->str, F_OK) != 0)
+			free_and_exit(NOFILE_ERROR, s);
+		node = node->next;
+	}
+	lst->fd_inf = open(lst->infile, O_RDONLY);
+	if (lst->fd_inf == -1)
+	{
+		free_and_exit(NOFILE_ERROR, s);
+	}
 	if (dup2(lst->fd_inf, STDIN_FILENO) == -1)
 	{
 			//dup_fail(args, s, node->fd[1], lst);

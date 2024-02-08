@@ -6,7 +6,7 @@
 /*   By: dberes <dberes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 16:49:31 by gdanis            #+#    #+#             */
-/*   Updated: 2024/02/05 14:39:47 by dberes           ###   ########.fr       */
+/*   Updated: 2024/02/08 13:10:00 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,7 +151,7 @@ void		idx_tokens(t_token *list);
 void		print_parsed_tokens(t_token *list);
 void		type_tokens(t_token *list);
 void		block_tokens(t_token *list);
-void		execute_parsed_list(t_shell *s);
+void		execute(t_shell *s);
 void		sort_var_list(char **dup);
 void		ft_print_export_lines(char **dup, int i, int j);
 void		free_2d_array(void **ptr);
@@ -217,6 +217,7 @@ int			parse_cmdargs(t_parsed *lst, t_shell *s);
 int			is_delimiter(char c);
 int			is_operator(char c);
 int			arglst_size(t_parsed *lst);
+int			execute_builtin(t_shell *s);
 void		multi_child_process(t_parsed *lst, t_shell *s, int ind);
 //void		multi_parent_process(t_plist **lst, t_data *data, int ind);
 char		*get_path(char **env);
