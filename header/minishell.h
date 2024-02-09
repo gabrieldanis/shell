@@ -6,7 +6,7 @@
 /*   By: dberes <dberes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 16:49:31 by gdanis            #+#    #+#             */
-/*   Updated: 2024/02/08 22:30:57 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/02/09 17:52:45 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@
 # define WRITE_ERROR	15
 # define PERM_ERROR		16
 # define READ_ERROR		17
+# define RL_ERROR		18
 
 
 /*********************************
