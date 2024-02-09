@@ -6,7 +6,7 @@
 /*   By: gdanis <gdanis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/15 09:17:56 by gdanis            #+#    #+#             */
-/*   Updated: 2024/02/08 19:43:43 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/02/09 12:34:10 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void	update_pwd(t_shell *s, char *pwd)
 	if (!tmp)
 		free_and_exit(MALLOC_ERROR, s, NULL, NULL);
 	ft_setenv(s, tmp);
-	free(tmp);
+	//free(tmp);
 }
 
 int	ft_chdir(t_shell *s, t_parsed *lst)
