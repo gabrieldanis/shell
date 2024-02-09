@@ -6,7 +6,7 @@
 /*   By: dberes <dberes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/01 10:51:32 by dberes            #+#    #+#             */
-/*   Updated: 2024/02/08 22:36:05 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/02/09 16:15:32 by dberes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ void	multi_child_process(t_parsed *lst, t_shell *s, int ind)
 
 	node = lst;
 	node = get_to_node(node, ind);
+	parse_subiter(s, node, parse_heredoc);
 	if (node->infile)
 		fd_opener(node, s);
 	else if (ind > 0)

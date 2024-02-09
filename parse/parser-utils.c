@@ -6,7 +6,7 @@
 /*   By: dberes <dberes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/01 13:47:54 by gdanis            #+#    #+#             */
-/*   Updated: 2024/02/08 19:47:37 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/02/09 16:14:43 by dberes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,18 @@ void	parse_lstiter(t_shell *s, int (*f)(t_parsed *lst, t_shell *s))
 	}
 	s->lst = start;
 }
+
+void	parse_subiter(t_shell *s, t_parsed *node, int (*f)(t_parsed *lst, t_shell *s))
+{
+	while (node->lst)	
+	{
+		if (!f(node->lst, s))
+			return ;
+		node->lst = node->lst->next;
+	}
+}
+
+
 void	appln_chararr(t_parsed *lst, char *str, t_shell *s)
 {
 	char	**tmp;

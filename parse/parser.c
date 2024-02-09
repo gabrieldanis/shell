@@ -6,7 +6,7 @@
 /*   By: dberes <dberes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/31 08:44:00 by gdanis            #+#    #+#             */
-/*   Updated: 2024/02/08 19:47:55 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/02/09 16:28:09 by dberes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,5 +138,56 @@ int	parse_cmdargs(t_parsed *lst, t_shell *s)
 		lst->type = ARG;
 	if (!lst->next)
 		cmd = 0;
+	return (1);
+}
+
+int	parse_heredoc(t_parsed *lst, t_shell *s)
+{
+	char		*line;
+	char		*line_new;
+	t_parsed	*node;
+	/*int			fd_rand;
+	char		filename[50];
+	
+		
+	}*/
+	
+	node = lst;
+	line = NULL;
+	while(node)
+	{
+		if (node->type == HEREDOC)
+		{
+			node->infile = 1;
+			/*fd_rand = open("/dev/urandom", O_RDONLY);
+			while(access(node->filename, F_OK))
+			{
+				if(read(fd_rand, node->filename, 50) == -1)
+					free_and_exit(READ_ERROR, s, NULL, NULL);
+			}
+			close(fd_rand);
+			strcpy(node->filename, "/tmp");
+    		strcat(node->filename, filename);
+			if(!*node->filename)
+				free_and_exit(MALLOC_ERROR, s, NULL, NULL);*/
+			s->heredocfd = open("heredoc_content", O_WRONLY | O_APPEND | O_TRUNC, 0644);
+			while (1)
+			{
+				line = readline("> ");
+				if (!ft_strncmp(line, node->next->str, ft_strlen(line) +1))
+					break ;
+				line_new = ft_strjoin(line, "\n");
+				if(!line_new)
+				{
+					free(line);
+					free_and_exit(MALLOC_ERROR, s, NULL, NULL);
+				}
+				if(write(s->heredocfd, line_new, ft_strlen(line_new)) == -1)
+					free_and_exit(WRITE_ERROR, s, NULL, NULL);
+			}
+			free(line_new);
+		}
+		node = node->next;
+	}
 	return (1);
 }

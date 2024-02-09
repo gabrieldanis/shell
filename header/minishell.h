@@ -6,7 +6,7 @@
 /*   By: dberes <dberes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 16:49:31 by gdanis            #+#    #+#             */
-/*   Updated: 2024/02/08 22:30:57 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/02/09 16:15:02 by dberes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,6 +113,7 @@ typedef struct s_parsed
 	int				append;
 	pid_t			pid;
 	char			**dirs2;
+	char			filename[50];
 }	t_parsed;
 
 typedef struct s_shell
@@ -131,6 +132,7 @@ typedef struct s_shell
 	int			**pipes;
 	int			rval;
 	int			cmds;
+	int			heredocfd;
 }	t_shell;
 
 /*********************************
@@ -185,6 +187,7 @@ void		init_plst(t_shell *s);
 void		printlst(t_shell *s);
 void		parse_type(t_shell *s);
 void		parse_lstiter(t_shell *s, int (*f)(t_parsed *lst, t_shell *s));
+void		parse_subiter(t_shell *s, t_parsed *node, int (*f)(t_parsed *lst, t_shell *s));
 void		ft_unset_str(t_shell *s, char *str, int i);
 void		free_lsts(t_shell *s);
 void		ft_exit(t_shell *s, t_parsed *lst);
@@ -204,6 +207,7 @@ int			ft_echo(t_parsed *list);
 int			error_message(int n, char *exe_name, char *str, t_shell *s);
 int			isenvar(char *env, char *varname);
 int			parse_isfile(t_parsed *lst, t_shell *s);
+int			parse_heredoc(t_parsed *lst, t_shell *s);
 int			clear_screen(void);
 int			ft_pwd(t_shell *s);
 int			ft_setenv(t_shell *s, char *str);

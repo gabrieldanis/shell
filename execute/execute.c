@@ -6,7 +6,7 @@
 /*   By: dberes <dberes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 08:08:33 by gdanis            #+#    #+#             */
-/*   Updated: 2024/02/08 22:22:37 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/02/09 16:19:07 by dberes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void	execute(t_shell *s)
 {
 	if(s->cmds == 1)
 	{
-		if (execute_builtin(s, s->lst))	
+		if (execute_builtin(s, s->lst))
 			return ;
 	}
 	multi_pipe(s);
