@@ -43,7 +43,7 @@ int	main(int argc, char **argv, char **envp)
 				init_plst(s);
 				parse_lstiter(s, parse_isfile);
 				parse_lstiter(s, parse_cmdargs);
-				//parse_lstiter(s, parse_heredoc);
+				parse_lstiter(s, parse_heredoc);
 				count_parsed_nodes(s);
 				//printlst(s);
 				arg_list(s);

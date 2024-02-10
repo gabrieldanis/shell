@@ -146,11 +146,6 @@ int	parse_heredoc(t_parsed *lst, t_shell *s)
 	char		*line;
 	char		*line_new;
 	t_parsed	*node;
-	/*int			fd_rand;
-	char		filename[50];
-	
-		
-	}*/
 	
 	node = lst;
 	line = NULL;
@@ -158,19 +153,15 @@ int	parse_heredoc(t_parsed *lst, t_shell *s)
 	{
 		if (node->type == HEREDOC)
 		{
-			node->infile = 1;
-			/*fd_rand = open("/dev/urandom", O_RDONLY);
-			while(access(node->filename, F_OK))
+			//node->infile = 1;
+			create_tmp_file(lst, s);
+			printf("%s\n", node->filename);
+			s->heredocfd = open(node->filename, O_WRONLY | O_APPEND | O_CREAT, 0644);
+			if (s->heredocfd == -1) 
 			{
-				if(read(fd_rand, node->filename, 50) == -1)
-					free_and_exit(READ_ERROR, s, NULL, NULL);
+    			perror("Error opening file");
+    			free_and_exit(OPEN_ERROR, s, NULL, NULL);
 			}
-			close(fd_rand);
-			strcpy(node->filename, "/tmp");
-    		strcat(node->filename, filename);
-			if(!*node->filename)
-				free_and_exit(MALLOC_ERROR, s, NULL, NULL);*/
-			s->heredocfd = open("heredoc_content", O_WRONLY | O_APPEND | O_TRUNC, 0644);
 			while (1)
 			{
 				line = readline("> ");
@@ -190,4 +181,32 @@ int	parse_heredoc(t_parsed *lst, t_shell *s)
 		node = node->next;
 	}
 	return (1);
+}
+
+void	create_tmp_file(t_parsed *node, t_shell *s)
+{
+	int			i;
+	const char	*charset;
+	//char		*heredoc;
+	
+	i = 0;
+	charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+	node->filename = (char *)malloc(sizeof(char) * 10 + 1);
+	if(node->filename == NULL)
+		free_and_exit(MALLOC_ERROR, s, NULL, NULL);
+	ft_strlcpy(node->filename, "/tmp/", 6);
+	while (i < 5)
+	{
+		node->filename[5 + i] = charset[((i) * 1000) % 62];
+		i++;
+	}
+	while(access(node->filename, F_OK) == 0)
+	{
+		i = 0;
+		while (i < 5)
+		{
+			node->filename[5 + i] = charset[(node->filename[i] + 1) % 62];
+			i++;
+		}
+	}
 }

@@ -18,7 +18,7 @@ void	multi_child_process(t_parsed *lst, t_shell *s, int ind)
 
 	node = lst;
 	node = get_to_node(node, ind);
-	parse_subiter(s, node, parse_heredoc);
+	//parse_subiter(s, node, parse_heredoc);
 	if (node->infile)
 		fd_opener(node, s);
 	else if (ind > 0)
