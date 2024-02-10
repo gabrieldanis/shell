@@ -125,3 +125,19 @@ void	free_2d_array_i(void ***arr, int i)
 	free(*arr);
 	*arr = NULL;
 }
+
+void	delete_files(t_shell *s)
+{
+	t_parsed	*node;
+
+	node = s->lst->lst;
+	while(node)
+	{
+		if (node->type == HEREDOC)
+		{
+			if (unlink(node->filename) == -1) 
+				free_and_exit(UNLINK_ERROR, s, NULL, NULL);
+		}
+		node = node->next;
+	}
+}

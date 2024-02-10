@@ -14,6 +14,7 @@
 
 void	execute(t_shell *s)
 {
+	//parse_lstiter(s, parse_heredoc);
 	if(s->cmds == 1)
 	{
 		if (execute_builtin(s, s->lst))

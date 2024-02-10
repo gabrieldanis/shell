@@ -149,37 +149,37 @@ int	parse_heredoc(t_parsed *lst, t_shell *s)
 	
 	node = lst;
 	line = NULL;
-	while(node)
+	//while(node)
+	//{
+	if (node->type == HEREDOC)
 	{
-		if (node->type == HEREDOC)
+		//node->infile = 1;
+		create_tmp_file(node, s);
+		printf("%s\n", node->filename);
+		s->heredocfd = open(node->filename, O_WRONLY | O_APPEND | O_CREAT, 0644);
+		if (s->heredocfd == -1) 
 		{
-			//node->infile = 1;
-			create_tmp_file(lst, s);
-			printf("%s\n", node->filename);
-			s->heredocfd = open(node->filename, O_WRONLY | O_APPEND | O_CREAT, 0644);
-			if (s->heredocfd == -1) 
-			{
-    			perror("Error opening file");
-    			free_and_exit(OPEN_ERROR, s, NULL, NULL);
-			}
-			while (1)
-			{
-				line = readline("> ");
-				if (!ft_strncmp(line, node->next->str, ft_strlen(line) +1))
-					break ;
-				line_new = ft_strjoin(line, "\n");
-				if(!line_new)
-				{
-					free(line);
-					free_and_exit(MALLOC_ERROR, s, NULL, NULL);
-				}
-				if(write(s->heredocfd, line_new, ft_strlen(line_new)) == -1)
-					free_and_exit(WRITE_ERROR, s, NULL, NULL);
-			}
-			free(line_new);
+    		perror("Error opening file");
+    		free_and_exit(OPEN_ERROR, s, NULL, NULL);
 		}
-		node = node->next;
+		while (1)
+		{
+			line = readline("> ");
+			if (!ft_strncmp(line, node->next->str, ft_strlen(line) +1))
+				break ;
+			line_new = ft_strjoin(line, "\n");
+			if(!line_new)
+			{
+				free(line);
+				free_and_exit(MALLOC_ERROR, s, NULL, NULL);
+			}
+			if(write(s->heredocfd, line_new, ft_strlen(line_new)) == -1)
+				free_and_exit(WRITE_ERROR, s, NULL, NULL);
+		}
+		free(line_new);
 	}
+	//node = node->next;
+	//}
 	return (1);
 }
 
@@ -187,7 +187,6 @@ void	create_tmp_file(t_parsed *node, t_shell *s)
 {
 	int			i;
 	const char	*charset;
-	//char		*heredoc;
 	
 	i = 0;
 	charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
@@ -205,7 +204,7 @@ void	create_tmp_file(t_parsed *node, t_shell *s)
 		i = 0;
 		while (i < 5)
 		{
-			node->filename[5 + i] = charset[(node->filename[i] + 1) % 62];
+			node->filename[5 + i] = charset[(node->filename[5 + i] + 1) % 62];
 			i++;
 		}
 	}

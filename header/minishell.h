@@ -61,6 +61,7 @@
 # define PERM_ERROR		16
 # define READ_ERROR		17
 # define OPEN_ERROR		18
+# define UNLINK_ERROR	19
 
 
 /*********************************
@@ -115,6 +116,7 @@ typedef struct s_parsed
 	pid_t			pid;
 	char			**dirs2;
 	char			*filename;
+	char			*last_heredoc;
 }	t_parsed;
 
 typedef struct s_shell
@@ -190,6 +192,7 @@ void		parse_type(t_shell *s);
 void		parse_lstiter(t_shell *s, int (*f)(t_parsed *lst, t_shell *s));
 void		parse_subiter(t_shell *s, t_parsed *node, int (*f)(t_parsed *lst, t_shell *s));
 void		create_tmp_file(t_parsed *node, t_shell *s);
+void		delete_files(t_shell *s);
 void		ft_unset_str(t_shell *s, char *str, int i);
 void		free_lsts(t_shell *s);
 void		ft_exit(t_shell *s, t_parsed *lst);

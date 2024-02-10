@@ -19,7 +19,7 @@ void	multi_child_process(t_parsed *lst, t_shell *s, int ind)
 	node = lst;
 	node = get_to_node(node, ind);
 	//parse_subiter(s, node, parse_heredoc);
-	if (node->infile)
+	if (node->infile || check_last_heredoc(node))
 		fd_opener(node, s);
 	else if (ind > 0)
 	{
@@ -114,4 +114,23 @@ void	fd_closer(t_shell *s)
 		close(s->pipes[i][1]);
 		i++;
 	}
+}
+
+int	check_last_heredoc(t_parsed *lst, t_shell *s)
+{
+	t_parsed	*node;
+	int			flag;
+
+	flag = 0;
+	node = lst->lst;
+	while(node)
+	{
+		if(node->type == HEREDOC)
+		{
+			flag = 1;
+			lst->last_heredoc = node->filename;
+		}
+		node = node->next;
+	}
+	return (flag);
 }

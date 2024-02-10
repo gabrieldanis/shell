@@ -49,7 +49,9 @@ int	main(int argc, char **argv, char **envp)
 				arg_list(s);
 				if (s->lst->arglst[0])
 					execute(s);
+				delete_files(s);
 				free_lsts(s);
+				
 			}
 		}
 		if (!s->str)
