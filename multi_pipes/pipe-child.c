@@ -6,7 +6,7 @@
 /*   By: dberes <dberes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/01 10:51:32 by dberes            #+#    #+#             */
-/*   Updated: 2024/02/09 16:15:32 by dberes           ###   ########.fr       */
+/*   Updated: 2024/02/11 14:59:40 by dberes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	multi_child_process(t_parsed *lst, t_shell *s, int ind)
 	node = lst;
 	node = get_to_node(node, ind);
 	//parse_subiter(s, node, parse_heredoc);
-	if (node->infile || check_last_heredoc(node))
+	if (node->infile)
 		fd_opener(node, s);
 	else if (ind > 0)
 	{
@@ -115,7 +115,7 @@ void	fd_closer(t_shell *s)
 		i++;
 	}
 }
-
+/*
 int	check_last_heredoc(t_parsed *lst, t_shell *s)
 {
 	t_parsed	*node;
@@ -134,3 +134,4 @@ int	check_last_heredoc(t_parsed *lst, t_shell *s)
 	}
 	return (flag);
 }
+*/

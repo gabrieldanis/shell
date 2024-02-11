@@ -6,7 +6,7 @@
 /*   By: dberes <dberes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 16:48:10 by gdanis            #+#    #+#             */
-/*   Updated: 2024/02/09 16:20:27 by dberes           ###   ########.fr       */
+/*   Updated: 2024/02/11 14:56:19 by dberes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,9 +41,9 @@ int	main(int argc, char **argv, char **envp)
 				expand_token(s);
 				//print_token(s);
 				init_plst(s);
+				parse_lstiter(s, parse_heredoc);
 				parse_lstiter(s, parse_isfile);
 				parse_lstiter(s, parse_cmdargs);
-				parse_lstiter(s, parse_heredoc);
 				count_parsed_nodes(s);
 				//printlst(s);
 				arg_list(s);

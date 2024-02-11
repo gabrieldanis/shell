@@ -6,7 +6,7 @@
 /*   By: dberes <dberes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/31 08:44:00 by gdanis            #+#    #+#             */
-/*   Updated: 2024/02/09 16:28:09 by dberes           ###   ########.fr       */
+/*   Updated: 2024/02/11 16:30:24 by dberes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,6 +111,10 @@ int	parse_isfile(t_parsed *lst, t_shell *s)
 		lst->next->type = INFILE;
 		s->lst->infile = lst->next->str;
 	}
+	if (lst->type == HEREDOC)
+	{
+		s->lst->infile = lst->filename;
+	}
 	if ((lst->type == RED_OUT || lst->type == RED_APP) && lst->next
 			&& !lst->next->type)
 	{
@@ -155,7 +159,6 @@ int	parse_heredoc(t_parsed *lst, t_shell *s)
 	{
 		//node->infile = 1;
 		create_tmp_file(node, s);
-		printf("%s\n", node->filename);
 		s->heredocfd = open(node->filename, O_WRONLY | O_APPEND | O_CREAT, 0644);
 		if (s->heredocfd == -1) 
 		{
@@ -167,6 +170,8 @@ int	parse_heredoc(t_parsed *lst, t_shell *s)
 			line = readline("> ");
 			if (!ft_strncmp(line, node->next->str, ft_strlen(line) +1))
 				break ;
+			if (ft_strchr(line, '$'))
+				line = heredoc_expand(line, s); 
 			line_new = ft_strjoin(line, "\n");
 			if(!line_new)
 			{
@@ -181,6 +186,59 @@ int	parse_heredoc(t_parsed *lst, t_shell *s)
 	//node = node->next;
 	//}
 	return (1);
+}
+
+char	*heredoc_expand(char *line, t_shell *s)
+{
+	int		i;
+	int		j;
+	char	*str;
+	char	*fstr;
+	char	*tmp;
+	
+
+	i = 0;
+
+	fstr = NULL;
+	while (line[i])
+	{
+		str = NULL;
+		while (line[i] && line[i] != '$')
+		{
+			ft_charjoin(&fstr, line[i], s);
+			i++;
+		}
+		i++;
+		j = i;
+		while (line[i] && (check_is_var(line[i]) || line[j] == '?'))
+		{
+			ft_charjoin(&str, line[i], s);
+			if (line[j] == '?')
+			{
+				i++;
+				break ;
+			}
+			i++;
+		}
+		if (str)
+		{
+			if (line[j] == '?')
+				tmp = ft_strjoin(fstr, token_vardup(NULL, s, EXIT_VALUE));
+			else
+				tmp = ft_strjoin(fstr, getenv(str));
+			if (!tmp)
+			{
+				free(str);
+				free(fstr);
+				free_and_exit(MALLOC_ERROR, s, NULL, NULL);
+			}
+			free(str);
+			free(fstr);
+			fstr = tmp;
+		}
+	}
+	free(line);
+	return (fstr);
 }
 
 void	create_tmp_file(t_parsed *node, t_shell *s)

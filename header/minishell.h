@@ -6,7 +6,7 @@
 /*   By: dberes <dberes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 16:49:31 by gdanis            #+#    #+#             */
-/*   Updated: 2024/02/09 16:15:02 by dberes           ###   ########.fr       */
+/*   Updated: 2024/02/11 16:13:05 by dberes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -206,6 +206,7 @@ char		*expand_var(char *str);
 char		*get_str(t_parsed *list);
 char		*ft_getenv(char *str, t_shell *s);
 char		*token_vardup(char *s1, t_shell *s, int itoa);
+char		*heredoc_expand(char *line, t_shell *s);
 int			update_existing_var(t_shell *s, char *str);
 int			append_var(t_shell *s, char *str);
 int			ft_echo(t_parsed *list);
