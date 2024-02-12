@@ -6,7 +6,7 @@
 /*   By: gdanis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 13:17:49 by gdanis            #+#    #+#             */
-/*   Updated: 2024/02/08 19:41:41 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/02/09 23:22:26 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,25 @@ void	free_and_exit(int n, t_shell *s, char *exe_name, char *str)
 	}
 	else
 		exitval = MALLOC_ERROR;
+	clear_history();
 	exit (exitval);
+}
+
+void	free_pipes(t_shell *s)
+{
+	int	i;
+
+	i = 0;
+	if (s->pipes && s->pipes[0])
+	{
+		while (i < s->cmds - 1)
+		{
+			free (s->pipes[i]);
+			i++;
+		}
+	}
+	free (s->pipes);
+	s->pipes = NULL;
 }
 
 void	free_lsts(t_shell *s)
@@ -41,6 +59,7 @@ void	free_lsts(t_shell *s)
 			free_parsed_list(s->lst);
 		s->tlst = NULL;
 		s->lst = NULL;
+		free_pipes(s);
 	}
 }
 
@@ -84,6 +103,8 @@ void	free_parsed_list(t_parsed *lst)
 			free(tmp->str);
 			tmp->str = NULL;
 		}
+		if (tmp->cmd)
+			free (tmp->cmd);
 		if (tmp->arglst)
 		{
 			free_2d_array((void **)tmp->arglst);

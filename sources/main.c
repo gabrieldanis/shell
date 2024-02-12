@@ -29,7 +29,12 @@ int	main(int argc, char **argv, char **envp)
 			s->str = argv[1];
 		}
 		else
+		{
 			s->str = readline("💻 minishell > ");
+			if (!s->str)
+				free_and_exit(0, s, NULL, NULL);
+		}
+
 		if (s->str && s->str[0] != '\0')
 		{
 			if (loop)
@@ -47,7 +52,7 @@ int	main(int argc, char **argv, char **envp)
 				count_parsed_nodes(s);
 				//printlst(s);
 				arg_list(s);
-				if (s->lst->arglst[0])
+				if (s->lst->arglst && s->lst->arglst[0])
 					execute(s);
 				delete_files(s);
 				free_lsts(s);
