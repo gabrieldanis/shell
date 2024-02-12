@@ -60,6 +60,8 @@ int	error_message(int n, char *exe_name, char *str, t_shell *s)
 		ft_putstr_fd("dup2 error\n", 2);
 	else if (n == PERM_ERROR)
 		ft_putstr_fd("Permission denied\n", 2);
+	else if (n == RL_ERROR)
+		ft_putstr_fd("Readline error\n", 2);
 	else if (n == OPEN_ERROR)
 		ft_putstr_fd("failed to open file\n", 2);
 	else if (n == UNLINK_ERROR)
