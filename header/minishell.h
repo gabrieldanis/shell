@@ -6,7 +6,7 @@
 /*   By: dberes <dberes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 16:49:31 by gdanis            #+#    #+#             */
-/*   Updated: 2024/02/09 17:52:45 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/02/11 16:13:05 by dberes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,24 +43,26 @@
  * 	ERROR CODES
  *********************************/
 
-# define MALLOC_ERROR	1
-# define QUOTE_ERROR	2 /* unclosed quote */
-# define IDENT_ERROR	3
+# define MALLOC_ERROR		1
+# define QUOTE_ERROR		2 /* unclosed quote */
+# define IDENT_ERROR		3
 # define GEN_ERROR		4
-# define NOFILE_ERROR	5
+# define NOFILE_ERROR		5
 # define CMD_ERROR		6
-# define EXECVE_ERROR	7
+# define EXECVE_ERROR		7
 # define FORK_ERROR		8
 # define UNEX_TOKEN		9
-# define ARGNUM_ERROR	10
+# define ARGNUM_ERROR		10
 # define NUM_ERROR		11
 # define PIPE_ERROR		12
 # define PID_ERROR		13
 # define DUP_ERROR		14
-# define WRITE_ERROR	15
+# define WRITE_ERROR		15
 # define PERM_ERROR		16
 # define READ_ERROR		17
 # define RL_ERROR		18
+# define OPEN_ERROR		19
+# define UNLINK_ERROR		20
 
 
 /*********************************
@@ -114,6 +116,8 @@ typedef struct s_parsed
 	int				append;
 	pid_t			pid;
 	char			**dirs2;
+	char			*filename;
+	char			*last_heredoc;
 }	t_parsed;
 
 typedef struct s_shell
@@ -132,6 +136,7 @@ typedef struct s_shell
 	int			**pipes;
 	int			rval;
 	int			cmds;
+	int			heredocfd;
 }	t_shell;
 
 /*********************************
@@ -186,6 +191,9 @@ void		init_plst(t_shell *s);
 void		printlst(t_shell *s);
 void		parse_type(t_shell *s);
 void		parse_lstiter(t_shell *s, int (*f)(t_parsed *lst, t_shell *s));
+void		parse_subiter(t_shell *s, t_parsed *node, int (*f)(t_parsed *lst, t_shell *s));
+void		create_tmp_file(t_parsed *node, t_shell *s);
+void		delete_files(t_shell *s);
 void		ft_unset_str(t_shell *s, char *str, int i);
 void		free_lsts(t_shell *s);
 void		ft_exit(t_shell *s, t_parsed *lst);
@@ -199,12 +207,14 @@ char		*expand_var(char *str);
 char		*get_str(t_parsed *list);
 char		*ft_getenv(char *str, t_shell *s);
 char		*token_vardup(char *s1, t_shell *s, int itoa);
+char		*heredoc_expand(char *line, t_shell *s);
 int			update_existing_var(t_shell *s, char *str);
 int			append_var(t_shell *s, char *str);
 int			ft_echo(t_parsed *list);
 int			error_message(int n, char *exe_name, char *str, t_shell *s);
 int			isenvar(char *env, char *varname);
 int			parse_isfile(t_parsed *lst, t_shell *s);
+int			parse_heredoc(t_parsed *lst, t_shell *s);
 int			clear_screen(void);
 int			ft_pwd(t_shell *s);
 int			ft_setenv(t_shell *s, char *str);

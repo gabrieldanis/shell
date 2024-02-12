@@ -6,7 +6,7 @@
 /*   By: dberes <dberes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/31 08:44:00 by gdanis            #+#    #+#             */
-/*   Updated: 2024/02/08 19:47:55 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/02/11 16:30:24 by dberes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,6 +111,10 @@ int	parse_isfile(t_parsed *lst, t_shell *s)
 		lst->next->type = INFILE;
 		s->lst->infile = lst->next->str;
 	}
+	if (lst->type == HEREDOC)
+	{
+		s->lst->infile = lst->filename;
+	}
 	if ((lst->type == RED_OUT || lst->type == RED_APP) && lst->next
 			&& !lst->next->type)
 	{
@@ -139,4 +143,127 @@ int	parse_cmdargs(t_parsed *lst, t_shell *s)
 	if (!lst->next)
 		cmd = 0;
 	return (1);
+}
+
+int	parse_heredoc(t_parsed *lst, t_shell *s)
+{
+	char		*line;
+	char		*line_new;
+	t_parsed	*node;
+	
+	node = lst;
+	line = NULL;
+	//while(node)
+	//{
+	if (node->type == HEREDOC)
+	{
+		//node->infile = 1;
+		create_tmp_file(node, s);
+		s->heredocfd = open(node->filename, O_WRONLY | O_APPEND | O_CREAT, 0644);
+		if (s->heredocfd == -1) 
+		{
+    		perror("Error opening file");
+    		free_and_exit(OPEN_ERROR, s, NULL, NULL);
+		}
+		while (1)
+		{
+			line = readline("> ");
+			if (!ft_strncmp(line, node->next->str, ft_strlen(line) +1))
+				break ;
+			if (ft_strchr(line, '$'))
+				line = heredoc_expand(line, s); 
+			line_new = ft_strjoin(line, "\n");
+			if(!line_new)
+			{
+				free(line);
+				free_and_exit(MALLOC_ERROR, s, NULL, NULL);
+			}
+			if(write(s->heredocfd, line_new, ft_strlen(line_new)) == -1)
+				free_and_exit(WRITE_ERROR, s, NULL, NULL);
+		}
+		free(line_new);
+	}
+	//node = node->next;
+	//}
+	return (1);
+}
+
+char	*heredoc_expand(char *line, t_shell *s)
+{
+	int		i;
+	int		j;
+	char	*str;
+	char	*fstr;
+	char	*tmp;
+	
+
+	i = 0;
+
+	fstr = NULL;
+	while (line[i])
+	{
+		str = NULL;
+		while (line[i] && line[i] != '$')
+		{
+			ft_charjoin(&fstr, line[i], s);
+			i++;
+		}
+		i++;
+		j = i;
+		while (line[i] && (check_is_var(line[i]) || line[j] == '?'))
+		{
+			ft_charjoin(&str, line[i], s);
+			if (line[j] == '?')
+			{
+				i++;
+				break ;
+			}
+			i++;
+		}
+		if (str)
+		{
+			if (line[j] == '?')
+				tmp = ft_strjoin(fstr, token_vardup(NULL, s, EXIT_VALUE));
+			else
+				tmp = ft_strjoin(fstr, getenv(str));
+			if (!tmp)
+			{
+				free(str);
+				free(fstr);
+				free_and_exit(MALLOC_ERROR, s, NULL, NULL);
+			}
+			free(str);
+			free(fstr);
+			fstr = tmp;
+		}
+	}
+	free(line);
+	return (fstr);
+}
+
+void	create_tmp_file(t_parsed *node, t_shell *s)
+{
+	int			i;
+	const char	*charset;
+	
+	i = 0;
+	charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+	node->filename = (char *)malloc(sizeof(char) * 10 + 1);
+	if(node->filename == NULL)
+		free_and_exit(MALLOC_ERROR, s, NULL, NULL);
+	ft_strlcpy(node->filename, "/tmp/", 6);
+	while (i < 5)
+	{
+		node->filename[5 + i] = charset[((i) * 1000) % 62];
+		i++;
+	}
+	while(access(node->filename, F_OK) == 0)
+	{
+		i = 0;
+		while (i < 5)
+		{
+			node->filename[5 + i] = charset[(node->filename[5 + i] + 1) % 62];
+			i++;
+		}
+	}
 }

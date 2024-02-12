@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gdanis <gdanis@student.42.fr>              +#+  +:+       +#+        */
+/*   By: dberes <dberes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 14:07:21 by gdanis            #+#    #+#             */
-/*   Updated: 2024/02/09 17:53:13 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/02/11 14:43:56 by dberes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,13 +55,17 @@ int	error_message(int n, char *exe_name, char *str, t_shell *s)
 	else if (n == WRITE_ERROR)
 		ft_putstr_fd("write to file failed\n", 2);
 	else if (n == READ_ERROR)
-		ft_putstr_fd("write to file failed\n", 2);
+		ft_putstr_fd("read from file failed\n", 2);
 	else if (n == DUP_ERROR)
 		ft_putstr_fd("dup2 error\n", 2);
 	else if (n == PERM_ERROR)
 		ft_putstr_fd("Permission denied\n", 2);
 	else if (n == RL_ERROR)
 		ft_putstr_fd("Readline error\n", 2);
+	else if (n == OPEN_ERROR)
+		ft_putstr_fd("failed to open file\n", 2);
+	else if (n == UNLINK_ERROR)
+		ft_putstr_fd("failed to unlink file\n", 2);
 	else
 		ft_putstr_fd("unknown error\n", 2);
 	free_lsts(s);
