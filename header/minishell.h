@@ -43,25 +43,26 @@
  * 	ERROR CODES
  *********************************/
 
-# define MALLOC_ERROR	1
-# define QUOTE_ERROR	2 /* unclosed quote */
-# define IDENT_ERROR	3
+# define MALLOC_ERROR		1
+# define QUOTE_ERROR		2 /* unclosed quote */
+# define IDENT_ERROR		3
 # define GEN_ERROR		4
-# define NOFILE_ERROR	5
+# define NOFILE_ERROR		5
 # define CMD_ERROR		6
-# define EXECVE_ERROR	7
+# define EXECVE_ERROR		7
 # define FORK_ERROR		8
 # define UNEX_TOKEN		9
-# define ARGNUM_ERROR	10
+# define ARGNUM_ERROR		10
 # define NUM_ERROR		11
 # define PIPE_ERROR		12
 # define PID_ERROR		13
 # define DUP_ERROR		14
-# define WRITE_ERROR	15
+# define WRITE_ERROR		15
 # define PERM_ERROR		16
 # define READ_ERROR		17
-# define OPEN_ERROR		18
-# define UNLINK_ERROR	19
+# define RL_ERROR		18
+# define OPEN_ERROR		19
+# define UNLINK_ERROR		20
 
 
 /*********************************
