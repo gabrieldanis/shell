@@ -67,7 +67,12 @@ void	split_token(t_shell *s)
 	while (s->tlst)
 	{
 		if (s->tlst->type == HEREDOC && s->tlst->next)
+		{
 			s->tlst->next->type = HEREDOC_DEL;
+			if (ft_strchr(s->tlst->next->str, '\'') ||
+				ft_strchr(s->tlst->next->str, 34))
+				s->tlst->next->heredoc_quote = 1;
+		}
 		i = 0;
 		while (s->tlst->str[i])
 		{

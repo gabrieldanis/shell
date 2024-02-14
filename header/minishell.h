@@ -94,6 +94,7 @@ typedef struct s_token
 	char			*str;
 	int				split;
 	int				expand;
+	int				heredoc_quote;
 	int				type;
 }	t_token;
 
@@ -118,6 +119,7 @@ typedef struct s_parsed
 	char			**dirs2;
 	char			*filename;
 	char			*last_heredoc;
+	int				heredoc_quote;
 }	t_parsed;
 
 typedef struct s_shell

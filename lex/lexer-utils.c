@@ -77,7 +77,9 @@ void	print_token(t_shell *s)
 			{
 				if (s->tlst->sp->str[0] == '\0')
 					printf("\t\t\\0");
-				printf("\t\t%s\n", s->tlst->sp->str);
+				printf("\t\t%s", s->tlst->sp->str);
+				printf(" split: %d expand %d",s->tlst->sp->split, s->tlst->sp->expand);
+				printf(" heredoc_quote: %d\n",s->tlst->heredoc_quote);
 				s->tlst->sp = s->tlst->sp->next;
 			}
 			s->tlst->sp = sp_start;
@@ -91,7 +93,9 @@ void	print_token(t_shell *s)
 			{
 				if (s->tlst->ex->str && s->tlst->ex->str[0] == '\0')
 					printf("\t\t\\0");
-				printf("\t\t%s\n", s->tlst->ex->str);
+				printf("\t\t%s", s->tlst->ex->str);
+				printf(" split: %d expand %d",s->tlst->ex->split, s->tlst->ex->expand);
+
 				s->tlst->ex = s->tlst->ex->next;
 			}
 			s->tlst->ex = ex_start;

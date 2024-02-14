@@ -28,7 +28,7 @@ void	printlst(t_shell *s)
 		sub_start = s->lst->lst;
 		while (s->lst->lst)	
 		{
-			printf("type: %s str: %s\n", token_type(s->lst->lst->type), s->lst->lst->str);
+			printf("type: %s str: %s heredoc_q %d\n", token_type(s->lst->lst->type), s->lst->lst->str, s->lst->lst->heredoc_quote);
 			s->lst->lst = s->lst->lst->next;
 		}
 		printf("++++++++++++++++++++++++++++++++++\n\n");

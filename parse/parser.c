@@ -64,6 +64,7 @@ void	init_plst(t_shell *s)
 				{
 					addnewlstback(s, lstlast(s->lst));
 					node_dup(lstlast(lstlast(s->lst)->lst), s->tlst->ex->str, s);
+					lstlast(lstlast(s->lst)->lst)->heredoc_quote = s->tlst->heredoc_quote;
 				}
 				s->tlst->ex = s->tlst->ex->next;
 			}
@@ -153,6 +154,7 @@ int	parse_heredoc(t_parsed *lst, t_shell *s)
 	
 	node = lst;
 	line = NULL;
+	line_new = NULL;
 	//while(node)
 	//{
 	if (node->type == HEREDOC)
@@ -170,7 +172,7 @@ int	parse_heredoc(t_parsed *lst, t_shell *s)
 			line = readline("> ");
 			if (!ft_strncmp(line, node->next->str, ft_strlen(line) +1))
 				break ;
-			if (ft_strchr(line, '$'))
+			if (ft_strchr(line, '$') && node->next->heredoc_quote == 0)
 				line = heredoc_expand(line, s); 
 			line_new = ft_strjoin(line, "\n");
 			if(!line_new)
@@ -181,7 +183,8 @@ int	parse_heredoc(t_parsed *lst, t_shell *s)
 			if(write(s->heredocfd, line_new, ft_strlen(line_new)) == -1)
 				free_and_exit(WRITE_ERROR, s, NULL, NULL);
 		}
-		free(line_new);
+		if (line_new)
+			free(line_new);
 	}
 	//node = node->next;
 	//}
