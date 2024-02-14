@@ -18,6 +18,6 @@ int	ft_pwd(t_shell *s)
 
 	if (getcwd(path, sizeof(path)) == NULL)
 		return (error_message(GEN_ERROR, "pwd", NULL, s));
-	printf("%s\n", path);
+	//printf("%s\n", path);
 	return (0);
 }

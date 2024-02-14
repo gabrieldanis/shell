@@ -28,11 +28,18 @@ int	main(int argc, char **argv, char **envp)
 			loop = 0;
 			s->str = argv[1];
 		}
-		else
+		else if((isatty(fileno(stdin))))
 		{
 			s->str = readline("💻 minishell > ");
 			if (!s->str)
 				free_and_exit(0, s, NULL, NULL);
+		}
+		else
+		{
+			char *line;
+			line = get_next_line(fileno(stdin));
+			s->str = ft_strtrim(line, "\n");
+			free(line);
 		}
 
 		if (s->str && s->str[0] != '\0')

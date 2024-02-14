@@ -16,7 +16,7 @@ void	ft_exit(t_shell *s, t_parsed *lst)
 {
 	int	i;
 
-	ft_putstr_fd("exit\n", 2);
+	//ft_putstr_fd("exit\n", 2);
 	if (lst && lst->lst->next)
 	{
 		i = 0;

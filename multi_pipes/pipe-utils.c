@@ -27,27 +27,36 @@ void	*get_dir_multi(t_shell *s)
 	while (node)
 	{
 		i = 0;
-		cmd = ft_strjoin("/", node->arglst[0]);
-		if (!cmd)
-			free_and_exit(MALLOC_ERROR, s, NULL, NULL);
-		while (dirs[i] != NULL)
+		if (access(node->arglst[0], F_OK) == 0)
 		{
-			dir = ft_strjoin(dirs[i], cmd);
-			if (!dir)
+			node->cmd = ft_strdup(node->arglst[0]);
+			if (!node->cmd)
 				free_and_exit(MALLOC_ERROR, s, NULL, NULL);
-			if (access(dir, F_OK) == 0)
-			{
-				node->cmd = dir;
-				free(cmd);
-				cmd = NULL;
-				break ;
-			}
-			else
-				free (dir);
-			i++;
 		}
-		if (cmd)
-			free (cmd);
+		else
+		{
+			cmd = ft_strjoin("/", node->arglst[0]);
+			if (!cmd)
+				free_and_exit(MALLOC_ERROR, s, NULL, NULL);
+			while (dirs[i] != NULL)
+			{
+				dir = ft_strjoin(dirs[i], cmd);
+				if (!dir)
+					free_and_exit(MALLOC_ERROR, s, NULL, NULL);
+				if (access(dir, F_OK) == 0)
+				{
+					node->cmd = dir;
+					free(cmd);
+					cmd = NULL;
+					break ;
+				}
+				else
+					free (dir);
+				i++;
+			}
+			if (cmd)
+				free (cmd);
+		}
 		node = node->next;
 	}
 	if (dirs)
