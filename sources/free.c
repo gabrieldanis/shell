@@ -17,7 +17,7 @@ void	free_and_exit(int n, t_shell *s, char *exe_name, char *str)
 	int	exitval;
 
 	if (n != 0)
-		error_message(n, exe_name, str, s);
+		s->rval = error_message(n, exe_name, str, s);
 	if (s && s->env)
 		free_2d_array((void **)s->env);
 	free_lsts(s);

@@ -37,8 +37,10 @@ void	multi_child_process(t_parsed *lst, t_shell *s, int ind)
 	fd_closer(s);
 	if (execute_builtin(s, node))
 		free_and_exit(0, s, NULL, NULL);
+	if (node->cmd && access(node->cmd, R_OK) != 0)
+			free_and_exit(PERM_ERROR, s, NULL, node->arglst[0]);
 	if (execve(node->cmd, node->arglst, s->env) == -1)
-		free_and_exit(EXECVE_ERROR, s, NULL, NULL);
+		free_and_exit(EXECVE_ERROR, s, NULL, node->arglst[0]);
 }
 
 void	ft_write_to_file(t_shell *s, t_parsed *node)

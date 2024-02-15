@@ -23,12 +23,14 @@ int	main(int argc, char **argv, char **envp)
 	s = init_shell(argc, argv, envp);
 	while (loop)
 	{
+		/*
 		if (argc >= 2)
 		{
 			loop = 0;
 			s->str = argv[1];
 		}
-		else if((isatty(fileno(stdin))))
+		*/
+		if((isatty(fileno(stdin))))
 		{
 			s->str = readline("💻 minishell > ");
 			if (!s->str)

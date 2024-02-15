@@ -36,14 +36,21 @@ int	multi_pipe(t_shell *s)
 void	wait_for_child(t_shell *s)
 {
 	t_parsed	*node;
-
+	int			status;
+	
 	node = s->lst;
+
 	while (node->next != NULL)
 	{
-		waitpid(node->pid, NULL, 0);
+		waitpid(node->pid, &status, 0);
 		node = node->next;
 	}
-	waitpid(node->pid, NULL, 0);
+	waitpid(node->pid, &status, 0);
+	if ( WIFEXITED(status) )
+    {
+		s->rval = WEXITSTATUS(status);    
+    	//printf("Exit status of the last child was %d\n", s->rval);
+	}
 }
 
 void	pipe_array(t_shell *s)
@@ -81,10 +88,10 @@ void	pipe_fork(t_parsed *lst, t_shell *s)
 	ind = 0;
 	while (node)
 	{
-		lst->pid = fork();
-		if (lst->pid == -1)
+		node->pid = fork();
+		if (node->pid == -1)
 			free_and_exit(PID_ERROR, s, NULL, NULL);
-		if (lst->pid == 0)
+		if (node->pid == 0)
 			multi_child_process(lst, s, ind);
 		ind++;
 		node = node->next;

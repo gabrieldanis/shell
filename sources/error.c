@@ -40,7 +40,7 @@ int	error_message(int n, char *exe_name, char *str, t_shell *s)
 	else if (n == CMD_ERROR)
 		ft_putstr_fd("command not found\n", 2);
 	else if (n == EXECVE_ERROR)
-		ft_putstr_fd("execve error\n", 2);
+		return (ft_putstr_fd("Command not found\n", 2), 127);
 	else if (n == FORK_ERROR)
 		ft_putstr_fd("fork error\n", 2);
 	else if (n == UNEX_TOKEN)
@@ -59,7 +59,7 @@ int	error_message(int n, char *exe_name, char *str, t_shell *s)
 	else if (n == DUP_ERROR)
 		ft_putstr_fd("dup2 error\n", 2);
 	else if (n == PERM_ERROR)
-		ft_putstr_fd("Permission denied\n", 2);
+		return (ft_putstr_fd("Permission denied\n", 2), 126);
 	else if (n == RL_ERROR)
 		ft_putstr_fd("Readline error\n", 2);
 	else if (n == OPEN_ERROR)

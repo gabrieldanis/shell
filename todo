@@ -3,10 +3,23 @@
 TODOOOOOOOOOOO
 
 
-*	do funcheck stuff
-*	make parsed lst double linked list
+
 *	export "declare -x" hardcoded??
-*	implement $? variable for export
+*	$? exit value
+*   signal handling (heredoc)
+*   parse errors 
+*   error handling
+
+
+==========================================
+
+*	do funcheck stuff
+*   valgrind memory leaks
+*   valgrind fd leaks
+*   norminette
+
+==========================================
+
 
 
 
