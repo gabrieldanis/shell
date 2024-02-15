@@ -42,6 +42,7 @@ int	main(int argc, char **argv, char **envp)
 			line = get_next_line(fileno(stdin));
 			s->str = ft_strtrim(line, "\n");
 			free(line);
+			loop = 0;
 		}
 
 		if (s->str && s->str[0] != '\0')
