@@ -34,10 +34,15 @@ void	handle_sig1(int sig, siginfo_t *info, void *ucontext)
 	(void)info;
 	(void)ucontext;
 	printf("\n"); // Move to a new line
+	if (g_var != -1)
+	{
     	rl_on_new_line(); // Regenerate the prompt on a newline
-    	rl_replace_line("", 0); // Clear the previous text
+   		rl_replace_line("", 0); // Clear the previous text
     	rl_redisplay();
+	}
+		g_var = 130;
 }
+
 void	handle_sig2(int sig, siginfo_t *info, void *ucontext)
 {
 	(void)sig;

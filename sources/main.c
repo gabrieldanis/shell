@@ -12,17 +12,19 @@
 
 #include "../header/minishell.h"
 
-int	g_signal = 0;
+int	g_var;
 
 int	main(int argc, char **argv, char **envp)
 {
 	t_shell	*s;
 	int	loop;
 
+	
 	loop = 1;
 	s = init_shell(argc, argv, envp);
 	while (loop)
 	{
+		g_var = 0;
 		/*
 		if (argc >= 2)
 		{
@@ -47,6 +49,8 @@ int	main(int argc, char **argv, char **envp)
 
 		if (s->str && s->str[0] != '\0')
 		{
+			if (g_var)
+				s->rval = g_var;
 			if (loop)
 				add_history(s->str);
 			str_to_token(s);

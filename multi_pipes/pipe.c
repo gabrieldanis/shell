@@ -48,15 +48,11 @@ void	wait_for_child(t_shell *s)
 	waitpid(node->pid, &status, 0);
 	if ( WIFEXITED(status) )
     {
-		printf("helo\n");
 		s->rval = WEXITSTATUS(status);    
-    	//printf("Exit status of the last child was %d\n", s->rval);
 	}
 	if (WIFSIGNALED(status)) 
 	{
-		printf("before: %d\n", s->rval);
-        //s->rval = WTERMSIG(status);
-		printf("Exit status of the last child was %d\n", WTERMSIG(status));
+        s->rval = 128 + WTERMSIG(status);
     } 
 	
 }
@@ -96,6 +92,7 @@ void	pipe_fork(t_parsed *lst, t_shell *s)
 	ind = 0;
 	while (node)
 	{
+		g_var = -1;
 		node->pid = fork();
 		if (node->pid == -1)
 			free_and_exit(PID_ERROR, s, NULL, NULL);
