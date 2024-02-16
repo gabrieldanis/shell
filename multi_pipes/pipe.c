@@ -48,9 +48,17 @@ void	wait_for_child(t_shell *s)
 	waitpid(node->pid, &status, 0);
 	if ( WIFEXITED(status) )
     {
+		printf("helo\n");
 		s->rval = WEXITSTATUS(status);    
     	//printf("Exit status of the last child was %d\n", s->rval);
 	}
+	if (WIFSIGNALED(status)) 
+	{
+		printf("before: %d\n", s->rval);
+        //s->rval = WTERMSIG(status);
+		printf("Exit status of the last child was %d\n", WTERMSIG(status));
+    } 
+	
 }
 
 void	pipe_array(t_shell *s)
