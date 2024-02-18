@@ -52,9 +52,9 @@ void	wait_for_child(t_shell *s)
 	}
 	if (WIFSIGNALED(status)) 
 	{
+		printf("exited childprocess because of a signal\n");
         s->rval = 128 + WTERMSIG(status);
-    } 
-	
+    } 	
 }
 
 void	pipe_array(t_shell *s)

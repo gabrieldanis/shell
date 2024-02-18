@@ -33,6 +33,7 @@ void	handle_sig1(int sig, siginfo_t *info, void *ucontext)
 	(void)sig;
 	(void)info;
 	(void)ucontext;
+	
 	printf("\n"); // Move to a new line
 	if (g_var != -1)
 	{
