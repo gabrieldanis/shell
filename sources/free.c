@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gdanis <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: dberes <dberes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 13:17:49 by gdanis            #+#    #+#             */
-/*   Updated: 2024/02/09 23:22:26 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/02/19 16:27:14 by dberes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,6 +156,7 @@ void	delete_files(t_shell *s)
 	{
 		if (node->type == HEREDOC)
 		{
+			printf("%s\n", node->filename);
 			if (unlink(node->filename) == -1) 
 				free_and_exit(UNLINK_ERROR, s, NULL, NULL);
 		}
