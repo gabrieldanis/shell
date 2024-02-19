@@ -6,7 +6,7 @@
 /*   By: dberes <dberes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/31 08:44:00 by gdanis            #+#    #+#             */
-/*   Updated: 2024/02/19 14:35:32 by dberes           ###   ########.fr       */
+/*   Updated: 2024/02/19 15:55:27 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -174,7 +174,7 @@ int	parse_heredoc(t_parsed *lst, t_shell *s)
 			if(!line)
 			{
 				error_message(HEREDOC_EOF_ERROR, "warning", node->next->str, s);
-				return (1);
+				return (0);
 			}
 			if (!ft_strncmp(line, node->next->str, ft_strlen(line) +1))
 				break ;

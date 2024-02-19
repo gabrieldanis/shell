@@ -6,7 +6,7 @@
 /*   By: dberes <dberes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 14:07:21 by gdanis            #+#    #+#             */
-/*   Updated: 2024/02/19 14:26:27 by dberes           ###   ########.fr       */
+/*   Updated: 2024/02/19 16:09:18 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,6 @@ int	error_message(int n, char *exe_name, char *str, t_shell *s)
 	}
 	else
 		ft_putstr_fd("unknown error\n", 2);
-	free_lsts(s);
+	//free_lsts(s);
 	return (n);
 }
