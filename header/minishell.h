@@ -66,6 +66,7 @@ extern int	g_var;
 # define OPEN_ERROR		19
 # define UNLINK_ERROR		20
 # define HEREDOC_EOF_ERROR	21
+# define NO_DELIMIT_ERROR	22
 
 
 /*********************************

@@ -160,7 +160,13 @@ int	parse_heredoc(t_parsed *lst, t_shell *s)
 	ft_signal_heredoc(s);
 	if (node->type == HEREDOC)
 	{
-		//node->infile = 1;
+		
+		if (!node->next)
+		{
+			error_message(NO_DELIMIT_ERROR, NULL, NULL, s);
+			s->rval = 2;
+			return (1);
+		}
 		create_tmp_file(node, s);
 		s->heredocfd = open(node->filename, O_WRONLY | O_APPEND | O_CREAT, 0644);
 		if (s->heredocfd == -1) 
@@ -276,7 +282,7 @@ void	create_tmp_file(t_parsed *node, t_shell *s)
 		i = 0;
 		while (i < 5)
 		{
-			node->filename[5 + i] = charset[(node->filename[5 + i] + 1) % 62];
+			node->filename[5 + i] = charset[(node->filename[5 + i] * 329) % 62];
 			i++;
 		}
 	}

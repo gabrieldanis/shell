@@ -154,9 +154,8 @@ void	delete_files(t_shell *s)
 	node = s->lst->lst;
 	while(node)
 	{
-		if (node->type == HEREDOC)
+		if (node->type == HEREDOC && node->filename)
 		{
-			printf("%s\n", node->filename);
 			if (unlink(node->filename) == -1) 
 				free_and_exit(UNLINK_ERROR, s, NULL, NULL);
 		}
