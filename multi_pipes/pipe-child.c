@@ -6,11 +6,14 @@
 /*   By: dberes <dberes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/01 10:51:32 by dberes            #+#    #+#             */
-/*   Updated: 2024/02/11 14:59:40 by dberes           ###   ########.fr       */
+/*   Updated: 2024/02/19 11:23:32 by dberes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../header/minishell.h"
+
+
+
 
 void	multi_child_process(t_parsed *lst, t_shell *s, int ind)
 {

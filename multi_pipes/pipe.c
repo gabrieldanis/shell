@@ -6,7 +6,7 @@
 /*   By: dberes <dberes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 17:14:11 by gdanis            #+#    #+#             */
-/*   Updated: 2024/02/08 19:47:24 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/02/19 12:04:29 by dberes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,9 +52,10 @@ void	wait_for_child(t_shell *s)
 	}
 	if (WIFSIGNALED(status)) 
 	{
-		printf("exited childprocess because of a signal\n");
+		//printf("exited childprocess because of a signal: %d\n", WTERMSIG(status));
         s->rval = 128 + WTERMSIG(status);
-    } 	
+    }
+	ft_signal(s);
 }
 
 void	pipe_array(t_shell *s)
@@ -83,6 +84,8 @@ void	pipe_array(t_shell *s)
 	}
 }
 
+
+
 void	pipe_fork(t_parsed *lst, t_shell *s)
 {
 	int			ind;
@@ -92,7 +95,7 @@ void	pipe_fork(t_parsed *lst, t_shell *s)
 	ind = 0;
 	while (node)
 	{
-		g_var = -1;
+		child_signal();
 		node->pid = fork();
 		if (node->pid == -1)
 			free_and_exit(PID_ERROR, s, NULL, NULL);

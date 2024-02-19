@@ -6,7 +6,7 @@
 /*   By: dberes <dberes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/01 13:47:54 by gdanis            #+#    #+#             */
-/*   Updated: 2024/02/09 16:14:43 by dberes           ###   ########.fr       */
+/*   Updated: 2024/02/19 14:33:11 by dberes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,11 @@ void	parse_lstiter(t_shell *s, int (*f)(t_parsed *lst, t_shell *s))
 		while (s->lst->lst)	
 		{
 			if (!f(s->lst->lst, s))
+			{
+				s->lst->lst = sub_start;
+				s->lst = start;
 				return ;
+			}
 			s->lst->lst = s->lst->lst->next;
 		}
 		s->lst->lst = sub_start;

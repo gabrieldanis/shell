@@ -6,7 +6,7 @@
 /*   By: dberes <dberes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 14:07:21 by gdanis            #+#    #+#             */
-/*   Updated: 2024/02/11 14:43:56 by dberes           ###   ########.fr       */
+/*   Updated: 2024/02/19 14:26:27 by dberes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int	error_message(int n, char *exe_name, char *str, t_shell *s)
 		ft_putstr_fd(exe_name, 2);
 		ft_putstr_fd(": ", 2);
 	}
-	if (str && n != UNEX_TOKEN)
+	if (str && n != UNEX_TOKEN && n != HEREDOC_EOF_ERROR)
 	{
 		ft_putstr_fd(str, 2);
 		ft_putstr_fd(": ", 2);
@@ -66,6 +66,12 @@ int	error_message(int n, char *exe_name, char *str, t_shell *s)
 		ft_putstr_fd("failed to open file\n", 2);
 	else if (n == UNLINK_ERROR)
 		ft_putstr_fd("failed to unlink file\n", 2);
+	else if (n == HEREDOC_EOF_ERROR)
+	{
+		ft_putstr_fd("here-document delimited by end-of-file (wanted `", 2);
+		ft_putstr_fd(str, 2);
+		ft_putstr_fd("')\n", 2);
+	}
 	else
 		ft_putstr_fd("unknown error\n", 2);
 	free_lsts(s);

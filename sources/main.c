@@ -6,7 +6,7 @@
 /*   By: dberes <dberes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 16:48:10 by gdanis            #+#    #+#             */
-/*   Updated: 2024/02/11 14:56:19 by dberes           ###   ########.fr       */
+/*   Updated: 2024/02/19 14:49:05 by dberes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,6 @@ int	main(int argc, char **argv, char **envp)
 			free(line);
 			loop = 0;
 		}
-
 		if (s->str && s->str[0] != '\0')
 		{
 			if (g_var)
@@ -61,6 +60,7 @@ int	main(int argc, char **argv, char **envp)
 				//print_token(s);
 				init_plst(s);
 				parse_lstiter(s, parse_heredoc);
+				ft_signal(s);
 				parse_lstiter(s, parse_isfile);
 				parse_lstiter(s, parse_cmdargs);
 				count_parsed_nodes(s);
@@ -70,7 +70,6 @@ int	main(int argc, char **argv, char **envp)
 					execute(s);
 				delete_files(s);
 				free_lsts(s);
-				
 			}
 		}
 		if (!s->str)

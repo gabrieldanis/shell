@@ -6,7 +6,7 @@
 /*   By: dberes <dberes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 16:49:31 by gdanis            #+#    #+#             */
-/*   Updated: 2024/02/11 16:13:05 by dberes           ###   ########.fr       */
+/*   Updated: 2024/02/19 13:46:44 by dberes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,13 +32,14 @@
 # include <stdarg.h>
 # include <fcntl.h>
 # include <sys/types.h> 
+# include <sys/ioctl.h>
 
 
 /*********************************
  * 	GLOBAL VARIABLE
  *********************************/
 
-int	g_var;
+extern int	g_var;
 
 /*********************************
  * 	ERROR CODES
@@ -64,6 +65,7 @@ int	g_var;
 # define RL_ERROR		18
 # define OPEN_ERROR		19
 # define UNLINK_ERROR		20
+# define HEREDOC_EOF_ERROR	21
 
 
 /*********************************
@@ -178,11 +180,18 @@ void		set_q_flag_plist(t_parsed *list, int *q_flag, char *quotes);
 void		remove_quotes(t_shell *s);
 void		free_token_list(t_token *tlst);
 void		free_parsed_list(t_parsed *list);
-void		handle_sig1(int sig, siginfo_t *info, void *ucontext);
-void		handle_sig2(int sig, siginfo_t *info, void *ucontext);
+//void		handle_sig1(int sig, siginfo_t *info, void *ucontext);
+void		handle_sig1(int signal_num);
+void		handle_sig2(int signal_num);
+void		ft_signal_heredoc(t_shell *s);
+void		handle_sig1_heredoc(int signal_num);
+//void		handle_sig2(int sig, siginfo_t *info, void *ucontext);
 void		init_signals(struct sigaction sig1, struct sigaction sig2);
 void		set_shlvl(t_shell *s);
 void		ft_signal(t_shell *s);
+void		handle_sig_child_1(int signal_num);
+void		handle_sig_child_2(int signal_num);
+void		child_signal(void);
 void		str_to_token(t_shell *s);
 void		setqflag(int *flag, char c);
 void		split_token(t_shell *s);
