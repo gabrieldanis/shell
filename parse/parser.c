@@ -179,7 +179,7 @@ int	parse_heredoc(t_parsed *lst, t_shell *s)
 		if (check_delimiter(node, s))
 		{
 			s->rval = 2;
-			return (1);
+			return (-1);
 		}
 		create_tmp_file(node, s);
 		s->heredocfd = open(node->filename, O_WRONLY | O_APPEND | O_CREAT, 0644);

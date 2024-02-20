@@ -25,6 +25,7 @@ int	main(int argc, char **argv, char **envp)
 	while (loop)
 	{
 		g_var = 0;
+		s->stop_flag = 0;
 		/*
 		if (argc >= 2)
 		{
@@ -66,7 +67,7 @@ int	main(int argc, char **argv, char **envp)
 				count_parsed_nodes(s);
 				//printlst(s);
 				arg_list(s);
-				if (s->lst->arglst && s->lst->arglst[0])
+				if (s->lst->arglst && s->lst->arglst[0] && !s->stop_flag)
 					execute(s);
 				delete_files(s);
 				free_lsts(s);

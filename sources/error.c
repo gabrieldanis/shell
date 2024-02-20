@@ -20,7 +20,7 @@ int	error_message(int n, char *exe_name, char *str, t_shell *s)
 		ft_putstr_fd(exe_name, 2);
 		ft_putstr_fd(": ", 2);
 	}
-	if (str && n != UNEX_TOKEN && n != HEREDOC_EOF_ERROR)
+	if (str && n != UNEX_TOKEN && n != HEREDOC_EOF_ERROR && n != DELIMIT_ERROR)
 	{
 		ft_putstr_fd(str, 2);
 		ft_putstr_fd(": ", 2);

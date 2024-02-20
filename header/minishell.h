@@ -144,6 +144,7 @@ typedef struct s_shell
 	int			rval;
 	int			cmds;
 	int			heredocfd;
+	int			stop_flag;
 }	t_shell;
 
 /*********************************

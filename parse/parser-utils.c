@@ -66,17 +66,18 @@ void	parse_lstiter(t_shell *s, int (*f)(t_parsed *lst, t_shell *s))
 {
 	t_parsed	*start;
 	t_parsed	*sub_start;
-	
+
 	start = s->lst;
 	while (s->lst)
 	{
 		sub_start = s->lst->lst;
 		while (s->lst->lst)	
 		{
-			if (!f(s->lst->lst, s))
+			if (f(s->lst->lst, s) != 1)
 			{
 				s->lst->lst = sub_start;
 				s->lst = start;
+				s->stop_flag = 1;
 				return ;
 			}
 			s->lst->lst = s->lst->lst->next;

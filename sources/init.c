@@ -43,6 +43,7 @@ t_shell	*init_shell(int argc, char **argv, char **envp)
 	set_shlvl(s);
 	ft_signal(s);
 	s->str = NULL;
+	s->stop_flag = 0;
 	return (s);
 }
 
