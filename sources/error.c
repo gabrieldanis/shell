@@ -76,6 +76,12 @@ int	error_message(int n, char *exe_name, char *str, t_shell *s)
 	{
 		ft_putstr_fd("syntax error near unexpected token `newline'\n", 2);
 	}
+	else if (n == DELIMIT_ERROR)
+	{
+		ft_putstr_fd("syntax error near unexpected token `", 2);
+		ft_putstr_fd(str, 2);
+		ft_putstr_fd("'\n", 2);
+	}
 	else
 		ft_putstr_fd("unknown error\n", 2);
 	//free_lsts(s);

@@ -146,6 +146,22 @@ int	parse_cmdargs(t_parsed *lst, t_shell *s)
 	return (1);
 }
 
+int	check_delimiter(t_parsed *node, t_shell *s)
+{
+	if (!node->next)
+	{
+		error_message(NO_DELIMIT_ERROR, NULL, NULL, s);
+		return (1);
+	}
+	else if (*(node->next->str) == '|')
+	{
+		error_message(DELIMIT_ERROR, NULL, node->next->str, s);
+		return (1);	
+	}
+	else
+		return (0);
+}
+
 int	parse_heredoc(t_parsed *lst, t_shell *s)
 {
 	char		*line;
@@ -160,10 +176,8 @@ int	parse_heredoc(t_parsed *lst, t_shell *s)
 	ft_signal_heredoc(s);
 	if (node->type == HEREDOC)
 	{
-		
-		if (!node->next)
+		if (check_delimiter(node, s))
 		{
-			error_message(NO_DELIMIT_ERROR, NULL, NULL, s);
 			s->rval = 2;
 			return (1);
 		}
