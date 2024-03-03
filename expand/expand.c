@@ -6,7 +6,7 @@
 /*   By: gdanis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/29 11:54:47 by gdanis            #+#    #+#             */
-/*   Updated: 2024/01/14 14:49:15 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/03/03 14:04:39 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,12 +52,16 @@ void	expand_nonsplittable_vars(t_shell *s)
 {
 	char	*var;
 
+	var = NULL;
 	if (s->tlst->sp->expand)
 	{
 		if (s->tlst->sp->str[1] == '?' && s->tlst->sp->str[2] == '\0')
 			var = token_vardup(NULL, s, EXIT_VALUE);
 		else
-			var = token_vardup(ft_getenv(s->tlst->sp->str + 1, s), s, 0);
+		{
+			if (ft_getenv(s->tlst->sp->str + 1, s))
+				var = token_vardup(ft_getenv(s->tlst->sp->str + 1, s), s, 0);
+		}
 	}
 	else
 		var = token_vardup(s->tlst->sp->str, s, 0);

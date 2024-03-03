@@ -6,7 +6,7 @@
 /*   By: gdanis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/29 09:52:50 by gdanis            #+#    #+#             */
-/*   Updated: 2024/02/08 19:45:43 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/03/03 10:59:15 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,9 +77,8 @@ void	print_token(t_shell *s)
 			{
 				if (s->tlst->sp->str[0] == '\0')
 					printf("\t\t\\0");
-				printf("\t\t%s", s->tlst->sp->str);
-				printf(" split: %d expand %d",s->tlst->sp->split, s->tlst->sp->expand);
-				printf(" heredoc_quote: %d\n",s->tlst->heredoc_quote);
+				printf("\t\t%s\n", s->tlst->sp->str);
+				//printf(" split: %d expand %d",s->tlst->sp->split, s->tlst->sp->expand);
 				s->tlst->sp = s->tlst->sp->next;
 			}
 			s->tlst->sp = sp_start;
@@ -94,7 +93,7 @@ void	print_token(t_shell *s)
 				if (s->tlst->ex->str && s->tlst->ex->str[0] == '\0')
 					printf("\t\t\\0");
 				printf("\t\t%s", s->tlst->ex->str);
-				printf(" split: %d expand %d",s->tlst->ex->split, s->tlst->ex->expand);
+				//printf(" split: %d expand %d",s->tlst->ex->split, s->tlst->ex->expand);
 
 				s->tlst->ex = s->tlst->ex->next;
 			}

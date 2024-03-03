@@ -6,7 +6,7 @@
 /*   By: dberes <dberes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/01 10:51:32 by dberes            #+#    #+#             */
-/*   Updated: 2024/02/19 11:23:32 by dberes           ###   ########.fr       */
+/*   Updated: 2024/03/03 13:26:49 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ void	ft_write_to_file(t_shell *s, t_parsed *node)
 	i = 0;
 	while (node->outfiles && node->outfiles[i])
 	{
-		if (access(node->outfiles[i], W_OK) != 0)
+		if (access(node->outfiles[i], F_OK) == 0 && access(node->outfiles[i], W_OK) != 0)
 			free_and_exit(PERM_ERROR, s, NULL, node->outfiles[i]);
 		if (node->outfiles[i + 1] != NULL)
 		{
@@ -106,6 +106,7 @@ void	fd_opener(t_parsed *lst, t_shell *s)
 		free_and_exit(NOFILE_ERROR, s, NULL, lst->infile);
 	if (dup2(lst->fd_inf, STDIN_FILENO) == -1)
 		free_and_exit(DUP_ERROR, s, NULL, NULL);
+	close(lst->fd_inf);
 }
 
 void	fd_closer(t_shell *s)

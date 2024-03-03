@@ -6,7 +6,7 @@
 /*   By: gdanis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/29 10:00:53 by gdanis            #+#    #+#             */
-/*   Updated: 2024/02/08 19:49:42 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/03/03 09:46:42 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ void	create_var_token(t_shell *s, int *i, int flag)
 	if ((flag == 2 || flag == 0) && s->tlst->type != HEREDOC_DEL
 		&& (check_is_var(s->tlst->str[*i]) || s->tlst->str[*i] == '?'))
 		last_token(s->tlst->sp)->expand = 1;
-	if (flag == 0 && !check_is_var(s->tlst->str[*i]))
+	if (flag == 0 && !check_is_var(s->tlst->str[*i]) && s->tlst->str[*i] != '\0')
 		last_token(s->tlst->sp)->expand = 1;
 	while (check_is_var(s->tlst->str[*i]) || (s->tlst->str[*i] == '?'
 			&& s->tlst->str[(*i) - 1] == '$'))

@@ -6,7 +6,7 @@
 /*   By: dberes <dberes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/01 13:47:54 by gdanis            #+#    #+#             */
-/*   Updated: 2024/02/19 14:33:11 by dberes           ###   ########.fr       */
+/*   Updated: 2024/03/03 11:00:29 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,8 @@ void	printlst(t_shell *s)
 		sub_start = s->lst->lst;
 		while (s->lst->lst)	
 		{
-			printf("type: %s str: %s heredoc_q %d\n", token_type(s->lst->lst->type), s->lst->lst->str, s->lst->lst->heredoc_quote);
+			//printf("type: %s str: %s heredoc_q %d\n", token_type(s->lst->lst->type), s->lst->lst->str, s->lst->lst->heredoc_quote);
+			printf("type: %s str: %s\n", token_type(s->lst->lst->type), s->lst->lst->str);
 			s->lst->lst = s->lst->lst->next;
 		}
 		printf("++++++++++++++++++++++++++++++++++\n\n");

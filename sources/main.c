@@ -6,7 +6,7 @@
 /*   By: dberes <dberes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 16:48:10 by gdanis            #+#    #+#             */
-/*   Updated: 2024/02/19 14:49:05 by dberes           ###   ########.fr       */
+/*   Updated: 2024/03/03 14:05:16 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,8 +56,8 @@ int	main(int argc, char **argv, char **envp)
 			if (s->tlst)
 			{
 				split_token(s);
-				expand_token(s);
 				//print_token(s);
+				expand_token(s);
 				init_plst(s);
 				parse_lstiter(s, parse_heredoc);
 				ft_signal(s);

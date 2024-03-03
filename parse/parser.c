@@ -6,7 +6,7 @@
 /*   By: dberes <dberes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/31 08:44:00 by gdanis            #+#    #+#             */
-/*   Updated: 2024/02/19 14:35:32 by dberes           ###   ########.fr       */
+/*   Updated: 2024/03/03 13:35:18 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -257,27 +257,27 @@ char	*heredoc_expand(char *line, t_shell *s)
 
 void	create_tmp_file(t_parsed *node, t_shell *s)
 {
-	int			i;
-	const char	*charset;
-	
-	i = 0;
-	charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-	node->filename = (char *)malloc(sizeof(char) * 10 + 1);
-	if(node->filename == NULL)
-		free_and_exit(MALLOC_ERROR, s, NULL, NULL);
-	ft_strlcpy(node->filename, "/tmp/", 6);
-	while (i < 5)
-	{
-		node->filename[5 + i] = charset[((i) * 1000) % 62];
-		i++;
-	}
-	while(access(node->filename, F_OK) == 0)
-	{
-		i = 0;
-		while (i < 5)
-		{
-			node->filename[5 + i] = charset[(node->filename[5 + i] + 1) % 62];
-			i++;
-		}
-	}
+    int            i;
+    const char    *charset;
+
+    i = 0;
+    charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+    node->filename = (char *)malloc(sizeof(char) * 10 + 1);
+    if(node->filename == NULL)
+        free_and_exit(MALLOC_ERROR, s, NULL, NULL);
+    ft_strlcpy(node->filename, "/tmp/", 6);
+    while (i < 5)
+    {
+        node->filename[5 + i] = charset[((i) * 1000) % 62];
+        i++;
+    }
+    while(access(node->filename, F_OK) == 0)
+    {
+        i = 0;
+        while (i < 5)
+        {
+            node->filename[5 + i] = charset[(node->filename[5 + i] * 329) % 62];
+            i++;
+        }
+    }
 }

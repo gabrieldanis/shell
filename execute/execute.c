@@ -6,7 +6,7 @@
 /*   By: dberes <dberes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 08:08:33 by gdanis            #+#    #+#             */
-/*   Updated: 2024/02/09 16:19:07 by dberes           ###   ########.fr       */
+/*   Updated: 2024/03/03 13:25:00 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,36 @@
 
 void	execute(t_shell *s)
 {
+	int	original_stdout;
+	int	original_stdin;
+
 	//parse_lstiter(s, parse_heredoc);
 	if(s->cmds == 1)
 	{
+		if (s->lst->infile)
+		{
+			original_stdin = dup(0);
+			fd_opener(s->lst, s);
+		}
+		if (s->lst->outfiles)
+		{
+			ft_write_to_file(s, s->lst);
+			original_stdout = dup(1);
+		}
 		if (execute_builtin(s, s->lst))
+		{
+			if (s->lst->outfiles)
+			{
+				dup2(original_stdout, 1);
+				close(original_stdout);
+			}
+			if (s->lst->infile)
+			{
+				dup2(original_stdin, 0);
+				close(original_stdin);
+			}
 			return ;
+		}
 	}
 	multi_pipe(s);
 }
