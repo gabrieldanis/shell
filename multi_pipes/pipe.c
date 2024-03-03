@@ -6,7 +6,7 @@
 /*   By: dberes <dberes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 17:14:11 by gdanis            #+#    #+#             */
-/*   Updated: 2024/02/19 12:04:29 by dberes           ###   ########.fr       */
+/*   Updated: 2024/03/03 15:38:55 by dberes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 int	multi_pipe(t_shell *s)
 {
-
 	s->path = get_path(s->env);
 	get_dir_multi(s);
 	/*file_create(&data);

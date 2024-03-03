@@ -6,7 +6,7 @@
 /*   By: dberes <dberes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 08:08:33 by gdanis            #+#    #+#             */
-/*   Updated: 2024/03/03 13:25:00 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/03/03 15:48:09 by dberes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	execute(t_shell *s)
 	int	original_stdin;
 
 	//parse_lstiter(s, parse_heredoc);
-	if(s->cmds == 1)
+	if(s->cmds == 1 && check_builtin(s->lst->arglst[0]))
 	{
 		if (s->lst->infile)
 		{
@@ -46,6 +46,25 @@ void	execute(t_shell *s)
 		}
 	}
 	multi_pipe(s);
+}
+
+int	check_builtin(char *str)
+{
+	if (!ft_strncmp(str, "echo\0", 5))
+		return (1);
+	if (!ft_strncmp(str, "exit\0", 5))
+		return (1);
+	if (!ft_strncmp(str, "pwd\0", 4))
+		return (1);
+	if (!ft_strncmp(str, "cd\0", 3))
+		return (1);
+	if (!ft_strncmp(str, "env\0", 4))
+		return (1);
+	if (!ft_strncmp(str, "export\0", 7))
+		return (1);
+	if (!ft_strncmp(str, "unset\0", 6))
+		return (1);
+	return (0);
 }
 
 int	execute_builtin(t_shell *s, t_parsed *node)

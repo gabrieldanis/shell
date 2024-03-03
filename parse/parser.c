@@ -6,7 +6,7 @@
 /*   By: dberes <dberes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/31 08:44:00 by gdanis            #+#    #+#             */
-/*   Updated: 2024/03/03 14:49:57 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/03/03 14:59:00 by dberes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -196,6 +196,7 @@ int	parse_heredoc(t_parsed *lst, t_shell *s)
 		}
 		if (line_new)
 			free(line_new);
+		close(s->heredocfd);
 	}
 	//node = node->next;
 	//}

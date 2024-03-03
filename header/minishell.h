@@ -6,7 +6,7 @@
 /*   By: dberes <dberes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 16:49:31 by gdanis            #+#    #+#             */
-/*   Updated: 2024/02/19 13:46:44 by dberes           ###   ########.fr       */
+/*   Updated: 2024/03/03 15:45:54 by dberes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -244,6 +244,7 @@ int			parse_cmdargs(t_parsed *lst, t_shell *s);
 int			is_delimiter(char c);
 int			is_operator(char c);
 int			arglst_size(t_parsed *lst);
+int			check_builtin(char *str);
 int			execute_builtin(t_shell *s, t_parsed *node);
 void		check_infiles(t_shell *s, t_parsed *lst);
 void		multi_child_process(t_parsed *lst, t_shell *s, int ind);
