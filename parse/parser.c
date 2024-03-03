@@ -6,7 +6,7 @@
 /*   By: dberes <dberes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/31 08:44:00 by gdanis            #+#    #+#             */
-/*   Updated: 2024/03/03 13:35:18 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/03/03 14:49:57 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -271,6 +271,7 @@ void	create_tmp_file(t_parsed *node, t_shell *s)
         node->filename[5 + i] = charset[((i) * 1000) % 62];
         i++;
     }
+	node->filename[10] = '\0';
     while(access(node->filename, F_OK) == 0)
     {
         i = 0;
