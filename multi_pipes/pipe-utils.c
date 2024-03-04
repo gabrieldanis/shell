@@ -6,7 +6,7 @@
 /*   By: dberes <dberes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 18:01:22 by gdanis            #+#    #+#             */
-/*   Updated: 2024/02/09 18:12:45 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/03/04 10:48:20 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,36 +26,39 @@ void	*get_dir_multi(t_shell *s)
 	node = s->lst;
 	while (node)
 	{
-		i = 0;
-		if (access(node->arglst[0], F_OK) == 0)
+		if (node->arglst && node->arglst[0])
 		{
-			node->cmd = ft_strdup(node->arglst[0]);
-			if (!node->cmd)
-				free_and_exit(MALLOC_ERROR, s, NULL, NULL);
-		}
-		else
-		{
-			cmd = ft_strjoin("/", node->arglst[0]);
-			if (!cmd)
-				free_and_exit(MALLOC_ERROR, s, NULL, NULL);
-			while (dirs[i] != NULL)
+			i = 0;
+			if (access(node->arglst[0], F_OK) == 0)
 			{
-				dir = ft_strjoin(dirs[i], cmd);
-				if (!dir)
+				node->cmd = ft_strdup(node->arglst[0]);
+				if (!node->cmd)
 					free_and_exit(MALLOC_ERROR, s, NULL, NULL);
-				if (access(dir, F_OK) == 0)
-				{
-					node->cmd = dir;
-					free(cmd);
-					cmd = NULL;
-					break ;
-				}
-				else
-					free (dir);
-				i++;
 			}
-			if (cmd)
-				free (cmd);
+			else
+			{
+				cmd = ft_strjoin("/", node->arglst[0]);
+				if (!cmd)
+					free_and_exit(MALLOC_ERROR, s, NULL, NULL);
+				while (dirs[i] != NULL)
+				{
+					dir = ft_strjoin(dirs[i], cmd);
+					if (!dir)
+						free_and_exit(MALLOC_ERROR, s, NULL, NULL);
+					if (access(dir, F_OK) == 0)
+					{
+						node->cmd = dir;
+						free(cmd);
+						cmd = NULL;
+						break ;
+					}
+					else
+						free (dir);
+					i++;
+				}
+				if (cmd)
+					free (cmd);
+			}
 		}
 		node = node->next;
 	}

@@ -6,7 +6,7 @@
 /*   By: dberes <dberes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/01 13:47:54 by gdanis            #+#    #+#             */
-/*   Updated: 2024/03/03 11:00:29 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/03/04 11:06:34 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,8 @@ char	*token_type(int i)
 		return ("argument      ");
 	if (i == FILE_DIR)
 		return ("file or dir   ");
+	if (i == OUTFILE)
+		return ("outfile	   ");
 	return ("unknown       ");
 }
 
@@ -117,7 +119,9 @@ void	appln_chararr(t_parsed *lst, char *str, t_shell *s)
 		tmp[i] = lst->outfiles[i];
 		i++;
 	}
-	tmp[i] = str;
+	tmp[i] = ft_strdup(str);
+	if (!tmp[i])
+		free_and_exit(MALLOC_ERROR, s, NULL, NULL);
 	i++;
 	tmp[i] = NULL;
 	if (lst->outfiles)

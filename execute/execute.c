@@ -6,7 +6,7 @@
 /*   By: dberes <dberes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 08:08:33 by gdanis            #+#    #+#             */
-/*   Updated: 2024/03/03 15:48:09 by dberes           ###   ########.fr       */
+/*   Updated: 2024/03/04 10:34:33 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	execute(t_shell *s)
 	int	original_stdin;
 
 	//parse_lstiter(s, parse_heredoc);
-	if(s->cmds == 1 && check_builtin(s->lst->arglst[0]))
+	if(s->cmds == 1 && s->lst->arglst && s->lst->arglst[0] && check_builtin(s->lst->arglst[0]))
 	{
 		if (s->lst->infile)
 		{

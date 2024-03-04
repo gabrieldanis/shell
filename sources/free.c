@@ -6,7 +6,7 @@
 /*   By: gdanis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 13:17:49 by gdanis            #+#    #+#             */
-/*   Updated: 2024/02/09 23:22:26 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/03/04 11:00:35 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,11 @@ void	free_parsed_list(t_parsed *lst)
 		}
 		if (tmp->cmd)
 			free (tmp->cmd);
+		if (tmp->outfiles)
+		{
+			free_2d_array((void **)tmp->outfiles);
+			tmp->outfiles = NULL;
+		}
 		if (tmp->arglst)
 		{
 			free_2d_array((void **)tmp->arglst);

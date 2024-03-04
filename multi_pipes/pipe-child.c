@@ -6,7 +6,7 @@
 /*   By: dberes <dberes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/01 10:51:32 by dberes            #+#    #+#             */
-/*   Updated: 2024/03/03 15:27:20 by dberes           ###   ########.fr       */
+/*   Updated: 2024/03/04 10:43:04 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,8 @@ void	multi_child_process(t_parsed *lst, t_shell *s, int ind)
 			free_and_exit(DUP_ERROR, s, NULL, NULL);
 	}	
 	fd_closer(s);
+	if (!lst->arglst || !lst->arglst[0])
+		free_and_exit(0, s, NULL, NULL);
 	if (execute_builtin(s, node))
 		free_and_exit(0, s, NULL, NULL);
 	if (node->cmd && access(node->cmd, R_OK) != 0)

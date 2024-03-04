@@ -6,7 +6,7 @@
 /*   By: dberes <dberes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 16:48:10 by gdanis            #+#    #+#             */
-/*   Updated: 2024/03/03 14:05:16 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/03/04 11:08:12 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,8 +66,7 @@ int	main(int argc, char **argv, char **envp)
 				count_parsed_nodes(s);
 				//printlst(s);
 				arg_list(s);
-				if (s->lst->arglst && s->lst->arglst[0])
-					execute(s);
+				execute(s);
 				delete_files(s);
 				free_lsts(s);
 			}
