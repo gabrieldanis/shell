@@ -26,10 +26,10 @@ int	ft_export(t_shell *s, t_parsed *lst, int env)
 	while (lst->arglst[i])
 	{
 		if (!is_varname(lst->arglst[i]))
-			return (error_message(IDENT_ERROR, "export", lst->arglst[i], s), 1);
+			return (error_message(IDENT_ERROR, "export", lst->arglst[i], s, errno), 1);
 		tmp = ft_strdup(lst->arglst[i]);
 		if (!tmp)
-			free_and_exit(MALLOC_ERROR, s, NULL, NULL);
+			free_and_exit(MALLOC_ERROR, s, NULL, NULL, errno);
 		if (ft_setenv(s, tmp))
 			return (1);
 		i++;

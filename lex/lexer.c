@@ -20,7 +20,7 @@ void	reset_token_lsts(t_shell *s)
 		s->tlst->sp = s->sp_start;
 	if (s->t_start && s->tlst)
 		s->tlst = s->t_start;
-	free_and_exit(MALLOC_ERROR, s, NULL, NULL);
+	free_and_exit(MALLOC_ERROR, s, NULL, NULL, errno);
 }
 
 void	ft_charjoin(char **s1, char c, t_shell *s)
@@ -109,5 +109,5 @@ void	str_to_token(t_shell *s)
 			non_operator_token(s, &i, &flag);
 	}
 	if (flag)
-		error_message(QUOTE_ERROR, NULL, NULL, s);
+		error_message(QUOTE_ERROR, NULL, NULL, s, errno);
 }

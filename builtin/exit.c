@@ -25,18 +25,18 @@ void	ft_exit(t_shell *s, t_parsed *lst)
 			if (!ft_isdigit(lst->lst->next->str[i]))
 			{
 				s->rval = 2;
-				error_message(NUM_ERROR, "exit", lst->lst->next->str, s);
-				free_and_exit(0, s, NULL, NULL);
+				error_message(NUM_ERROR, "exit", lst->lst->next->str, s, errno);
+				free_and_exit(0, s, NULL, NULL, errno);
 			}
 			i++;
 		}
 		if (lst->lst->next->next)
 		{
 			s->rval = 1;
-			error_message(ARGNUM_ERROR, "exit", NULL, s);
+			error_message(ARGNUM_ERROR, "exit", NULL, s, errno);
 			return ;
 		}
 		s->rval = ft_atoi(lst->lst->next->str);
 	}
-	free_and_exit(0, s, NULL, NULL);
+	free_and_exit(0, s, NULL, NULL, errno);
 }

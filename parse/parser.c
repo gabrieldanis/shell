@@ -30,7 +30,7 @@ void	addnewlstback(t_shell *s, t_parsed *lst)
 			s->tlst->ex = s->ex_start;
 		if (s->t_start && s->tlst)
 			s->tlst = s->t_start;
-		free_and_exit(MALLOC_ERROR, s, NULL, NULL);
+		free_and_exit(MALLOC_ERROR, s, NULL, NULL, errno);
 	}
 	*tmp = (t_parsed){0};
 	if (!lst)
@@ -90,7 +90,7 @@ void	node_dup(t_parsed *lst, char *s2, t_shell *s)
 			s->tlst->ex = s->ex_start;
 		if (s->t_start && s->tlst)
 			s->tlst = s->t_start;
-		free_and_exit(MALLOC_ERROR, s, NULL, NULL);
+		free_and_exit(MALLOC_ERROR, s, NULL, NULL, errno);
 	}
 	lst->type = s->tlst->type;
 
@@ -103,7 +103,7 @@ int	parse_isfile(t_parsed *lst, t_shell *s)
 	{
 		if (lst->next->type)
 		{
-			error_message(UNEX_TOKEN, NULL, lst->next->str, s);
+			error_message(UNEX_TOKEN, NULL, lst->next->str, s, errno);
 			return (0);
 		}
 	}
@@ -166,14 +166,14 @@ int	parse_heredoc(t_parsed *lst, t_shell *s)
 		if (s->heredocfd == -1) 
 		{
     		perror("Error opening file");
-    		free_and_exit(OPEN_ERROR, s, NULL, NULL);
+    		free_and_exit(OPEN_ERROR, s, NULL, NULL, errno);
 		}
 		while (1)
 		{
 			line = readline("> ");
 			if(!line)
 			{
-				error_message(HEREDOC_EOF_ERROR, "warning", node->next->str, s);
+				error_message(HEREDOC_EOF_ERROR, "warning", node->next->str, s, errno);
 				return (1);
 			}
 			if (!ft_strncmp(line, node->next->str, ft_strlen(line) +1))
@@ -189,10 +189,10 @@ int	parse_heredoc(t_parsed *lst, t_shell *s)
 			if(!line_new)
 			{
 				free(line);
-				free_and_exit(MALLOC_ERROR, s, NULL, NULL);
+				free_and_exit(MALLOC_ERROR, s, NULL, NULL, errno);
 			}
 			if(write(s->heredocfd, line_new, ft_strlen(line_new)) == -1)
-				free_and_exit(WRITE_ERROR, s, NULL, NULL);
+				free_and_exit(WRITE_ERROR, s, NULL, NULL, errno);
 		}
 		if (line_new)
 			free(line_new);
@@ -245,7 +245,7 @@ char	*heredoc_expand(char *line, t_shell *s)
 			{
 				free(str);
 				free(fstr);
-				free_and_exit(MALLOC_ERROR, s, NULL, NULL);
+				free_and_exit(MALLOC_ERROR, s, NULL, NULL, errno);
 			}
 			free(str);
 			free(fstr);
@@ -265,7 +265,7 @@ void	create_tmp_file(t_parsed *node, t_shell *s)
     charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
     node->filename = (char *)malloc(sizeof(char) * 10 + 1);
     if(node->filename == NULL)
-        free_and_exit(MALLOC_ERROR, s, NULL, NULL);
+        free_and_exit(MALLOC_ERROR, s, NULL, NULL, errno);
     ft_strlcpy(node->filename, "/tmp/", 6);
     while (i < 5)
     {

@@ -36,7 +36,7 @@ int	main(int argc, char **argv, char **envp)
 		{
 			s->str = readline("💻 minishell > ");
 			if (!s->str)
-				free_and_exit(0, s, NULL, NULL);
+				free_and_exit(0, s, NULL, NULL, errno);
 		}
 		else
 		{
@@ -76,5 +76,5 @@ int	main(int argc, char **argv, char **envp)
 		if (loop)
 			free(s->str);
 	}
-	free_and_exit(0, s, NULL, NULL);
+	free_and_exit(0, s, NULL, NULL, errno);
 }

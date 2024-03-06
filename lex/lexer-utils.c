@@ -45,7 +45,7 @@ void	token_addlstlast(t_token **lst, t_shell *s)
 			s->tlst->sp = s->sp_start;
 		if (s->t_start && s->tlst)
 			s->tlst = s->t_start;
-		free_and_exit(MALLOC_ERROR, s, NULL, NULL);
+		free_and_exit(MALLOC_ERROR, s, NULL, NULL, errno);
 	}
 	*tmp = (t_token){0};
 	if (!(*lst))

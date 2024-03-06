@@ -112,7 +112,7 @@ void	appln_chararr(t_parsed *lst, char *str, t_shell *s)
 		i++;
 	tmp = (char **)malloc(sizeof(char *) * (i + 2));
 	if (!tmp)
-		free_and_exit(MALLOC_ERROR, s, NULL, NULL);
+		free_and_exit(MALLOC_ERROR, s, NULL, NULL, errno);
 	i = 0;
 	while (lst->outfiles && lst->outfiles[i])
 	{
@@ -121,7 +121,7 @@ void	appln_chararr(t_parsed *lst, char *str, t_shell *s)
 	}
 	tmp[i] = ft_strdup(str);
 	if (!tmp[i])
-		free_and_exit(MALLOC_ERROR, s, NULL, NULL);
+		free_and_exit(MALLOC_ERROR, s, NULL, NULL, errno);
 	i++;
 	tmp[i] = NULL;
 	if (lst->outfiles)

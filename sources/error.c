@@ -12,15 +12,22 @@
 
 #include "../header/minishell.h"
 
-int	error_message(int n, char *exe_name, char *str, t_shell *s)
+int	error_message(int n, char *exe_name, char *str, t_shell *s, int err)
 {
+
+	(void) n;
 	ft_putstr_fd("minishell: ", 2);
 	if (exe_name)
 	{
 		ft_putstr_fd(exe_name, 2);
 		ft_putstr_fd(": ", 2);
 	}
-	if (str && n != UNEX_TOKEN && n != HEREDOC_EOF_ERROR)
+	if (n != CMD_ERROR)
+	{
+		s->rval = err;
+		perror(str);
+	}
+	/*if (str && n != UNEX_TOKEN && n != HEREDOC_EOF_ERROR)
 	{
 		ft_putstr_fd(str, 2);
 		ft_putstr_fd(": ", 2);
@@ -37,8 +44,15 @@ int	error_message(int n, char *exe_name, char *str, t_shell *s)
 		ft_putstr_fd("error", 2);
 	else if (n == NOFILE_ERROR)
 		ft_putstr_fd("No such file or directory\n", 2);
-	else if (n == CMD_ERROR)
-		ft_putstr_fd("command not found\n", 2);
+	*/
+	if (n == CMD_ERROR)
+	{
+		ft_putstr_fd(str, 2);
+		ft_putstr_fd(": ", 2);
+		s->rval = 127;
+		return(ft_putstr_fd("command not found\n", 2), 127);
+	}
+	/*
 	else if (n == EXECVE_ERROR)
 		return (ft_putstr_fd("Command not found\n", 2), 127);
 	else if (n == FORK_ERROR)
@@ -52,8 +66,8 @@ int	error_message(int n, char *exe_name, char *str, t_shell *s)
 		ft_putstr_fd("too many arguments\n", 2);
 	else if (n == NUM_ERROR)
 		ft_putstr_fd("numeric argument required\n", 2);
-	else if (n == WRITE_ERROR)
-		ft_putstr_fd("write to file failed\n", 2);
+	//else if (n == WRITE_ERROR)
+	//	ft_putstr_fd("write to file failed\n", 2);
 	else if (n == READ_ERROR)
 		ft_putstr_fd("read from file failed\n", 2);
 	else if (n == DUP_ERROR)
@@ -73,7 +87,7 @@ int	error_message(int n, char *exe_name, char *str, t_shell *s)
 		ft_putstr_fd("')\n", 2);
 	}
 	else
-		ft_putstr_fd("unknown error\n", 2);
+		ft_putstr_fd("unknown error\n", 2);*/
 	//free_lsts(s);
-	return (n);
+	return (s->rval);
 }

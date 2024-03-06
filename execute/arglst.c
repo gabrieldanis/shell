@@ -21,7 +21,7 @@ void	fill_arglst(t_shell *s, int *i)
 		{
 			s->lst->lst = s->pp_start;
 			s->lst = s->p_start;
-			free_and_exit(MALLOC_ERROR, s, NULL, NULL);
+			free_and_exit(MALLOC_ERROR, s, NULL, NULL, errno);
 		}
 		(*i)++;
 	}
@@ -38,7 +38,7 @@ void	arg_list(t_shell *s)
 		s->lst->arglst = (char **)malloc
 			((arglst_size(s->lst) + 1) * sizeof(char *));
 		if (!s->lst->arglst)
-			free_and_exit(MALLOC_ERROR, s, NULL, NULL);
+			free_and_exit(MALLOC_ERROR, s, NULL, NULL, errno);
 		s->pp_start = s->lst->lst;
 		i = 0;
 		while (s->lst->lst)

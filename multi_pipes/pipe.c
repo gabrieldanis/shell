@@ -15,12 +15,8 @@
 int	multi_pipe(t_shell *s)
 {
 	s->path = get_path(s->env);
-	get_dir_multi(s);
-	/*file_create(&data);
-	if (s.path == NULL)
-		path_error(&data);
-	check_args(&data, &ex);
-	check_commands_bonus(&data, &ex);*/
+	if (get_dir_multi(s) != 0)
+		return (0);
 	pipe_array(s);
 	if (s->cmds)
 	{
@@ -65,7 +61,7 @@ void	pipe_array(t_shell *s)
 	{
 		s->pipes =(int **)malloc(sizeof(int *) * (s->cmds - 1));
 		if (!s->pipes)
-			free_and_exit(MALLOC_ERROR, s, NULL, NULL);
+			free_and_exit(MALLOC_ERROR, s, NULL, NULL, errno);
 	}
 	i = 0;
 	while (i < s->cmds - 1)
@@ -78,7 +74,7 @@ void	pipe_array(t_shell *s)
 	while (i < s->cmds - 1)
 	{
 		if (pipe(s->pipes[i]) == -1)
-			free_and_exit(PIPE_ERROR, s, NULL, NULL);
+			free_and_exit(PIPE_ERROR, s, NULL, NULL, errno);
 		i++;
 	}
 }
@@ -97,7 +93,7 @@ void	pipe_fork(t_parsed *lst, t_shell *s)
 		child_signal();
 		node->pid = fork();
 		if (node->pid == -1)
-			free_and_exit(PID_ERROR, s, NULL, NULL);
+			free_and_exit(PID_ERROR, s, NULL, NULL, errno);
 		if (node->pid == 0)
 			multi_child_process(lst, s, ind);
 		ind++;

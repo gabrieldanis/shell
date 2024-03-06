@@ -12,7 +12,7 @@
 
 #include "../header/minishell.h"
 
-void	*get_dir_multi(t_shell *s)
+int	get_dir_multi(t_shell *s)
 {
 	t_parsed	*node;
 	char		**dirs;
@@ -22,7 +22,7 @@ void	*get_dir_multi(t_shell *s)
 
 	dirs = ft_split(s->path, 58);
 	if (!dirs)
-		free_and_exit(MALLOC_ERROR, s, NULL, NULL);
+		free_and_exit(MALLOC_ERROR, s, NULL, NULL, errno);
 	node = s->lst;
 	while (node)
 	{
@@ -33,18 +33,18 @@ void	*get_dir_multi(t_shell *s)
 			{
 				node->cmd = ft_strdup(node->arglst[0]);
 				if (!node->cmd)
-					free_and_exit(MALLOC_ERROR, s, NULL, NULL);
+					free_and_exit(MALLOC_ERROR, s, NULL, NULL, errno);
 			}
 			else
 			{
 				cmd = ft_strjoin("/", node->arglst[0]);
 				if (!cmd)
-					free_and_exit(MALLOC_ERROR, s, NULL, NULL);
+					free_and_exit(MALLOC_ERROR, s, NULL, NULL, errno);
 				while (dirs[i] != NULL)
 				{
 					dir = ft_strjoin(dirs[i], cmd);
 					if (!dir)
-						free_and_exit(MALLOC_ERROR, s, NULL, NULL);
+						free_and_exit(MALLOC_ERROR, s, NULL, NULL, errno);
 					if (access(dir, F_OK) == 0)
 					{
 						node->cmd = dir;
@@ -58,13 +58,18 @@ void	*get_dir_multi(t_shell *s)
 				}
 				if (cmd)
 					free (cmd);
+				if (!node->cmd)
+				{
+					s->rval = error_message(CMD_ERROR, NULL, node->arglst[0], s, errno);
+					return (-1);
+				}
 			}
 		}
 		node = node->next;
 	}
 	if (dirs)
 		free_2d_array((void **)dirs);
-	return (NULL);
+	return (0);
 }
 
 /*
@@ -74,7 +79,7 @@ void	*get_dir_multi(t_shell *s)
  * need to finish dir_copy. maybe multipipe works then
  *
  *
- */
+ 
 
 void	dir_copy(t_shell *s, int *ex, int i)
 {
@@ -102,6 +107,7 @@ void	dir_copy(t_shell *s, int *ex, int i)
 		node = node->next;
 	}
 }
+*/
 
 char	*get_path(char **env)
 {

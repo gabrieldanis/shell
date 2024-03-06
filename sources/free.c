@@ -12,12 +12,20 @@
 
 #include "../header/minishell.h"
 
-void	free_and_exit(int n, t_shell *s, char *exe_name, char *str)
+void	free_and_exit(int n, t_shell *s, char *exe_name, char *str, int err)
 {
 	int	exitval;
 
+	(void)err;
+	/*if (err != 127)
+	{
+		s->rval = err;
+		perror(str);
+	}*/
 	if (n != 0)
-		s->rval = error_message(n, exe_name, str, s);
+	{
+		s->rval = error_message(n, exe_name, str, s, errno);
+	}
 	if (s && s->env)
 		free_2d_array((void **)s->env);
 	free_lsts(s);
@@ -162,7 +170,7 @@ void	delete_files(t_shell *s)
 		if (node->type == HEREDOC)
 		{
 			if (unlink(node->filename) == -1) 
-				free_and_exit(UNLINK_ERROR, s, NULL, NULL);
+				free_and_exit(UNLINK_ERROR, s, NULL, NULL, errno);
 		}
 		node = node->next;
 	}

@@ -33,6 +33,7 @@
 # include <fcntl.h>
 # include <sys/types.h> 
 # include <sys/ioctl.h>
+# include <errno.h>
 
 
 /*********************************
@@ -170,7 +171,7 @@ void		sort_var_list(char **dup);
 void		ft_print_export_lines(char **dup, int i, int j);
 void		free_2d_array(void **ptr);
 void		set_q_flag(t_token *list, int *q_flag, char *quotes);
-void		free_and_exit(int n, t_shell *s, char *exe, char *str);
+void		free_and_exit(int n, t_shell *s, char *exe, char *str, int err);
 void		plist_strjoin(t_shell *s, int *q_flag, char *quotes);
 void		plist_add_to_last(t_parsed **tmp, t_shell *s);
 void		plist_add_to_last_ex(t_parsed **tmp, t_shell *s);
@@ -224,7 +225,7 @@ char		*get_next_line(int fd);
 int			update_existing_var(t_shell *s, char *str);
 int			append_var(t_shell *s, char *str);
 int			ft_echo(t_parsed *list);
-int			error_message(int n, char *exe_name, char *str, t_shell *s);
+int			error_message(int n, char *exe_name, char *str, t_shell *s, int err);
 int			isenvar(char *env, char *varname);
 int			parse_isfile(t_parsed *lst, t_shell *s);
 int			parse_heredoc(t_parsed *lst, t_shell *s);
@@ -258,7 +259,7 @@ void		multi_parent(t_parsed *lst);
 void		child_processes(t_parsed *lst, t_shell *s, int ind);
 void		wait_for_child(t_shell *s);
 void		free_list(t_parsed *lst);
-void		*get_dir_multi(t_shell *s);
+int			get_dir_multi(t_shell *s);
 t_parsed	*get_to_node(t_parsed *node, int ind);
 //void		path_error(t_data *data);
 //void		check_args(t_data *data, int *ex);

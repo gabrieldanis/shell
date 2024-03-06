@@ -19,13 +19,13 @@ void	update_pwd(t_shell *s, char *pwd)
 
 	tmp = ft_strjoin("OLDPWD=", pwd);
 	if (!tmp)
-		free_and_exit(MALLOC_ERROR, s, NULL, NULL);
+		free_and_exit(MALLOC_ERROR, s, NULL, NULL, errno);
 	ft_setenv(s, tmp);
 	//free(tmp);
 	getcwd(pwd_new, sizeof(pwd_new));
 	tmp = ft_strjoin("PWD=", pwd_new);
 	if (!tmp)
-		free_and_exit(MALLOC_ERROR, s, NULL, NULL);
+		free_and_exit(MALLOC_ERROR, s, NULL, NULL, errno);
 	ft_setenv(s, tmp);
 	//free(tmp);
 }
@@ -42,14 +42,14 @@ int	ft_chdir(t_shell *s, t_parsed *lst)
 		if (lst->arglst[2])
 		{
 			s->rval = 1;
-			return (error_message(ARGNUM_ERROR, "cd", NULL, s));
+			return (error_message(ARGNUM_ERROR, "cd", NULL, s, errno));
 		}
 		getcwd(pwd, sizeof(pwd));
 		n = chdir(lst->arglst[1]);
 		if (n == -1)
 		{
 			s->rval = 1;
-			return (error_message(NOFILE_ERROR, "cd", lst->arglst[1], s));
+			return (error_message(NOFILE_ERROR, "cd", lst->arglst[1], s, errno));
 		}
 		update_pwd(s, pwd);
 	}
@@ -64,7 +64,7 @@ int	ft_chdir(t_shell *s, t_parsed *lst)
 		{
 			s->rval = 1;
 			return (error_message(NOFILE_ERROR, "cd",
-					ft_strchr(s->env[i], '=') + 1, s));
+					ft_strchr(s->env[i], '=') + 1, s, errno));
 		}
 		update_pwd(s, pwd);
 	}

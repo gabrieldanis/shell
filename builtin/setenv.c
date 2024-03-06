@@ -31,7 +31,7 @@ int	ft_setenv(t_shell *s, char *str)
 	{
 		free(str);
 		free_2d_array((void **)tmp);
-		free_and_exit(MALLOC_ERROR, s, NULL, NULL);
+		free_and_exit(MALLOC_ERROR, s, NULL, NULL, errno);
 	}
 	i = 0;
 	while (tmp[i] && ft_strncmp(tmp[i], "_=", 2))
@@ -42,7 +42,7 @@ int	ft_setenv(t_shell *s, char *str)
 			free(str);
 			free_2d_array((void **)tmp);
 			free_2d_array_i((void ***)&s->env, i);
-			free_and_exit(MALLOC_ERROR, s, NULL, NULL);
+			free_and_exit(MALLOC_ERROR, s, NULL, NULL, errno);
 		}
 		s->env[i] = tmp_str;
 		i++;
@@ -54,7 +54,7 @@ int	ft_setenv(t_shell *s, char *str)
 	{
 		free_2d_array((void **)tmp);
 		free_2d_array_i((void ***)&s->env, i);
-		free_and_exit(MALLOC_ERROR, s, NULL, NULL);
+		free_and_exit(MALLOC_ERROR, s, NULL, NULL, errno);
 	}
 	s->env[i] = tmp_str;
 	i++;

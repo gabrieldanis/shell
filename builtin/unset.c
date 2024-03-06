@@ -28,7 +28,7 @@ void	ft_unset_str(t_shell *s, char *str, int i)
 
 	tmp = (char **)malloc(sizeof(char *) * i);
 	if (!tmp)
-		free_and_exit(MALLOC_ERROR, s, NULL, NULL);
+		free_and_exit(MALLOC_ERROR, s, NULL, NULL, errno);
 	i = 0;
 	j = 0;
 	while (s->env[i + j])
