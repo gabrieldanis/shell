@@ -6,7 +6,7 @@
 /*   By: gdanis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/29 10:00:53 by gdanis            #+#    #+#             */
-/*   Updated: 2024/03/03 09:46:42 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/03/06 11:15:38 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,13 @@ void	create_nonvar_token(t_shell *s, int *i, int *flag)
 	}
 }
 
+
+
 void	create_var_token(t_shell *s, int *i, int flag)
 {
+	int	non_varname_char;
+
+	non_varname_char = 0;
 	if (!s->tlst->sp || (s->tlst->sp && last_token(s->tlst->sp)->str))
 		token_addlstlast(&s->tlst->sp, s);
 	ft_charjoin(&(last_token(s->tlst->sp)->str), s->tlst->str[*i], s);
@@ -47,12 +52,22 @@ void	create_var_token(t_shell *s, int *i, int flag)
 		last_token(s->tlst->sp)->expand = 1;
 	if (flag == 0 && !check_is_var(s->tlst->str[*i]) && s->tlst->str[*i] != '\0')
 		last_token(s->tlst->sp)->expand = 1;
+	if (!check_is_var(s->tlst->str[*i]) && s->tlst->str[*i] != '?'
+			&& s->tlst->str[*i] != '\0' && s->tlst->str[*i] != '"'
+			&& s->tlst->str[*i] != 39 && s->tlst->str[*i] != ' '
+			&& s->tlst->str[*i] != '=')
+	{
+		non_varname_char = 1;
+		last_token(s->tlst->sp)->expand = 0;
+		last_token(s->tlst->sp)->split = 0;
+	}
 	while (check_is_var(s->tlst->str[*i]) || (s->tlst->str[*i] == '?'
-			&& s->tlst->str[(*i) - 1] == '$'))
+			&& s->tlst->str[(*i) - 1] == '$') || non_varname_char)
 	{
 		ft_charjoin(&(last_token(s->tlst->sp)->str), s->tlst->str[*i], s);
 		(*i)++;
-		if (s->tlst->str[(*i) - 1] == '?' && s->tlst->str[(*i) - 2] == '$')
+		if ((s->tlst->str[(*i) - 1] == '?' && s->tlst->str[(*i) - 2] == '$') ||
+		(non_varname_char && (!s->tlst->str[*i] || is_delimiter(*i) || s->tlst->str[*i] == '$')))
 			break ;
 	}
 }

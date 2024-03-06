@@ -6,7 +6,7 @@
 /*   By: gdanis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/29 11:54:47 by gdanis            #+#    #+#             */
-/*   Updated: 2024/03/03 14:04:39 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/03/05 17:41:45 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,8 @@ void	create_space_token(t_shell *s, int *i, char *var)
 	{
 		while (var[*i] == ' ' || var[*i] == '\t')
 			(*i)++;
-		if (var[*i] && last_token(s->tlst->ex)->str)
+		//if (var[*i] && last_token(s->tlst->ex)->str)
+		if (last_token(s->tlst->ex)->str)
 			token_addlstlast(&s->tlst->ex, s);
 	}
 }
