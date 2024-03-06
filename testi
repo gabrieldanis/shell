@@ -1,5 +1,0 @@
-cat << $USER
-hello there why
-not
-$USER
-
