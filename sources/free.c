@@ -37,6 +37,7 @@ void	free_and_exit(int n, t_shell *s, char *exe_name, char *str, int err)
 	else
 		exitval = MALLOC_ERROR;
 	clear_history();
+	//delete_files(s);
 	exit (exitval);
 }
 

@@ -46,7 +46,7 @@ int	main(int argc, char **argv, char **envp)
 			if (!line)
 			{
 				loop = 0;
-				free_and_exit(0, s, NULL, NULL);
+				free_and_exit(0, s, NULL, NULL, errno);
 			}
 			s->str = ft_strtrim(line, "\n");
 			free(line);

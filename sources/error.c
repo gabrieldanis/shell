@@ -22,11 +22,30 @@ int	error_message(int n, char *exe_name, char *str, t_shell *s, int err)
 		ft_putstr_fd(exe_name, 2);
 		ft_putstr_fd(": ", 2);
 	}
-	if (n != CMD_ERROR)
+	if (n != CMD_ERROR && n != UNEX_TOKEN && n!= ARGNUM_ERROR)
 	{
-		s->rval = err;
+		if (err == 21 || n == NOFILE_ERROR)
+			s->rval = 1;
+		else
+			s->rval = err;
 		perror(str);
 	}
+	if (n == CMD_ERROR)
+	{
+		ft_putstr_fd(str, 2);
+		ft_putstr_fd(": ", 2);
+		s->rval = 127;
+		return(ft_putstr_fd("command not found\n", 2), 127);
+	}
+	else if (n == UNEX_TOKEN)
+	{
+		ft_putstr_fd("syntax error near unexpected token: `", 2);
+		ft_putstr_fd(str, 2);
+		ft_putstr_fd("'\n", 2);
+		s->rval = 2;
+	}
+	else if (n == ARGNUM_ERROR)
+		ft_putstr_fd("too many arguments\n", 2);
 	/*if (str && n != UNEX_TOKEN && n != HEREDOC_EOF_ERROR)
 	{
 		ft_putstr_fd(str, 2);
@@ -44,26 +63,12 @@ int	error_message(int n, char *exe_name, char *str, t_shell *s, int err)
 		ft_putstr_fd("error", 2);
 	else if (n == NOFILE_ERROR)
 		ft_putstr_fd("No such file or directory\n", 2);
-	*/
-	if (n == CMD_ERROR)
-	{
-		ft_putstr_fd(str, 2);
-		ft_putstr_fd(": ", 2);
-		s->rval = 127;
-		return(ft_putstr_fd("command not found\n", 2), 127);
-	}
-	/*
 	else if (n == EXECVE_ERROR)
 		return (ft_putstr_fd("Command not found\n", 2), 127);
 	else if (n == FORK_ERROR)
 		ft_putstr_fd("fork error\n", 2);
-	else if (n == UNEX_TOKEN)
-	{
-		ft_putstr_fd("syntax error near unexpected token: ", 2);
-		ft_putendl_fd(str, 2);
-	}
-	else if (n == ARGNUM_ERROR)
-		ft_putstr_fd("too many arguments\n", 2);
+	
+	
 	else if (n == NUM_ERROR)
 		ft_putstr_fd("numeric argument required\n", 2);
 	//else if (n == WRITE_ERROR)

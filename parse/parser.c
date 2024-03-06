@@ -283,7 +283,7 @@ void	create_tmp_file(t_parsed *node, t_shell *s)
         i = 0;
         while (i < 5)
         {
-            node->filename[5 + i] = charset[(node->filename[5 + i] * 329) % 62];
+            node->filename[5 + i] = charset[(node->filename[5 + i] * 3) % 62];
             i++;
         }
     }
