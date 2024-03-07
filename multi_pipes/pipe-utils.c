@@ -6,7 +6,7 @@
 /*   By: dberes <dberes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 18:01:22 by gdanis            #+#    #+#             */
-/*   Updated: 2024/03/04 10:48:20 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/03/07 11:35:05 by dberes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,13 +20,17 @@ int	get_dir_multi(t_shell *s)
 	char		*cmd;
 	int			i;
 
-	dirs = ft_split(s->path, 58);
-	if (!dirs)
-		free_and_exit(MALLOC_ERROR, s, NULL, NULL, errno);
+	dirs = NULL;
+	if(s->path)
+	{
+		dirs = ft_split(s->path, 58);
+		if (!dirs)
+			free_and_exit(MALLOC_ERROR, s, NULL, NULL, errno);
+	}
 	node = s->lst;
 	while (node)
 	{
-		if (node->arglst && node->arglst[0])
+		if (node->arglst && node->arglst[0] && dirs)
 		{
 			i = 0;
 			if (access(node->arglst[0], F_OK) == 0)
@@ -64,6 +68,12 @@ int	get_dir_multi(t_shell *s)
 					return (-1);
 				}
 			}
+		}
+		else if (!dirs && node->arglst && node->arglst[0])
+		{
+			node->cmd = ft_strdup(node->arglst[0]);
+			if (!node->cmd)
+				free_and_exit(MALLOC_ERROR, s, NULL, NULL, errno);
 		}
 		node = node->next;
 	}

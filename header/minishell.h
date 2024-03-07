@@ -6,7 +6,7 @@
 /*   By: dberes <dberes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 16:49:31 by gdanis            #+#    #+#             */
-/*   Updated: 2024/03/03 15:45:54 by dberes           ###   ########.fr       */
+/*   Updated: 2024/03/07 12:36:40 by dberes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,7 @@ extern int	g_var;
 # define OPEN_ERROR		19
 # define UNLINK_ERROR		20
 # define HEREDOC_EOF_ERROR	21
+# define EXPTOK_ERROR	22
 
 
 /*********************************

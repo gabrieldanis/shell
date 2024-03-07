@@ -6,7 +6,7 @@
 /*   By: dberes <dberes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/01 10:51:32 by dberes            #+#    #+#             */
-/*   Updated: 2024/03/04 10:43:04 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/03/07 11:26:53 by dberes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,12 +38,15 @@ void	multi_child_process(t_parsed *lst, t_shell *s, int ind)
 			free_and_exit(DUP_ERROR, s, NULL, NULL, errno);
 	}	
 	fd_closer(s);
-	if (!lst->arglst || !lst->arglst[0])
+	
+	if (!node->arglst || !node->arglst[0])
 		free_and_exit(0, s, NULL, NULL, errno);
+	//printf("node->cmd: %s\n", node->cmd);
 	if (execute_builtin(s, node))
 		free_and_exit(0, s, NULL, NULL, errno);
 	if (node->cmd && access(node->cmd, R_OK) != 0)
 			free_and_exit(PERM_ERROR, s, NULL, node->arglst[0], errno);
+	
 	if (execve(node->cmd, node->arglst, s->env) == -1)
 		free_and_exit(EXECVE_ERROR, s, NULL, node->arglst[0], errno);
 }
