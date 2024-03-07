@@ -6,7 +6,7 @@
 /*   By: dberes <dberes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 18:01:22 by gdanis            #+#    #+#             */
-/*   Updated: 2024/03/07 11:35:05 by dberes           ###   ########.fr       */
+/*   Updated: 2024/03/07 13:36:49 by dberes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ int	get_dir_multi(t_shell *s)
 				if (!node->cmd)
 					free_and_exit(MALLOC_ERROR, s, NULL, NULL, errno);
 			}
-			else
+			else if (node->arglst[0][0] != '\0')
 			{
 				cmd = ft_strjoin("/", node->arglst[0]);
 				if (!cmd)
@@ -67,6 +67,11 @@ int	get_dir_multi(t_shell *s)
 					s->rval = error_message(CMD_ERROR, NULL, node->arglst[0], s, errno);
 					return (-1);
 				}
+			}
+			if (node->arglst[0][0] == '\0')
+			{
+				s->rval = error_message(CMD_ERROR, NULL, node->arglst[0], s, errno);
+				return (-1);
 			}
 		}
 		else if (!dirs && node->arglst && node->arglst[0])

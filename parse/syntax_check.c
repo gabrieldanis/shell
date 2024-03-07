@@ -6,14 +6,14 @@
 /*   By: dberes <dberes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/07 12:29:39 by dberes            #+#    #+#             */
-/*   Updated: 2024/03/07 12:36:07 by dberes           ###   ########.fr       */
+/*   Updated: 2024/03/07 12:46:37 by dberes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../header/minishell.h"
 
 
-void	syntax_check(t_shell *s);
+int	syntax_check(t_shell *s)
 {
 	t_token *node;
 
@@ -24,11 +24,19 @@ void	syntax_check(t_shell *s);
 		{
 			if (!node->next)
 			{
-				errno = 2;
-				error_message(EXPTOK_ERROR, NULL, "newline", s, errno);
-				return ;
+				error_message(UNEX_TOKEN, NULL, "newline", s, errno);
+				return (1);
+			}
+		}
+		if (node->type == HEREDOC)
+		{
+			if (node->next->type)
+			{
+				error_message(UNEX_TOKEN, NULL, node->next->str, s, errno);
+				return (1);
 			}
 		}
 		node = node->next;	
 	}
+	return (0);
 }

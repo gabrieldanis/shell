@@ -6,7 +6,7 @@
 /*   By: dberes <dberes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 14:07:21 by gdanis            #+#    #+#             */
-/*   Updated: 2024/03/04 12:45:13 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/03/07 12:39:14 by dberes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ int	error_message(int n, char *exe_name, char *str, t_shell *s, int err)
 	}
 	else if (n == ARGNUM_ERROR)
 		ft_putstr_fd("too many arguments\n", 2);
+		
 	/*if (str && n != UNEX_TOKEN && n != HEREDOC_EOF_ERROR)
 	{
 		ft_putstr_fd(str, 2);

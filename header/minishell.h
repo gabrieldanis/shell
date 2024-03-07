@@ -6,7 +6,7 @@
 /*   By: dberes <dberes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 16:49:31 by gdanis            #+#    #+#             */
-/*   Updated: 2024/03/07 12:36:40 by dberes           ###   ########.fr       */
+/*   Updated: 2024/03/07 12:44:22 by dberes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,6 @@ extern int	g_var;
 # define OPEN_ERROR		19
 # define UNLINK_ERROR		20
 # define HEREDOC_EOF_ERROR	21
-# define EXPTOK_ERROR	22
 
 
 /*********************************
@@ -248,6 +247,7 @@ int			is_operator(char c);
 int			arglst_size(t_parsed *lst);
 int			check_builtin(char *str);
 int			execute_builtin(t_shell *s, t_parsed *node);
+int			syntax_check(t_shell *s);
 void		check_infiles(t_shell *s, t_parsed *lst);
 void		multi_child_process(t_parsed *lst, t_shell *s, int ind);
 //void		multi_parent_process(t_plist **lst, t_data *data, int ind);
