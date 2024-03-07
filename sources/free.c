@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gdanis <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: dberes <dberes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 13:17:49 by gdanis            #+#    #+#             */
-/*   Updated: 2024/03/04 11:00:35 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/03/07 10:05:48 by dberes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,8 @@
 void	free_and_exit(int n, t_shell *s, char *exe_name, char *str, int err)
 {
 	int	exitval;
-
-	(void)err;
+	delete_files(s);
+	//(void)err;
 	/*if (err != 127)
 	{
 		s->rval = err;
@@ -24,7 +24,7 @@ void	free_and_exit(int n, t_shell *s, char *exe_name, char *str, int err)
 	}*/
 	if (n != 0)
 	{
-		s->rval = error_message(n, exe_name, str, s, errno);
+		s->rval = error_message(n, exe_name, str, s, err);
 	}
 	if (s && s->env)
 		free_2d_array((void **)s->env);
@@ -37,7 +37,6 @@ void	free_and_exit(int n, t_shell *s, char *exe_name, char *str, int err)
 	else
 		exitval = MALLOC_ERROR;
 	clear_history();
-	//delete_files(s);
 	exit (exitval);
 }
 
@@ -165,14 +164,17 @@ void	delete_files(t_shell *s)
 {
 	t_parsed	*node;
 
-	node = s->lst->lst;
-	while(node)
+	if (s->lst && s->lst->lst)
 	{
-		if (node->type == HEREDOC)
+		node = s->lst->lst;
+		while(node)
 		{
-			if (unlink(node->filename) == -1) 
-				free_and_exit(UNLINK_ERROR, s, NULL, NULL, errno);
+			if (node->type == HEREDOC && !access(node->filename, F_OK))
+			{
+				if (unlink(node->filename) == -1) 
+					free_and_exit(UNLINK_ERROR, s, NULL, NULL, errno);
+			}
+			node = node->next;
 		}
-		node = node->next;
 	}
 }
