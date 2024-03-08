@@ -6,7 +6,7 @@
 /*   By: gdanis <gdanis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/15 11:28:20 by gdanis            #+#    #+#             */
-/*   Updated: 2024/02/08 19:44:28 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/03/08 13:54:44 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	ft_export(t_shell *s, t_parsed *lst, int env)
 
 	i = 0;
 	if (env)
-		return (ft_env(s), 0);
+		return (ft_env(s, lst), 127);
 	if (!lst->arglst[1])
 		return (ft_print_export(s->env, s), 0);
 	i++;

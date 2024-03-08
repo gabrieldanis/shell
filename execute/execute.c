@@ -6,7 +6,7 @@
 /*   By: dberes <dberes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 08:08:33 by gdanis            #+#    #+#             */
-/*   Updated: 2024/03/04 10:34:33 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/03/08 13:41:11 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ int	execute_builtin(t_shell *s, t_parsed *node)
 	if (!ft_strncmp(node->arglst[0], "cd\0", 3))
 		return (ft_chdir(s, node), 1);
 	if (!ft_strncmp(node->arglst[0], "env\0", 4))
-		return (s->rval = ft_export(s, node, 1), 1);
+		return (ft_export(s, node, 1), 1);
 	if (!ft_strncmp(node->arglst[0], "export\0", 7))
 		return (s->rval = ft_export(s, node, 0), 1);
 	if (!ft_strncmp(node->arglst[0], "unset\0", 6))

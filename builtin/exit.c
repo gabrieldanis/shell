@@ -6,7 +6,7 @@
 /*   By: gdanis <gdanis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/04 14:23:00 by gdanis            #+#    #+#             */
-/*   Updated: 2024/02/08 19:44:09 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/03/08 13:22:01 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,18 +15,19 @@
 void	ft_exit(t_shell *s, t_parsed *lst)
 {
 	int	i;
+	unsigned char	num;
 
-	//ft_putstr_fd("exit\n", 2);
 	if (lst && lst->lst->next)
 	{
 		i = 0;
-		while (lst->lst->next->str[i])
+		if (lst->lst->next->str[0] == '+' || lst->lst->next->str[0] == '-')
+			i++;
+		while (lst->lst->next->str[i] || lst->lst->next->str[0] == '\0')
 		{
-			if (!ft_isdigit(lst->lst->next->str[i]))
+			if (!ft_isdigit(lst->lst->next->str[i]) || lst->lst->next->str[0] == '\0')
 			{
-				s->rval = 2;
-				error_message(NUM_ERROR, "exit", lst->lst->next->str, s, errno);
-				free_and_exit(0, s, NULL, NULL, errno);
+				errno = 2;
+				free_and_exit(NUM_ERROR, s, "exit", lst->lst->next->str, errno);
 			}
 			i++;
 		}
@@ -36,7 +37,9 @@ void	ft_exit(t_shell *s, t_parsed *lst)
 			error_message(ARGNUM_ERROR, "exit", NULL, s, errno);
 			return ;
 		}
-		s->rval = ft_atoi(lst->lst->next->str);
+
+		num = ft_atoi(lst->lst->next->str);
+		s->rval = num;
 	}
 	free_and_exit(0, s, NULL, NULL, errno);
 }

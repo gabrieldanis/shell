@@ -6,7 +6,7 @@
 /*   By: dberes <dberes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 16:49:31 by gdanis            #+#    #+#             */
-/*   Updated: 2024/03/07 12:44:22 by dberes           ###   ########.fr       */
+/*   Updated: 2024/03/08 13:55:25 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,8 @@ extern int	g_var;
 # define OPEN_ERROR		19
 # define UNLINK_ERROR		20
 # define HEREDOC_EOF_ERROR	21
+# define ISDIR_ERROR	22
+# define ENV_ERROR	22
 
 
 /*********************************
@@ -234,7 +236,7 @@ int			ft_pwd(t_shell *s);
 int			ft_setenv(t_shell *s, char *str);
 int			is_varname(char *str);
 int			ft_chdir(t_shell *s, t_parsed *lst);
-int			ft_env(t_shell *s);
+int			ft_env(t_shell *s, t_parsed *lst);
 int			ft_export(t_shell *s, t_parsed *lst, int env);
 int			ft_print_export(char **envp, t_shell *s);
 int			delimiter_char(char c);

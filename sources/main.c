@@ -6,7 +6,7 @@
 /*   By: dberes <dberes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 16:48:10 by gdanis            #+#    #+#             */
-/*   Updated: 2024/03/07 12:42:52 by dberes           ###   ########.fr       */
+/*   Updated: 2024/03/08 11:39:47 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,8 @@ int	main(int argc, char **argv, char **envp)
 					arg_list(s);
 					execute(s);
 				}
+				else
+					loop = 0;
 				delete_files(s);
 				free_lsts(s);
 			}

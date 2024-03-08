@@ -6,7 +6,7 @@
 /*   By: dberes <dberes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 14:07:21 by gdanis            #+#    #+#             */
-/*   Updated: 2024/03/07 12:39:14 by dberes           ###   ########.fr       */
+/*   Updated: 2024/03/08 13:46:28 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,19 +15,32 @@
 int	error_message(int n, char *exe_name, char *str, t_shell *s, int err)
 {
 
-	(void) n;
-	ft_putstr_fd("minishell: ", 2);
+	//printf("err = %d, n = %d\n", err , n);
+	if (n != ENV_ERROR)
+		ft_putstr_fd("minishell: ", 2);
 	if (exe_name)
 	{
 		ft_putstr_fd(exe_name, 2);
 		ft_putstr_fd(": ", 2);
 	}
-	if (n != CMD_ERROR && n != UNEX_TOKEN && n!= ARGNUM_ERROR)
+	if (n == NUM_ERROR)
 	{
-		if (err == 21 || n == NOFILE_ERROR)
+		ft_putstr_fd(str, 2);
+		ft_putstr_fd(": ", 2);
+	}
+	if (n != CMD_ERROR && n != UNEX_TOKEN && n!= ARGNUM_ERROR && n!= NUM_ERROR && n != ENV_ERROR)
+	{
+		if (err == 21 || n == NOFILE_ERROR || n == WRITE_ERROR)
 			s->rval = 1;
+		else if (err == 21 && n == ISDIR_ERROR)
+			s->rval = 126;
 		else
 			s->rval = err;
+		perror(str);
+	}
+	if (n == ENV_ERROR)
+	{
+		s->rval = 127;
 		perror(str);
 	}
 	if (n == CMD_ERROR)
@@ -42,6 +55,11 @@ int	error_message(int n, char *exe_name, char *str, t_shell *s, int err)
 		ft_putstr_fd("syntax error near unexpected token: `", 2);
 		ft_putstr_fd(str, 2);
 		ft_putstr_fd("'\n", 2);
+		s->rval = 2;
+	}
+	else if (n == NUM_ERROR)
+	{
+		ft_putstr_fd("numeric argument required\n", 2);
 		s->rval = 2;
 	}
 	else if (n == ARGNUM_ERROR)
