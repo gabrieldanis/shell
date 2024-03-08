@@ -20,19 +20,29 @@ int	syntax_check(t_shell *s)
 	node = s->tlst;
 	while(node)
 	{
-		if (node->type == HEREDOC)
+		if (node->type == HEREDOC || node->type == RED_IN || node->type == RED_OUT || node->type == RED_APP)
 		{
 			if (!node->next)
 			{
 				error_message(UNEX_TOKEN, NULL, "newline", s, errno);
 				return (1);
 			}
-		}
-		if (node->type == HEREDOC)
-		{
 			if (node->next->type)
 			{
 				error_message(UNEX_TOKEN, NULL, node->next->str, s, errno);
+				return (1);
+			}
+		}
+		if (s->tlst->type == PIPE)
+		{
+			error_message(UNEX_TOKEN, NULL, "|", s, errno);
+			return (1);
+		}
+		if (node->type == PIPE)
+		{
+			if (node->next->type == PIPE || !node->next)
+			{
+				error_message(UNEX_TOKEN, NULL, "|", s, errno);
 				return (1);
 			}
 		}
