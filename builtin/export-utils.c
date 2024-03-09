@@ -6,7 +6,7 @@
 /*   By: gdanis <gdanis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/16 17:13:51 by gdanis            #+#    #+#             */
-/*   Updated: 2024/01/14 15:31:40 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/03/09 12:06:59 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,13 +81,15 @@ int	is_varname(char *str)
 	int	i;
 
 	i = 0;
-	if (!ft_isalpha(str[i]))
+	if (!ft_isalpha(str[i]) && str[i] != '_')
 		return (0);
 	while (str[i] && str[i] != '+' && str[i] != '=')
 	{
 		if (!check_is_var(str[i]))
 			return (0);
 		i++;
+		if (str[i] == '+' && str[i + 1] != '=')
+			return (0);
 	}
 	return (1);
 }

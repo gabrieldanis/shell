@@ -6,7 +6,7 @@
 /*   By: dberes <dberes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 14:07:21 by gdanis            #+#    #+#             */
-/*   Updated: 2024/03/09 10:54:48 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/03/09 11:57:21 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,8 @@ int	error_message(int n, char *exe_name, char *str, t_shell *s, int err)
 		ft_putstr_fd(str, 2);
 		ft_putstr_fd(": ", 2);
 	}
-	if (n != CMD_ERROR && n != UNEX_TOKEN && n!= ARGNUM_ERROR && n!= NUM_ERROR && n != ENV_ERROR)
+	if (n != CMD_ERROR && n != UNEX_TOKEN && n!= ARGNUM_ERROR
+			&& n!= NUM_ERROR && n != ENV_ERROR && n != IDENT_ERROR)
 	{
 		if (n == NOFILE_ERROR)
 			s->rval = 127;
@@ -67,5 +68,13 @@ int	error_message(int n, char *exe_name, char *str, t_shell *s, int err)
 	}
 	else if (n == ARGNUM_ERROR)
 		ft_putstr_fd("too many arguments\n", 2);
+	else if (n == IDENT_ERROR)
+	{
+		if (err == 2)
+			ft_putstr_fd("invalid option\n", 2);
+		else
+			ft_putstr_fd("invalid idenftifier\n", 2);
+		s->rval = err;
+	}
 	return (s->rval);
 }

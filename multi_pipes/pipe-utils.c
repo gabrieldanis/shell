@@ -6,7 +6,7 @@
 /*   By: dberes <dberes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 18:01:22 by gdanis            #+#    #+#             */
-/*   Updated: 2024/03/09 10:42:33 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/03/09 11:19:21 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ int	get_dir_multi(t_shell *s)
 	char		**dirs;
 	char		*dir;
 	char		*cmd;
+	char		*tmp;		
 	int			i;
 
 	dirs = NULL;
@@ -26,6 +27,11 @@ int	get_dir_multi(t_shell *s)
 		dirs = ft_split(s->path, 58);
 		if (!dirs)
 			free_and_exit(MALLOC_ERROR, s, NULL, NULL, errno);
+		tmp = ft_strdup(ft_strchr(dirs[0], '=') + 1);
+		if (!tmp)
+			free_and_exit(MALLOC_ERROR, s, NULL, NULL, errno);
+		free(dirs[0]);
+		dirs[0] = tmp;
 	}
 	node = s->lst;
 	while (node)
@@ -82,43 +88,6 @@ int	get_dir_multi(t_shell *s)
 		free_2d_array((void **)dirs);
 	return (0);
 }
-
-/*
- *
- *
- *
- * need to finish dir_copy. maybe multipipe works then
- *
- *
- 
-
-void	dir_copy(t_shell *s, int *ex, int i)
-{
-	char		*directory;
-	t_parsed	*node;
-
-	node = s->lst;
-	directory = NULL;
-	while(node)
-	{
-		if (access(node->arglst[0], F_OK) == 0)
-			node->cmd = ft_strdup(node->arglst[0]);
-		else
-		{
-			directory = get_dir_multi(s);
-			if (directory == NULL)
-			{
-				printf("pipex: %s: command not found\n", node->arglst[0]);
-				*ex = 1;
-			}
-			else if (*ex == 0)
-				node->dirs[i - 2] = ft_strdup(directory);
-			free(directory);
-		}
-		node = node->next;
-	}
-}
-*/
 
 char	*get_path(char **env)
 {

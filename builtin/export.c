@@ -6,7 +6,7 @@
 /*   By: gdanis <gdanis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/15 11:28:20 by gdanis            #+#    #+#             */
-/*   Updated: 2024/03/08 13:54:44 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/03/09 11:53:38 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,13 @@ int	ft_export(t_shell *s, t_parsed *lst, int env)
 	while (lst->arglst[i])
 	{
 		if (!is_varname(lst->arglst[i]))
+		{
+			if (lst->arglst[i][0] == '-')
+				errno = 2;
+			else
+				errno = 1;
 			return (error_message(IDENT_ERROR, "export", lst->arglst[i], s, errno), 1);
+		}
 		tmp = ft_strdup(lst->arglst[i]);
 		if (!tmp)
 			free_and_exit(MALLOC_ERROR, s, NULL, NULL, errno);
