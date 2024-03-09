@@ -6,7 +6,7 @@
 /*   By: dberes <dberes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 18:01:22 by gdanis            #+#    #+#             */
-/*   Updated: 2024/03/07 13:36:49 by dberes           ###   ########.fr       */
+/*   Updated: 2024/03/09 10:42:33 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,10 @@ int	get_dir_multi(t_shell *s)
 		if (node->arglst && node->arglst[0] && dirs)
 		{
 			i = 0;
-			if (access(node->arglst[0], F_OK) == 0)
+			if (ft_strchr(node->arglst[0], '/'))
 			{
+				if(access(node->arglst[0], F_OK) == 0)
+					node->cmd_found = 1;
 				node->cmd = ft_strdup(node->arglst[0]);
 				if (!node->cmd)
 					free_and_exit(MALLOC_ERROR, s, NULL, NULL, errno);
@@ -52,6 +54,7 @@ int	get_dir_multi(t_shell *s)
 					if (access(dir, F_OK) == 0)
 					{
 						node->cmd = dir;
+						node->cmd_found = 1;
 						free(cmd);
 						cmd = NULL;
 						break ;
@@ -62,20 +65,13 @@ int	get_dir_multi(t_shell *s)
 				}
 				if (cmd)
 					free (cmd);
-				if (!node->cmd)
-				{
-					s->rval = error_message(CMD_ERROR, NULL, node->arglst[0], s, errno);
-					return (-1);
-				}
-			}
-			if (node->arglst[0][0] == '\0')
-			{
-				s->rval = error_message(CMD_ERROR, NULL, node->arglst[0], s, errno);
-				return (-1);
 			}
 		}
-		else if (!dirs && node->arglst && node->arglst[0])
+		if (!node->cmd && node->arglst && node->arglst[0])
 		{
+			node->cmd_found = 0;
+			if(access(node->arglst[0], F_OK) == 0 && !s->path)
+				node->cmd_found = 1;
 			node->cmd = ft_strdup(node->arglst[0]);
 			if (!node->cmd)
 				free_and_exit(MALLOC_ERROR, s, NULL, NULL, errno);

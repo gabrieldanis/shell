@@ -6,7 +6,7 @@
 /*   By: dberes <dberes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/01 10:51:32 by dberes            #+#    #+#             */
-/*   Updated: 2024/03/08 10:47:08 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/03/09 10:22:18 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,19 +38,36 @@ void	multi_child_process(t_parsed *lst, t_shell *s, int ind)
 			free_and_exit(DUP_ERROR, s, NULL, NULL, errno);
 	}	
 	fd_closer(s);
+
+	/**** COMMAND EXECUTION BEGINS HERE ****/
 	
+	// NO COMMAND
 	if (!node->arglst || !node->arglst[0])
 		free_and_exit(0, s, NULL, NULL, errno);
-	if (execute_builtin(s, node))
-		free_and_exit(0, s, NULL, NULL, errno);
-	if (node->cmd[ft_strlen(node->cmd) - 1] == '/')
+
+	// CMD IS A DIRECTORY
+	if (node->cmd[ft_strlen(node->cmd) - 1] == '/' ||
+			(ft_strchr(node->cmd, '/') && !node->cmd_found))
 	{
+		if (access(node->cmd, F_OK))
+			free_and_exit(NOFILE_ERROR, s, NULL, node->arglst[0], errno);
 		errno = 21;
 		free_and_exit(ISDIR_ERROR, s, NULL, node->arglst[0], errno);
-
 	}
-	if (node->cmd && access(node->cmd, F_OK) != 0)
+
+	// BUILTIN
+	if (execute_builtin(s, node))
+		free_and_exit(0, s, NULL, NULL, errno);
+
+	// PATH EXISTS CMD NOT FOUND
+	if (s->path && !node->cmd_found)
+		free_and_exit(CMD_ERROR, s,  NULL, node->arglst[0], errno);
+
+	// CMD NOT EXECUTABLE "
+	if ((node->cmd || !s->path) && access(node->cmd, X_OK) != 0)
 		free_and_exit(PERM_ERROR, s, NULL, node->arglst[0], errno);
+
+	// ERROR DURING EXECUTION OF COMMAND
 	if (execve(node->cmd, node->arglst, s->env) == -1)
 		free_and_exit(EXECVE_ERROR, s, NULL, node->arglst[0], errno);
 }
@@ -65,7 +82,7 @@ void	ft_write_to_file(t_shell *s, t_parsed *node)
 	while (node->outfiles && node->outfiles[i])
 	{
 		if (access(node->outfiles[i], F_OK) == 0 && access(node->outfiles[i], W_OK) != 0)
-			free_and_exit(PERM_ERROR, s, NULL, node->outfiles[i], errno);
+			free_and_exit(OUTFILE_ERROR, s, NULL, node->outfiles[i], errno);
 		if (node->outfiles[i + 1] != NULL)
 		{
 			old = open(node->outfiles[i], O_WRONLY | O_TRUNC | O_CREAT, 0644);
@@ -100,7 +117,7 @@ void	check_infiles(t_shell *s, t_parsed *lst)
 	while (node)
 	{
 		if (node->type == INFILE && access(node->str, F_OK) != 0)
-			free_and_exit(NOFILE_ERROR, s, NULL, node->str, errno);
+			free_and_exit(NOINFILE_ERROR, s, NULL, node->str, errno);
 		if (node->type == INFILE && access(node->str, R_OK) != 0)
 			free_and_exit(PERM_ERROR, s, NULL, node->str, errno);
 		node = node->next;
@@ -130,23 +147,3 @@ void	fd_closer(t_shell *s)
 		i++;
 	}
 }
-/*
-int	check_last_heredoc(t_parsed *lst, t_shell *s)
-{
-	t_parsed	*node;
-	int			flag;
-
-	flag = 0;
-	node = lst->lst;
-	while(node)
-	{
-		if(node->type == HEREDOC)
-		{
-			flag = 1;
-			lst->last_heredoc = node->filename;
-		}
-		node = node->next;
-	}
-	return (flag);
-}
-*/

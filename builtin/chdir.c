@@ -6,7 +6,7 @@
 /*   By: gdanis <gdanis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/15 09:17:56 by gdanis            #+#    #+#             */
-/*   Updated: 2024/02/09 15:04:35 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/03/09 10:53:52 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,10 +47,7 @@ int	ft_chdir(t_shell *s, t_parsed *lst)
 		getcwd(pwd, sizeof(pwd));
 		n = chdir(lst->arglst[1]);
 		if (n == -1)
-		{
-			s->rval = 1;
-			return (error_message(NOFILE_ERROR, "cd", lst->arglst[1], s, errno));
-		}
+			return (error_message(NOCDFILE_ERROR, "cd", lst->arglst[1], s, errno));
 		update_pwd(s, pwd);
 	}
 	else
@@ -63,7 +60,7 @@ int	ft_chdir(t_shell *s, t_parsed *lst)
 		if (n == -1)
 		{
 			s->rval = 1;
-			return (error_message(NOFILE_ERROR, "cd",
+			return (error_message(NOCDFILE_ERROR, "cd",
 					ft_strchr(s->env[i], '=') + 1, s, errno));
 		}
 		update_pwd(s, pwd);

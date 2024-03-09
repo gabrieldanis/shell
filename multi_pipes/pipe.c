@@ -6,7 +6,7 @@
 /*   By: dberes <dberes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 17:14:11 by gdanis            #+#    #+#             */
-/*   Updated: 2024/03/04 10:45:01 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/03/08 17:15:51 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,9 @@ int	multi_pipe(t_shell *s)
 		return (0);
 	pipe_array(s);
 	if (s->cmds)
-	{
 		pipe_fork(s->lst, s);
-	}
 	fd_closer(s);
 	wait_for_child(s);
-	//return (free_list(s), free_array(s->lst->dirs), 0);
 	return (0);
 }
 
@@ -42,14 +39,9 @@ void	wait_for_child(t_shell *s)
 	}
 	waitpid(node->pid, &status, 0);
 	if ( WIFEXITED(status) )
-    {
 		s->rval = WEXITSTATUS(status);    
-	}
 	if (WIFSIGNALED(status)) 
-	{
-		//printf("exited childprocess because of a signal: %d\n", WTERMSIG(status));
         s->rval = 128 + WTERMSIG(status);
-    }
 	ft_signal(s);
 }
 

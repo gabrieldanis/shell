@@ -6,7 +6,7 @@
 /*   By: dberes <dberes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 16:49:31 by gdanis            #+#    #+#             */
-/*   Updated: 2024/03/08 13:55:25 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/03/09 10:54:19 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,29 +46,32 @@ extern int	g_var;
  * 	ERROR CODES
  *********************************/
 
-# define MALLOC_ERROR		1
-# define QUOTE_ERROR		2 /* unclosed quote */
-# define IDENT_ERROR		3
-# define GEN_ERROR		4
-# define NOFILE_ERROR		5
-# define CMD_ERROR		6
-# define EXECVE_ERROR		7
-# define FORK_ERROR		8
-# define UNEX_TOKEN		9
-# define ARGNUM_ERROR		10
-# define NUM_ERROR		11
-# define PIPE_ERROR		12
-# define PID_ERROR		13
-# define DUP_ERROR		14
-# define WRITE_ERROR		15
-# define PERM_ERROR		16
-# define READ_ERROR		17
-# define RL_ERROR		18
-# define OPEN_ERROR		19
-# define UNLINK_ERROR		20
-# define HEREDOC_EOF_ERROR	21
-# define ISDIR_ERROR	22
-# define ENV_ERROR	22
+# define MALLOC_ERROR			1
+# define QUOTE_ERROR 			2 /* unclosed quote */
+# define IDENT_ERROR 			3
+# define GEN_ERROR				4
+# define NOFILE_ERROR			5
+# define CMD_ERROR				6
+# define EXECVE_ERROR			7
+# define FORK_ERROR				8
+# define UNEX_TOKEN				9
+# define ARGNUM_ERROR			10
+# define NUM_ERROR				11
+# define PIPE_ERROR				12
+# define PID_ERROR				13
+# define DUP_ERROR				14
+# define WRITE_ERROR			15
+# define PERM_ERROR				16
+# define READ_ERROR				17
+# define RL_ERROR				18
+# define OPEN_ERROR				19
+# define UNLINK_ERROR			20
+# define HEREDOC_EOF_ERROR		21
+# define ISDIR_ERROR			22
+# define ENV_ERROR				23
+# define NOINFILE_ERROR			24
+# define OUTFILE_ERROR			25
+# define NOCDFILE_ERROR			26
 
 
 /*********************************
@@ -117,12 +120,13 @@ typedef struct s_parsed
 	int				eof;
 	int				fd_inf;
 	int				fd_outf;
-	char			**dirs;
 	char			*cmd;
+	int				cmd_found;
+	char			**dirs;
+	char			**dirs2;
 	int				index;
 	int				append;
 	pid_t			pid;
-	char			**dirs2;
 	char			*filename;
 	char			*last_heredoc;
 	int				heredoc_quote;
