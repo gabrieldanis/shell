@@ -1,0 +1,6 @@
+echo $PATH
+echo $HOME
+unset PATH HOME
+echo $PATH
+echo $HOME
+

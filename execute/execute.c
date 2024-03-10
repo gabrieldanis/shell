@@ -6,7 +6,7 @@
 /*   By: dberes <dberes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 08:08:33 by gdanis            #+#    #+#             */
-/*   Updated: 2024/03/09 12:14:26 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/03/10 21:44:14 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,8 @@ void	execute(t_shell *s)
 		}
 		if (s->lst->outfiles)
 		{
-			ft_write_to_file(s, s->lst);
 			original_stdout = dup(1);
+			ft_write_to_file(s, s->lst);
 		}
 		if (execute_builtin(s, s->lst))
 		{

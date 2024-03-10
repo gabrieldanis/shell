@@ -6,7 +6,7 @@
 /*   By: gdanis <gdanis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 15:29:32 by gdanis            #+#    #+#             */
-/*   Updated: 2024/03/09 12:13:27 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/03/10 21:21:43 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,5 +77,5 @@ int	ft_unset(t_shell *s, t_parsed *lst)
 			ft_unset_str(s, lst->arglst[k], i);
 		k++;
 	}
-	return (0);
+	return (s->rval = 0, 0);
 }
