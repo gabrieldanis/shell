@@ -6,7 +6,7 @@
 /*   By: dberes <dberes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 16:49:31 by gdanis            #+#    #+#             */
-/*   Updated: 2024/03/09 10:54:19 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/03/10 20:18:31 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -280,6 +280,7 @@ void		close_all_pipes(t_shell *s);
 void		appln_chararr(t_parsed *lst, char *str, t_shell *s);
 void		count_parsed_nodes(t_shell *s);
 void		ft_write_to_file(t_shell *s, t_parsed *node);
+void		create_outfiles(t_shell *s);
 
 /*
 void		check_commands_bonus(t_data *data, int *ex);

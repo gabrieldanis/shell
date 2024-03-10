@@ -6,7 +6,7 @@
 /*   By: dberes <dberes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 13:17:49 by gdanis            #+#    #+#             */
-/*   Updated: 2024/03/07 10:05:48 by dberes           ###   ########.fr       */
+/*   Updated: 2024/03/10 15:51:23 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,8 @@
 void	free_and_exit(int n, t_shell *s, char *exe_name, char *str, int err)
 {
 	int	exitval;
+	//fd_closer(s);
 	delete_files(s);
-	//(void)err;
-	/*if (err != 127)
-	{
-		s->rval = err;
-		perror(str);
-	}*/
 	if (n != 0)
 	{
 		s->rval = error_message(n, exe_name, str, s, err);

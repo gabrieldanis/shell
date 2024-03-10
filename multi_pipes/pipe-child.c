@@ -6,13 +6,27 @@
 /*   By: dberes <dberes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/01 10:51:32 by dberes            #+#    #+#             */
-/*   Updated: 2024/03/10 11:00:48 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/03/10 20:48:33 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../header/minishell.h"
 
 
+void	close_unused_pipes(int **pipes, int i, int cmds)
+{
+	int	j;
+
+	j = 0;
+	while (j < (cmds - 1))
+	{
+		if (j != (i - 1))
+			close(pipes[j][0]);
+		if (j != i)
+			close(pipes[j][1]);
+		j++;
+	}
+}
 
 
 void	multi_child_process(t_parsed *lst, t_shell *s, int ind)
@@ -22,6 +36,7 @@ void	multi_child_process(t_parsed *lst, t_shell *s, int ind)
 	node = lst;
 	node = get_to_node(node, ind);
 	//parse_subiter(s, node, parse_heredoc);
+	//close_unused_pipes(s->pipes, ind, s->cmds);
 	if (node->infile)
 		fd_opener(node, s);
 	else if (ind > 0)
@@ -36,6 +51,7 @@ void	multi_child_process(t_parsed *lst, t_shell *s, int ind)
 	{
 		if(dup2(s->pipes[ind][1], STDOUT_FILENO) == -1)
 			free_and_exit(DUP_ERROR, s, NULL, NULL, errno);
+
 	}	
 	fd_closer(s);
 
@@ -71,7 +87,6 @@ void	multi_child_process(t_parsed *lst, t_shell *s, int ind)
 	if ((node->cmd || !s->path) && access(node->cmd, X_OK) != 0)
 		free_and_exit(PERM_ERROR, s, NULL, node->arglst[0], errno);
 
-	// ERROR DURING EXECUTION OF COMMAND
 	if (execve(node->cmd, node->arglst, s->env) == -1)
 		free_and_exit(EXECVE_ERROR, s, NULL, node->arglst[0], errno);
 }
@@ -79,37 +94,25 @@ void	multi_child_process(t_parsed *lst, t_shell *s, int ind)
 void	ft_write_to_file(t_shell *s, t_parsed *node)
 {
 	int			file;
-	int			old;
 	int			i;
 
 	i = 0;
-	while (node->outfiles && node->outfiles[i])
-	{
-		if (access(node->outfiles[i], F_OK) == 0 && access(node->outfiles[i], W_OK) != 0)
-			free_and_exit(OUTFILE_ERROR, s, NULL, node->outfiles[i], errno);
-		if (node->outfiles[i + 1] != NULL)
-		{
-			old = open(node->outfiles[i], O_WRONLY | O_TRUNC | O_CREAT, 0644);
-			if (old == -1)
-				free_and_exit(WRITE_ERROR, s, NULL, node->outfiles[i], errno);
-			close(old);
-		}
-		if (node->outfiles[i + 1] == NULL)
-		{
-			if (!node->append)
-				file = open(node->outfiles[i], O_WRONLY | O_TRUNC | O_CREAT, 0644);
-			if (node->append)
-				file = open(node->outfiles[i], O_WRONLY | O_APPEND | O_CREAT, 0644);
-			if (file == -1)
-				free_and_exit(WRITE_ERROR, s, NULL, node->outfiles[i], errno);
-			if (dup2(file, STDOUT_FILENO) == -1)
-			{
-				fd_closer(s);
-				free_and_exit(DUP_ERROR, s, NULL, NULL, errno);
-			}
-			close(file);
-		}
+	while (node->outfiles && node->outfiles[i + 1])
 		i++;
+	if (node->outfiles && node->outfiles[i])
+	{
+		if (!node->append)
+			file = open(node->outfiles[i], O_WRONLY | O_TRUNC | O_CREAT, 0644);
+		if (node->append)
+			file = open(node->outfiles[i], O_WRONLY | O_APPEND | O_CREAT, 0644);
+		if (file == -1)
+			free_and_exit(0, s, NULL, NULL, 0);
+		if (dup2(file, STDOUT_FILENO) == -1)
+		{
+			fd_closer(s);
+			free_and_exit(DUP_ERROR, s, NULL, NULL, errno);
+		}
+		close(file);
 	}
 }
 
@@ -151,3 +154,31 @@ void	fd_closer(t_shell *s)
 		i++;
 	}
 }
+
+void	create_outfiles(t_shell *s)
+{
+	t_parsed *node;
+	int	old;
+	int	i;
+
+	node = s->lst;
+	while (node)
+	{
+		i = 0;
+		while (node->outfiles && node->outfiles[i])
+		{
+			if (access(node->outfiles[i], F_OK) == 0 && access(node->outfiles[i], W_OK) != 0)
+				error_message(OUTFILE_ERROR, NULL, node->outfiles[i], s, errno);
+			if (node->outfiles[i + 1])
+				old = open(node->outfiles[i], O_WRONLY | O_TRUNC | O_CREAT, 0644);
+			else
+				old = open(node->outfiles[i], O_WRONLY | O_CREAT, 0644);
+			if (old == -1)
+				error_message(WRITE_ERROR, NULL, node->outfiles[i], s, errno);
+			close(old);
+			i++;
+		}
+		node = node->next;
+	}
+}
+
