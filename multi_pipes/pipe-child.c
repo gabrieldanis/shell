@@ -6,7 +6,7 @@
 /*   By: dberes <dberes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/01 10:51:32 by dberes            #+#    #+#             */
-/*   Updated: 2024/03/09 10:22:18 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/03/10 11:00:48 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,11 @@ void	multi_child_process(t_parsed *lst, t_shell *s, int ind)
 	if (s->path && !node->cmd_found)
 		free_and_exit(CMD_ERROR, s,  NULL, node->arglst[0], errno);
 
-	// CMD NOT EXECUTABLE "
+	// PATH DOES NOT EXIST AND CMD NOT FOUND
+	if (!s->path && !node->cmd_found)
+		free_and_exit(NOFILE_ERROR, s, NULL, node->arglst[0], errno);
+
+	// CMD NOT EXECUTABLE 
 	if ((node->cmd || !s->path) && access(node->cmd, X_OK) != 0)
 		free_and_exit(PERM_ERROR, s, NULL, node->arglst[0], errno);
 
