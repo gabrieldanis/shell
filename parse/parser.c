@@ -6,7 +6,7 @@
 /*   By: dberes <dberes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/31 08:44:00 by gdanis            #+#    #+#             */
-/*   Updated: 2024/03/07 12:24:06 by dberes           ###   ########.fr       */
+/*   Updated: 2024/03/11 15:41:11 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -198,9 +198,9 @@ int	parse_heredoc(t_parsed *lst, t_shell *s)
 			}
 			if(write(s->heredocfd, line_new, ft_strlen(line_new)) == -1)
 				free_and_exit(WRITE_ERROR, s, NULL, NULL, errno);
+			if (line_new)
+				free(line_new);
 		}
-		if (line_new)
-			free(line_new);
 		close(s->heredocfd);
 	}
 	//node = node->next;
