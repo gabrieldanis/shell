@@ -6,28 +6,11 @@
 /*   By: dberes <dberes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/01 10:51:32 by dberes            #+#    #+#             */
-/*   Updated: 2024/03/10 20:48:33 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/03/11 12:59:43 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../header/minishell.h"
-
-
-void	close_unused_pipes(int **pipes, int i, int cmds)
-{
-	int	j;
-
-	j = 0;
-	while (j < (cmds - 1))
-	{
-		if (j != (i - 1))
-			close(pipes[j][0]);
-		if (j != i)
-			close(pipes[j][1]);
-		j++;
-	}
-}
-
 
 void	multi_child_process(t_parsed *lst, t_shell *s, int ind)
 {
@@ -52,7 +35,7 @@ void	multi_child_process(t_parsed *lst, t_shell *s, int ind)
 		if(dup2(s->pipes[ind][1], STDOUT_FILENO) == -1)
 			free_and_exit(DUP_ERROR, s, NULL, NULL, errno);
 
-	}	
+	}
 	fd_closer(s);
 
 	/**** COMMAND EXECUTION BEGINS HERE ****/
@@ -107,11 +90,16 @@ void	ft_write_to_file(t_shell *s, t_parsed *node)
 			file = open(node->outfiles[i], O_WRONLY | O_APPEND | O_CREAT, 0644);
 		if (file == -1)
 			free_and_exit(0, s, NULL, NULL, 0);
-		if (dup2(file, STDOUT_FILENO) == -1)
+		/*
+		if (node->arglst && node->arglst[0])
 		{
-			fd_closer(s);
-			free_and_exit(DUP_ERROR, s, NULL, NULL, errno);
-		}
+		*/
+			if (dup2(file, STDOUT_FILENO) == -1)
+			{
+				fd_closer(s);
+				free_and_exit(DUP_ERROR, s, NULL, NULL, errno);
+			}
+		//}
 		close(file);
 	}
 }
@@ -181,4 +169,20 @@ void	create_outfiles(t_shell *s)
 		node = node->next;
 	}
 }
+
+void	close_unused_pipes(int **pipes, int i, int cmds)
+{
+	int	j;
+
+	j = 0;
+	while (j < (cmds - 1))
+	{
+		if (j != (i - 1))
+			close(pipes[j][0]);
+		if (j != i)
+			close(pipes[j][1]);
+		j++;
+	}
+}
+
 

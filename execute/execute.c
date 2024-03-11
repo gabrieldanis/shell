@@ -6,7 +6,7 @@
 /*   By: dberes <dberes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 08:08:33 by gdanis            #+#    #+#             */
-/*   Updated: 2024/03/10 21:44:14 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/03/11 11:39:51 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,10 @@ int	check_builtin(char *str)
 int	execute_builtin(t_shell *s, t_parsed *node)
 
 {
+	/*
+	if (s->cmds > 1)
+		close (0);
+		*/
 	if (!ft_strncmp(node->arglst[0], "echo\0", 5))
 		return (s->rval = ft_echo(node), 1);
 	if (!ft_strncmp(node->arglst[0], "exit\0", 5))
