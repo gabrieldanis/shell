@@ -6,7 +6,7 @@
 /*   By: dberes <dberes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 14:07:21 by gdanis            #+#    #+#             */
-/*   Updated: 2024/03/12 10:58:33 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/03/12 13:33:19 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int	error_message(int n, char *exe_name, char *str, t_shell *s, int err)
 	}
 	if (n != CMD_ERROR && n != UNEX_TOKEN && n!= ARGNUM_ERROR
 			&& n != NUM_ERROR && n != ENV_ERROR && n != IDENT_ERROR 
-			&& n != MALLOC_ERROR && n != NOHOME_ERROR)
+			&& n != MALLOC_ERROR && n != NOHOME_ERROR && n != HEREDOC_EOF_ERROR)
 	{
 		if (n == NOFILE_ERROR)
 			s->rval = 127;
@@ -43,14 +43,19 @@ int	error_message(int n, char *exe_name, char *str, t_shell *s, int err)
 			s->rval = err;
 		perror(str);
 	}
+	if (n == HEREDOC_EOF_ERROR)
+	{
+		ft_putstr_fd("warning: here-document delimited by end-of-file instead of delimiter\n", 2);
+		s->rval = 0;
+	}
 	if (n == MALLOC_ERROR)
 	{
-		printf("malloc error\n");
+		ft_putstr_fd("malloc error\n", 2);
 		s->rval = 1;
 	}
 	if (n == NOHOME_ERROR)
 	{
-		printf("HOME not set\n");
+		ft_putstr_fd("HOME not set\n", 2);
 		s->rval = 1;
 	}
 	if (n == ENV_ERROR)

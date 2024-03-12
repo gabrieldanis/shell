@@ -6,7 +6,7 @@
 /*   By: dberes <dberes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 16:48:10 by gdanis            #+#    #+#             */
-/*   Updated: 2024/03/12 09:33:39 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/03/12 13:14:09 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,12 @@ int	main(int argc, char **argv, char **envp)
 {
 	t_shell	*s;
 	int	loop;
+	int	loop_gn;
 	char *line;
 
 	//print_env(envp);
 	loop = 1;
+	loop_gn = 1;
 	s = init_shell(argc, argv, envp);
 	while (loop)
 	{
@@ -43,10 +45,11 @@ int	main(int argc, char **argv, char **envp)
 		else
 		{
 			line = get_next_line(fileno(stdin));
-			//printf("getnextline got this line: %s\n", line);
-			if (!line || line[0] == '\n')
+			if (!line || line[0] == '\n' || !loop_gn)
 			{
-				loop = 0;
+				//loop = 0;
+				if (line)
+					free (line);
 				free_and_exit(0, s, NULL, NULL, errno);
 			}
 			s->str = ft_strtrim(line, "\n");
@@ -79,7 +82,7 @@ int	main(int argc, char **argv, char **envp)
 					execute(s);
 				}
 				else
-					loop = 0;
+					loop_gn = 0;
 				delete_files(s);
 				free_lsts(s);
 			}
