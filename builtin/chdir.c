@@ -6,7 +6,7 @@
 /*   By: gdanis <gdanis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/15 09:17:56 by gdanis            #+#    #+#             */
-/*   Updated: 2024/03/11 11:52:09 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/03/12 10:33:29 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,8 @@ int	ft_chdir(t_shell *s, t_parsed *lst)
 		i = 0;
 		while (s->env[i] && ft_strncmp(s->env[i], "HOME=", 5))
 			i++;
+		if (!s->env[i])
+			return (error_message(NOHOME_ERROR, "cd", NULL, s, errno));
 		getcwd(pwd, sizeof(pwd));
 		n = chdir(ft_strchr(s->env[i], '=') + 1);
 		if (n == -1)

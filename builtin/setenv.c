@@ -6,7 +6,7 @@
 /*   By: gdanis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 08:47:24 by gdanis            #+#    #+#             */
-/*   Updated: 2024/02/09 23:23:44 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/03/12 08:26:47 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,15 +49,18 @@ int	ft_setenv(t_shell *s, char *str)
 	}
 	s->env[i] = str;
 	i++;
-	tmp_str = ft_strdup(tmp[i - 1]);
-	if (!tmp_str)
+	if (tmp [i - 1])
 	{
-		free_2d_array((void **)tmp);
-		free_2d_array_i((void ***)&s->env, i);
-		free_and_exit(MALLOC_ERROR, s, NULL, NULL, errno);
+		tmp_str = ft_strdup(tmp[i - 1]);
+		if (!tmp_str)
+		{
+			free_2d_array((void **)tmp);
+			free_2d_array_i((void ***)&s->env, i);
+			free_and_exit(MALLOC_ERROR, s, NULL, NULL, errno);
+		}
+		s->env[i] = tmp_str;
+		i++;
 	}
-	s->env[i] = tmp_str;
-	i++;
 	s->env[i] = NULL;
 	free_2d_array((void **)tmp);
 	return (0);

@@ -6,7 +6,7 @@
 /*   By: dberes <dberes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 16:48:10 by gdanis            #+#    #+#             */
-/*   Updated: 2024/03/11 12:01:06 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/03/12 09:33:39 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,14 @@
 
 int	g_var;
 
+
 int	main(int argc, char **argv, char **envp)
 {
 	t_shell	*s;
 	int	loop;
 	char *line;
 
-	
+	//print_env(envp);
 	loop = 1;
 	s = init_shell(argc, argv, envp);
 	while (loop)

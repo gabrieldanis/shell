@@ -6,7 +6,7 @@
 /*   By: dberes <dberes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 14:07:21 by gdanis            #+#    #+#             */
-/*   Updated: 2024/03/09 11:57:21 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/03/12 10:58:33 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,8 @@ int	error_message(int n, char *exe_name, char *str, t_shell *s, int err)
 		ft_putstr_fd(": ", 2);
 	}
 	if (n != CMD_ERROR && n != UNEX_TOKEN && n!= ARGNUM_ERROR
-			&& n!= NUM_ERROR && n != ENV_ERROR && n != IDENT_ERROR)
+			&& n != NUM_ERROR && n != ENV_ERROR && n != IDENT_ERROR 
+			&& n != MALLOC_ERROR && n != NOHOME_ERROR)
 	{
 		if (n == NOFILE_ERROR)
 			s->rval = 127;
@@ -42,6 +43,16 @@ int	error_message(int n, char *exe_name, char *str, t_shell *s, int err)
 			s->rval = err;
 		perror(str);
 	}
+	if (n == MALLOC_ERROR)
+	{
+		printf("malloc error\n");
+		s->rval = 1;
+	}
+	if (n == NOHOME_ERROR)
+	{
+		printf("HOME not set\n");
+		s->rval = 1;
+	}
 	if (n == ENV_ERROR)
 	{
 		s->rval = 127;
@@ -49,8 +60,11 @@ int	error_message(int n, char *exe_name, char *str, t_shell *s, int err)
 	}
 	if (n == CMD_ERROR)
 	{
-		ft_putstr_fd(str, 2);
-		ft_putstr_fd(": ", 2);
+		if (str)
+		{
+			ft_putstr_fd(str, 2);
+			ft_putstr_fd(": ", 2);
+		}
 		s->rval = 127;
 		return(ft_putstr_fd("command not found\n", 2), 127);
 	}

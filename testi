@@ -1,2 +1,2 @@
-pwd
-ls | cd .
+echo test |  <<lala
+
