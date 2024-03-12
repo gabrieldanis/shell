@@ -41,5 +41,10 @@ void	ft_exit(t_shell *s, t_parsed *lst)
 		num = ft_atoi(lst->lst->next->str);
 		s->rval = num;
 	}
+	if(s->str)
+	{
+		free(s->str);
+		s->str = NULL;
+	}
 	free_and_exit(0, s, NULL, NULL, errno);
 }

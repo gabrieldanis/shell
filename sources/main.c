@@ -19,7 +19,6 @@ int	main(int argc, char **argv, char **envp)
 	t_shell	*s;
 	int	loop;
 	char *line;
-
 	
 	loop = 1;
 	s = init_shell(argc, argv, envp);

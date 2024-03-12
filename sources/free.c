@@ -16,6 +16,12 @@ void	free_and_exit(int n, t_shell *s, char *exe_name, char *str, int err)
 {
 	int	exitval;
 	//fd_closer(s);
+/*
+	if(s->str)
+	{
+		free(s->str);
+		s->str = NULL;
+	}*/
 	delete_files(s);
 	if (n != 0)
 	{

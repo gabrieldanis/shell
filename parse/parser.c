@@ -189,18 +189,21 @@ int	parse_heredoc(t_parsed *lst, t_shell *s)
 				break ;
 			}
 			if (ft_strchr(line, '$') && node->next->heredoc_quote == 0)
-				line = heredoc_expand(line, s); 
+				line = heredoc_expand(line, s);
 			line_new = ft_strjoin(line, "\n");
 			if(!line_new)
 			{
 				free(line);
 				free_and_exit(MALLOC_ERROR, s, NULL, NULL, errno);
 			}
+			free (line);
 			if(write(s->heredocfd, line_new, ft_strlen(line_new)) == -1)
 				free_and_exit(WRITE_ERROR, s, NULL, NULL, errno);
 			if (line_new)
 				free(line_new);
 		}
+		if (line)
+			free(line);
 		close(s->heredocfd);
 	}
 	//node = node->next;
