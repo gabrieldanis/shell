@@ -6,7 +6,7 @@
 /*   By: dberes <dberes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 16:49:31 by gdanis            #+#    #+#             */
-/*   Updated: 2024/03/12 10:51:17 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/03/13 18:52:41 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,6 +146,7 @@ typedef struct s_shell
 	char		**env;
 	char		*path;
 	char		*str;
+	char		*var;
 	int			**pipes;
 	int			rval;
 	int			cmds;

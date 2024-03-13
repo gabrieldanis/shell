@@ -6,7 +6,7 @@
 /*   By: gdanis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/29 10:00:53 by gdanis            #+#    #+#             */
-/*   Updated: 2024/03/10 07:41:26 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/03/13 18:23:39 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@ void	create_nonvar_token(t_shell *s, int *i, int *flag)
 {
 	static int		oldflag;
 
+	if (s->tlst && s->tlst->sp && s->tlst->sp->next == NULL)
+		s->sp_start = s->tlst->sp;
 	if (!s->tlst->sp || (s->tlst->sp && last_token(s->tlst->sp)->str))
 		token_addlstlast(&(s->tlst->sp), s);
 	while (s->tlst->str[*i] && s->tlst->str[*i] != '$')
@@ -51,6 +53,8 @@ void	create_var_token(t_shell *s, int *i, int flag)
 {
 	int	non_varname_char;
 
+	if (s->tlst && s->tlst->sp && s->tlst->sp->next == NULL)
+		s->sp_start = s->tlst->sp;
 	non_varname_char = 0;
 	if (!s->tlst->sp || (s->tlst->sp && last_token(s->tlst->sp)->str))
 		token_addlstlast(&s->tlst->sp, s);

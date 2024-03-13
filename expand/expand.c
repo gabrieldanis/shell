@@ -6,7 +6,7 @@
 /*   By: gdanis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/29 11:54:47 by gdanis            #+#    #+#             */
-/*   Updated: 2024/03/05 17:41:45 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/03/13 18:53:05 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,27 +26,29 @@ void	create_space_token(t_shell *s, int *i, char *var)
 
 void	expand_splittable_vars(t_shell *s)
 {
-	char	*var;
 	int		i;
 
 	if (s->tlst->sp->str[1] == '?' && s->tlst->sp->str[2] == '\0')
-		var = token_vardup(NULL, s, EXIT_VALUE);
+		s->var = token_vardup(NULL, s, EXIT_VALUE);
 	else
 	{
 		if (ft_getenv(s->tlst->sp->str + 1, s))
-			var = token_vardup(ft_getenv(s->tlst->sp->str + 1, s), s, 0);
+			s->var = token_vardup(ft_getenv(s->tlst->sp->str + 1, s), s, 0);
 		else
-			var = NULL;
+			s->var = NULL;
 	}
 	i = 0;
-	while (var && var[i])
+	while (s->var && s->var[i])
 	{
-		while (var[i] && var[i] != ' ' && var[i] != '\t')
-			ft_charjoin(&last_token(s->tlst->ex)->str, var[i++], s);
-		create_space_token(s, &i, var);
+		while (s->var[i] && s->var[i] != ' ' && s->var[i] != '\t')
+			ft_charjoin(&last_token(s->tlst->ex)->str, s->var[i++], s);
+		create_space_token(s, &i, s->var);
 	}
-	if (var)
-		free(var);
+	if (s->var)
+	{
+		free(s->var);
+		s->var = NULL;
+	}
 }
 
 void	expand_nonsplittable_vars(t_shell *s)
@@ -79,6 +81,8 @@ void	expand_token(t_shell *s)
 	{
 		s->sp_start = s->tlst->sp;
 		token_addlstlast(&s->tlst->ex, s);
+		if (s->tlst && s->tlst->ex && s->tlst->ex->next == NULL)
+			s->ex_start = s->tlst->ex;
 		while (s->tlst->sp)
 		{
 			if (ft_strchr(s->tlst->sp->str, '$') && ft_strlen(s->tlst->sp->str)

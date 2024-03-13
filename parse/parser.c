@@ -6,7 +6,7 @@
 /*   By: dberes <dberes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/31 08:44:00 by gdanis            #+#    #+#             */
-/*   Updated: 2024/03/13 13:00:04 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/03/13 18:28:06 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,8 @@ void	addnewlstback(t_shell *s, t_parsed *lst)
 void	init_plst(t_shell *s)
 {
 	s->t_start = s->tlst;
+	s->ex_start = NULL;
+	s->sp_start = NULL;
 	while (s->tlst)
 	{
 		addnewlstback(s, NULL);
