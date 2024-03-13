@@ -94,11 +94,11 @@ void	ft_write_to_file(t_shell *s, t_parsed *node)
 		if (node->arglst && node->arglst[0])
 		{
 		*/
-			if (dup2(file, STDOUT_FILENO) == -1)
-			{
-				fd_closer(s);
-				free_and_exit(DUP_ERROR, s, NULL, NULL, errno);
-			}
+		if (dup2(file, STDOUT_FILENO) == -1)
+		{
+			fd_closer(s);
+			free_and_exit(DUP_ERROR, s, NULL, NULL, errno);
+		}
 		//}
 		close(file);
 	}
