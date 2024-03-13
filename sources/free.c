@@ -6,7 +6,7 @@
 /*   By: dberes <dberes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 13:17:49 by gdanis            #+#    #+#             */
-/*   Updated: 2024/03/13 13:31:55 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/03/13 18:08:07 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,11 @@ void	free_lsts(t_shell *s)
 		s->tlst = NULL;
 		s->lst = NULL;
 		free_pipes(s);
+		s->pp_start = NULL;
+		s->p_start = NULL;
+		s->t_start = NULL;
+		s->sp_start = NULL;
+		s->ex_start = NULL;
 	}
 }
 
