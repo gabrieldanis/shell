@@ -5,7 +5,8 @@ TODOOOOOOOOOOO
 
 
 *	export "declare -x" hardcoded??
-*	$? exit value
+*	protect signals
+*	cat and then \
 *   signal handling (heredoc)
 *   parse errors 
 *   error handling
@@ -19,20 +20,3 @@ TODOOOOOOOOOOO
 *   norminette
 
 ==========================================
-
-
-things we ignore:
-
-***SYNTAX ERROR***
-	(8, 19th line)
-
-***BUILTIN***
-
-	(101, 230th line)
-	(104, 236th line)
-	(106, 240th line)
-	(121, 287th line)
-	(127, 311th line)
-
-
-
