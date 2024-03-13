@@ -28,7 +28,7 @@ void	ft_exit(t_shell *s, t_parsed *lst)
 			{
 				free_s_str(s);
 				errno = 2;
-				free_and_exit(NUM_ERROR, s, "exit", lst->lst->next->str, errno);
+				free_and_exit(NUM_ERROR, s, "exit", lst->lst->next->str);
 			}
 			i++;
 		}
@@ -36,12 +36,12 @@ void	ft_exit(t_shell *s, t_parsed *lst)
 		{
 			s->rval = 1;
 			free_s_str(s);
-			error_message(ARGNUM_ERROR, "exit", NULL, s, errno);
+			error_message(ARGNUM_ERROR, "exit", NULL, s);
 			return ;
 		}
 		num = ft_atoi(lst->lst->next->str);
 		s->rval = num;
 	}
 	free_s_str(s);
-	free_and_exit(0, s, NULL, NULL, errno);
+	free_and_exit(0, s, NULL, NULL);
 }

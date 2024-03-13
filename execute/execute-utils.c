@@ -40,7 +40,7 @@ char	*find_dir(t_shell *s, char *cmd, char **dirs)
 		{
 			free(cmd);
 			free_2d_array((void **)dirs);
-			free_and_exit(MALLOC_ERROR, s, NULL, NULL, errno);
+			free_and_exit(MALLOC_ERROR, s, NULL, NULL);
 		}
 		if (access(dir, F_OK) == 0)
 		{
@@ -62,18 +62,18 @@ char	*get_dir(char *str, t_shell *s)
 
 	dirs = ft_split(str, 58);
 	if (!dirs)
-		free_and_exit(MALLOC_ERROR, s, NULL, NULL, errno);
+		free_and_exit(MALLOC_ERROR, s, NULL, NULL);
 	cmd = ft_strjoin("/", s->tlst->ex->str);
 	if (!cmd)
 	{
 		free_2d_array((void **)dirs);
-		free_and_exit(MALLOC_ERROR, s, NULL, NULL, errno);
+		free_and_exit(MALLOC_ERROR, s, NULL, NULL);
 	}
 	dir = find_dir(s, cmd, dirs);
 	if (dir)
 		return (dir);
 	free_2d_array((void **)dirs);
-	error_message(CMD_ERROR, NULL, cmd + 1, s, errno);
+	error_message(CMD_ERROR, NULL, cmd + 1, s);
 	free(cmd);
 	return (NULL);
 }
@@ -93,7 +93,7 @@ int	t_lstsize(t_token *list)
 
 void	exit_child(int n, t_shell *s)
 {
-	error_message(n, NULL, NULL, s, errno);
+	error_message(n, NULL, NULL, s);
 	exit(0);
 }
 /*

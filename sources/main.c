@@ -37,7 +37,7 @@ int	main(int argc, char **argv, char **envp)
 		{
 			s->str = readline("💻 minishell > ");
 			if (!s->str)
-				free_and_exit(0, s, NULL, NULL, errno);
+				free_and_exit(0, s, NULL, NULL);
 		}
 		else
 		{
@@ -46,7 +46,7 @@ int	main(int argc, char **argv, char **envp)
 			if (!line || line[0] == '\n')
 			{
 				loop = 0;
-				free_and_exit(0, s, NULL, NULL, errno);
+				free_and_exit(0, s, NULL, NULL);
 			}
 			s->str = ft_strtrim(line, "\n");
 			free(line);
@@ -88,5 +88,5 @@ int	main(int argc, char **argv, char **envp)
 		if (loop)
 			free(s->str);
 	}
-	free_and_exit(0, s, NULL, NULL, errno);
+	free_and_exit(0, s, NULL, NULL);
 }

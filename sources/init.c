@@ -19,12 +19,12 @@ void	set_shell(t_shell *s)
 
 	str = ft_strjoin("SHELL=", s->argv[0]);
 	if (!str)
-		free_and_exit(MALLOC_ERROR, s, NULL, NULL, errno);
+		free_and_exit(MALLOC_ERROR, s, NULL, NULL);
 	old = str;
 	str = ft_strjoin(str, " has taken over 💩 💩 💩");
 	free(old);
 	if (!str)
-		free_and_exit(MALLOC_ERROR, s, NULL, NULL, errno);
+		free_and_exit(MALLOC_ERROR, s, NULL, NULL);
 	ft_setenv(s, str);
 }
 
@@ -35,7 +35,7 @@ t_shell	*init_shell(int argc, char **argv, char **envp)
 	(void)argc;
 	s = (t_shell *)malloc(sizeof(t_shell));
 	if (!s)
-		exit(error_message(MALLOC_ERROR, NULL, NULL, s, errno));
+		exit(error_message(MALLOC_ERROR, NULL, NULL, s));
 	*s = (t_shell){0};
 	s->env = dup_envp(envp, s);
 	s->argv = argv;
@@ -61,11 +61,11 @@ void	set_shlvl(t_shell *s)
 		{
 				num = ft_itoa(ft_atoi(ft_strchr(s->env[i], '=') + 1) + 1);
 				if (!num)
-					free_and_exit(MALLOC_ERROR, s, NULL, NULL, errno);
+					free_and_exit(MALLOC_ERROR, s, NULL, NULL);
 				tmp = ft_strjoin("SHLVL=", num);
 				free(num);
 				if (!tmp)
-					free_and_exit(MALLOC_ERROR, s, NULL, NULL, errno);
+					free_and_exit(MALLOC_ERROR, s, NULL, NULL);
 				ft_setenv(s, tmp);
 				checker = 1;
 		}
@@ -75,7 +75,7 @@ void	set_shlvl(t_shell *s)
 	{
 		tmp = ft_strdup("SHLVL=1");
 		if (!tmp)
-			free_and_exit(MALLOC_ERROR, s, NULL, NULL, errno);
+			free_and_exit(MALLOC_ERROR, s, NULL, NULL);
 		ft_setenv(s, tmp);
 	}
 }
@@ -90,7 +90,7 @@ char	**dup_envp(char **envp, t_shell *s)
 		i++;
 	dup = (char **)malloc(sizeof(char *) * (i + 1));
 	if (!dup)
-		free_and_exit(MALLOC_ERROR, s, NULL, NULL, errno);
+		free_and_exit(MALLOC_ERROR, s, NULL, NULL);
 	i = 0;
 	while (envp[i])
 	{
@@ -98,7 +98,7 @@ char	**dup_envp(char **envp, t_shell *s)
 		if (!dup[i])
 		{
 			free_2d_array_i((void ***)&dup, i);
-			free_and_exit(MALLOC_ERROR, s, NULL, NULL, errno);
+			free_and_exit(MALLOC_ERROR, s, NULL, NULL);
 		}
 		i++;
 	}

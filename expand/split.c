@@ -30,7 +30,7 @@ void	create_nonvar_token(t_shell *s, int *i, int *flag)
 	{
 		last_token(s->tlst->sp)->str = ft_strdup("");
 		if (!last_token(s->tlst->sp)->str)
-			free_and_exit(MALLOC_ERROR, s, NULL, NULL, errno);
+			free_and_exit(MALLOC_ERROR, s, NULL, NULL);
 	}
 }
 

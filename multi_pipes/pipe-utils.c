@@ -26,10 +26,10 @@ int	get_dir_multi(t_shell *s)
 	{
 		dirs = ft_split(s->path, 58);
 		if (!dirs)
-			free_and_exit(MALLOC_ERROR, s, NULL, NULL, errno);
+			free_and_exit(MALLOC_ERROR, s, NULL, NULL);
 		tmp = ft_strdup(ft_strchr(dirs[0], '=') + 1);
 		if (!tmp)
-			free_and_exit(MALLOC_ERROR, s, NULL, NULL, errno);
+			free_and_exit(MALLOC_ERROR, s, NULL, NULL);
 		free(dirs[0]);
 		dirs[0] = tmp;
 	}
@@ -45,18 +45,18 @@ int	get_dir_multi(t_shell *s)
 					node->cmd_found = 1;
 				node->cmd = ft_strdup(node->arglst[0]);
 				if (!node->cmd)
-					free_and_exit(MALLOC_ERROR, s, NULL, NULL, errno);
+					free_and_exit(MALLOC_ERROR, s, NULL, NULL);
 			}
 			else if (node->arglst[0][0] != '\0')
 			{
 				cmd = ft_strjoin("/", node->arglst[0]);
 				if (!cmd)
-					free_and_exit(MALLOC_ERROR, s, NULL, NULL, errno);
+					free_and_exit(MALLOC_ERROR, s, NULL, NULL);
 				while (dirs[i] != NULL)
 				{
 					dir = ft_strjoin(dirs[i], cmd);
 					if (!dir)
-						free_and_exit(MALLOC_ERROR, s, NULL, NULL, errno);
+						free_and_exit(MALLOC_ERROR, s, NULL, NULL);
 					if (access(dir, F_OK) == 0)
 					{
 						node->cmd = dir;
@@ -80,7 +80,7 @@ int	get_dir_multi(t_shell *s)
 				node->cmd_found = 1;
 			node->cmd = ft_strdup(node->arglst[0]);
 			if (!node->cmd)
-				free_and_exit(MALLOC_ERROR, s, NULL, NULL, errno);
+				free_and_exit(MALLOC_ERROR, s, NULL, NULL);
 		}
 		node = node->next;
 	}

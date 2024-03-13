@@ -12,7 +12,7 @@
 
 #include "../header/minishell.h"
 
-int	error_message(int n, char *exe_name, char *str, t_shell *s, int err)
+int	error_message(int n, char *exe_name, char *str, t_shell *s)
 {
 
 	//printf("err = %d, n = %d\n", err , n);
@@ -39,7 +39,7 @@ int	error_message(int n, char *exe_name, char *str, t_shell *s, int err)
 				|| n == WRITE_ERROR || n == NOCDFILE_ERROR)
 			s->rval = 1;
 		else
-			s->rval = err;
+			s->rval = errno;
 		perror(str);
 	}
 	if (n == ENV_ERROR)
@@ -70,11 +70,11 @@ int	error_message(int n, char *exe_name, char *str, t_shell *s, int err)
 		ft_putstr_fd("too many arguments\n", 2);
 	else if (n == IDENT_ERROR)
 	{
-		if (err == 2)
+		if (errno == 2)
 			ft_putstr_fd("invalid option\n", 2);
 		else
 			ft_putstr_fd("invalid idenftifier\n", 2);
-		s->rval = err;
+		s->rval = errno;
 	}
 	return (s->rval);
 }

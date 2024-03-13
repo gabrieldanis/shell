@@ -25,7 +25,7 @@ void	multi_child_process(t_parsed *lst, t_shell *s, int ind)
 	else if (ind > 0)
 	{
 		if (dup2(s->pipes[ind -1][0], STDIN_FILENO) == -1)
-			free_and_exit(DUP_ERROR, s, NULL, NULL, errno);
+			free_and_exit(DUP_ERROR, s, NULL, NULL);
 	}
 	if (node->outfiles)
 		ft_write_to_file(s, node);
@@ -33,7 +33,7 @@ void	multi_child_process(t_parsed *lst, t_shell *s, int ind)
 	else if (s->cmds > 1 && ind < s->cmds -1)
 	{
 		if(dup2(s->pipes[ind][1], STDOUT_FILENO) == -1)
-			free_and_exit(DUP_ERROR, s, NULL, NULL, errno);
+			free_and_exit(DUP_ERROR, s, NULL, NULL);
 
 	}
 	fd_closer(s);
@@ -42,36 +42,36 @@ void	multi_child_process(t_parsed *lst, t_shell *s, int ind)
 	
 	// NO COMMAND
 	if (!node->arglst || !node->arglst[0])
-		free_and_exit(0, s, NULL, NULL, errno);
+		free_and_exit(0, s, NULL, NULL);
 
 	// CMD IS A DIRECTORY
 	if (node->cmd[ft_strlen(node->cmd) - 1] == '/' ||
 			(ft_strchr(node->cmd, '/') && !node->cmd_found))
 	{
 		if (access(node->cmd, F_OK))
-			free_and_exit(NOFILE_ERROR, s, NULL, node->arglst[0], errno);
+			free_and_exit(NOFILE_ERROR, s, NULL, node->arglst[0]);
 		errno = 21;
-		free_and_exit(ISDIR_ERROR, s, NULL, node->arglst[0], errno);
+		free_and_exit(ISDIR_ERROR, s, NULL, node->arglst[0]);
 	}
 
 	// BUILTIN
 	if (execute_builtin(s, node))
-		free_and_exit(0, s, NULL, NULL, errno);
+		free_and_exit(0, s, NULL, NULL);
 
 	// PATH EXISTS CMD NOT FOUND
 	if (s->path && !node->cmd_found)
-		free_and_exit(CMD_ERROR, s,  NULL, node->arglst[0], errno);
+		free_and_exit(CMD_ERROR, s,  NULL, node->arglst[0]);
 
 	// PATH DOES NOT EXIST AND CMD NOT FOUND
 	if (!s->path && !node->cmd_found)
-		free_and_exit(NOFILE_ERROR, s, NULL, node->arglst[0], errno);
+		free_and_exit(NOFILE_ERROR, s, NULL, node->arglst[0]);
 
 	// CMD NOT EXECUTABLE 
 	if ((node->cmd || !s->path) && access(node->cmd, X_OK) != 0)
-		free_and_exit(PERM_ERROR, s, NULL, node->arglst[0], errno);
+		free_and_exit(PERM_ERROR, s, NULL, node->arglst[0]);
 
 	if (execve(node->cmd, node->arglst, s->env) == -1)
-		free_and_exit(EXECVE_ERROR, s, NULL, node->arglst[0], errno);
+		free_and_exit(EXECVE_ERROR, s, NULL, node->arglst[0]);
 }
 
 void	ft_write_to_file(t_shell *s, t_parsed *node)
@@ -89,7 +89,7 @@ void	ft_write_to_file(t_shell *s, t_parsed *node)
 		if (node->append)
 			file = open(node->outfiles[i], O_WRONLY | O_APPEND | O_CREAT, 0644);
 		if (file == -1)
-			free_and_exit(0, s, NULL, NULL, 0);
+			free_and_exit(0, s, NULL, NULL);
 		/*
 		if (node->arglst && node->arglst[0])
 		{
@@ -97,7 +97,7 @@ void	ft_write_to_file(t_shell *s, t_parsed *node)
 		if (dup2(file, STDOUT_FILENO) == -1)
 		{
 			fd_closer(s);
-			free_and_exit(DUP_ERROR, s, NULL, NULL, errno);
+			free_and_exit(DUP_ERROR, s, NULL, NULL);
 		}
 		//}
 		close(file);
@@ -112,9 +112,9 @@ void	check_infiles(t_shell *s, t_parsed *lst)
 	while (node)
 	{
 		if (node->type == INFILE && access(node->str, F_OK) != 0)
-			free_and_exit(NOINFILE_ERROR, s, NULL, node->str, errno);
+			free_and_exit(NOINFILE_ERROR, s, NULL, node->str);
 		if (node->type == INFILE && access(node->str, R_OK) != 0)
-			free_and_exit(PERM_ERROR, s, NULL, node->str, errno);
+			free_and_exit(PERM_ERROR, s, NULL, node->str);
 		node = node->next;
 	}
 }
@@ -124,9 +124,9 @@ void	fd_opener(t_parsed *lst, t_shell *s)
 	check_infiles(s, lst);
 	lst->fd_inf = open(lst->infile, O_RDONLY);
 	if (lst->fd_inf == -1)
-		free_and_exit(NOFILE_ERROR, s, NULL, lst->infile, errno);
+		free_and_exit(NOFILE_ERROR, s, NULL, lst->infile);
 	if (dup2(lst->fd_inf, STDIN_FILENO) == -1)
-		free_and_exit(DUP_ERROR, s, NULL, NULL, errno);
+		free_and_exit(DUP_ERROR, s, NULL, NULL);
 	close(lst->fd_inf);
 }
 
@@ -156,13 +156,13 @@ void	create_outfiles(t_shell *s)
 		while (node->outfiles && node->outfiles[i])
 		{
 			if (access(node->outfiles[i], F_OK) == 0 && access(node->outfiles[i], W_OK) != 0)
-				error_message(OUTFILE_ERROR, NULL, node->outfiles[i], s, errno);
+				error_message(OUTFILE_ERROR, NULL, node->outfiles[i], s);
 			if (node->outfiles[i + 1])
 				old = open(node->outfiles[i], O_WRONLY | O_TRUNC | O_CREAT, 0644);
 			else
 				old = open(node->outfiles[i], O_WRONLY | O_CREAT, 0644);
 			if (old == -1)
-				error_message(WRITE_ERROR, NULL, node->outfiles[i], s, errno);
+				error_message(WRITE_ERROR, NULL, node->outfiles[i], s);
 			close(old);
 			i++;
 		}
