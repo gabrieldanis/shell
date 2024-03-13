@@ -24,17 +24,20 @@ int	syntax_check(t_shell *s)
 		{
 			if (!node->next)
 			{
+				free_s_str(s);
 				error_message(UNEX_TOKEN, NULL, "newline", s, errno);
 				return (1);
 			}
 			if (node->next->type)
 			{
+				free_s_str(s);
 				error_message(UNEX_TOKEN, NULL, node->next->str, s, errno);
 				return (1);
 			}
 		}
 		if (s->tlst->type == PIPE)
 		{
+			free_s_str(s);
 			error_message(UNEX_TOKEN, NULL, "|", s, errno);
 			return (1);
 		}
@@ -42,6 +45,7 @@ int	syntax_check(t_shell *s)
 		{
 			if (node->next->type == PIPE || !node->next)
 			{
+				free_s_str(s);
 				error_message(UNEX_TOKEN, NULL, "|", s, errno);
 				return (1);
 			}
