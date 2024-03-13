@@ -175,3 +175,12 @@ void	delete_files(t_shell *s)
 		}
 	}
 }
+
+void	free_s_str(t_shell *s)
+{
+	if(s->str)
+	{
+		free(s->str);
+		s->str = NULL;
+	}
+}

@@ -218,6 +218,7 @@ void		ft_unset_str(t_shell *s, char *str, int i);
 void		free_lsts(t_shell *s);
 void		ft_exit(t_shell *s, t_parsed *lst);
 void		free_2d_array_i(void ***arr, int i);
+void			free_s_str(t_shell *s);
 void		node_dup(t_parsed *lst, char *s2, t_shell *s);
 char		*get_path(char **env);
 char		*get_dir(char *str, t_shell *s);
