@@ -6,7 +6,7 @@
 /*   By: dberes <dberes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 16:48:10 by gdanis            #+#    #+#             */
-/*   Updated: 2024/03/13 11:40:04 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/03/13 13:36:40 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,13 @@ int	main(int argc, char **argv, char **envp)
 	t_shell	*s;
 	int	loop;
 	int	loop_gn;
+	int	gn;
 	char *line;
 
 	//print_env(envp);
 	loop = 1;
 	loop_gn = 1;
+	gn = 0;
 	s = init_shell(argc, argv, envp);
 	while (loop)
 	{
@@ -44,6 +46,7 @@ int	main(int argc, char **argv, char **envp)
 		}
 		else
 		{
+			gn = 1;
 			line = get_next_line(fileno(stdin));
 			if (!line || !loop_gn)
 			{
@@ -60,7 +63,7 @@ int	main(int argc, char **argv, char **envp)
 		{
 			if (g_var)
 				s->rval = g_var;
-			if (loop)
+			if (loop && !gn)
 				add_history(s->str);
 			str_to_token(s);
 			if (s->tlst)
@@ -90,7 +93,7 @@ int	main(int argc, char **argv, char **envp)
 		if (!s->str)
 			ft_exit(s, NULL);
 		if (loop)
-			free(s->str);
+			free_s_str(s);
 	}
 	free_and_exit(0, s, NULL, NULL, errno);
 }

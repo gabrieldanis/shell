@@ -6,7 +6,7 @@
 /*   By: gdanis <gdanis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/02 07:25:06 by gdanis            #+#    #+#             */
-/*   Updated: 2024/03/12 10:51:03 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/03/13 13:17:53 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ t_shell	*init_shell(int argc, char **argv, char **envp)
 	(void)argc;
 	s = (t_shell *)malloc(sizeof(t_shell));
 	if (!s)
-		exit(error_message(MALLOC_ERROR, NULL, NULL, s, errno));
+		exit (error_message(MALLOC_ERROR, NULL, NULL, s, errno));
 	*s = (t_shell){0};
 	s->env = dup_envp(envp, s);
 	//print_env(s->env);

@@ -6,7 +6,7 @@
 /*   By: dberes <dberes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/31 08:44:00 by gdanis            #+#    #+#             */
-/*   Updated: 2024/03/12 12:27:35 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/03/13 13:00:04 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -197,6 +197,7 @@ int	parse_heredoc(t_parsed *lst, t_shell *s)
 				free_and_exit(MALLOC_ERROR, s, NULL, NULL, errno);
 			}
 			free(line);
+			line = NULL;
 			if(write(s->heredocfd, line_new, ft_strlen(line_new)) == -1)
 			{
 				//free(line_new);

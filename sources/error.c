@@ -6,7 +6,7 @@
 /*   By: dberes <dberes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 14:07:21 by gdanis            #+#    #+#             */
-/*   Updated: 2024/03/12 13:33:19 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/03/13 13:17:30 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,10 @@ int	error_message(int n, char *exe_name, char *str, t_shell *s, int err)
 	if (n == MALLOC_ERROR)
 	{
 		ft_putstr_fd("malloc error\n", 2);
-		s->rval = 1;
+		if (s)
+			s->rval = 1;
+		else
+			return (1);
 	}
 	if (n == NOHOME_ERROR)
 	{
