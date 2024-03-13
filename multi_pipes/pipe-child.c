@@ -6,7 +6,7 @@
 /*   By: dberes <dberes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/01 10:51:32 by dberes            #+#    #+#             */
-/*   Updated: 2024/03/11 12:59:43 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/03/13 11:54:15 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@ void	multi_child_process(t_parsed *lst, t_shell *s, int ind)
 	
 	node = lst;
 	node = get_to_node(node, ind);
-	//parse_subiter(s, node, parse_heredoc);
 	//close_unused_pipes(s->pipes, ind, s->cmds);
 	if (node->infile)
 		fd_opener(node, s);
@@ -94,11 +93,11 @@ void	ft_write_to_file(t_shell *s, t_parsed *node)
 		if (node->arglst && node->arglst[0])
 		{
 		*/
-			if (dup2(file, STDOUT_FILENO) == -1)
-			{
-				fd_closer(s);
-				free_and_exit(DUP_ERROR, s, NULL, NULL, errno);
-			}
+		if (dup2(file, STDOUT_FILENO) == -1)
+		{
+			fd_closer(s);
+			free_and_exit(DUP_ERROR, s, NULL, NULL, errno);
+		}
 		//}
 		close(file);
 	}

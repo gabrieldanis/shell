@@ -6,7 +6,7 @@
 /*   By: dberes <dberes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 16:48:10 by gdanis            #+#    #+#             */
-/*   Updated: 2024/03/12 18:11:21 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/03/13 11:40:04 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ int	main(int argc, char **argv, char **envp)
 		else
 		{
 			line = get_next_line(fileno(stdin));
-			if (!line || line[0] == '\n' || !loop_gn)
+			if (!line || !loop_gn)
 			{
 				//loop = 0;
 				if (line)
