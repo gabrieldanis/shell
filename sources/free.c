@@ -160,10 +160,12 @@ void	free_2d_array_i(void ***arr, int i)
 void	delete_files(t_shell *s)
 {
 	t_parsed	*node;
+	t_parsed	*parent_node;
 
-	if (s->lst && s->lst->lst)
+	parent_node = s->lst;
+	while (parent_node)
 	{
-		node = s->lst->lst;
+		node = parent_node->lst;
 		while(node)
 		{
 			if (node->type == HEREDOC && !access(node->filename, F_OK))
@@ -173,6 +175,7 @@ void	delete_files(t_shell *s)
 			}
 			node = node->next;
 		}
+		parent_node = parent_node->next;
 	}
 }
 
