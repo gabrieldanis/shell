@@ -42,7 +42,7 @@ void	token_strjoin(char **s1, char **s2, t_shell *s)
 	{
 		s->tlst->sp = s->sp_start;
 		s->tlst = s->t_start;
-		free_and_exit(MALLOC_ERROR, s, NULL, NULL, errno);
+		free_and_exit(MALLOC_ERROR, s, NULL, NULL);
 	}
 	if (old_str)
 		free(old_str);
@@ -60,7 +60,7 @@ char	*token_vardup(char *s1, t_shell *s, int itoa)
 	{
 		s->tlst->sp = s->sp_start;
 		s->tlst = s->t_start;
-		free_and_exit(MALLOC_ERROR, s, NULL, NULL, errno);
+		free_and_exit(MALLOC_ERROR, s, NULL, NULL);
 	}
 	return (str);
 }

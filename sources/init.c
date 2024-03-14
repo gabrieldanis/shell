@@ -6,7 +6,7 @@
 /*   By: gdanis <gdanis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/02 07:25:06 by gdanis            #+#    #+#             */
-/*   Updated: 2024/03/13 13:17:53 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/03/14 15:22:49 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ t_shell	*init_shell(int argc, char **argv, char **envp)
 	(void)argc;
 	s = (t_shell *)malloc(sizeof(t_shell));
 	if (!s)
-		exit (error_message(MALLOC_ERROR, NULL, NULL, s, errno));
+		exit (error_message(MALLOC_ERROR, NULL, NULL, s));
 	*s = (t_shell){0};
 	s->env = dup_envp(envp, s);
 	//print_env(s->env);
@@ -41,12 +41,12 @@ void	set_shell(t_shell *s)
 
 	str = ft_strjoin("SHELL=", s->argv[0]);
 	if (!str)
-		free_and_exit(MALLOC_ERROR, s, NULL, NULL, errno);
+		free_and_exit(MALLOC_ERROR, s, NULL, NULL);
 	old = str;
 	str = ft_strjoin(str, " has taken over 💩 💩 💩");
 	free(old);
 	if (!str)
-		free_and_exit(MALLOC_ERROR, s, NULL, NULL, errno);
+		free_and_exit(MALLOC_ERROR, s, NULL, NULL);
 	ft_setenv(s, str);
 }
 
@@ -65,11 +65,11 @@ void	set_shlvl(t_shell *s)
 		{
 				num = ft_itoa(ft_atoi(ft_strchr(s->env[i], '=') + 1) + 1);
 				if (!num)
-					free_and_exit(MALLOC_ERROR, s, NULL, NULL, errno);
+					free_and_exit(MALLOC_ERROR, s, NULL, NULL);
 				tmp = ft_strjoin("SHLVL=", num);
 				free(num);
 				if (!tmp)
-					free_and_exit(MALLOC_ERROR, s, NULL, NULL, errno);
+					free_and_exit(MALLOC_ERROR, s, NULL, NULL);
 				ft_setenv(s, tmp);
 				checker = 1;
 		}
@@ -79,7 +79,7 @@ void	set_shlvl(t_shell *s)
 	{
 		tmp = ft_strdup("SHLVL=1");
 		if (!tmp)
-			free_and_exit(MALLOC_ERROR, s, NULL, NULL, errno);
+			free_and_exit(MALLOC_ERROR, s, NULL, NULL);
 		ft_setenv(s, tmp);
 	}
 }
@@ -91,25 +91,25 @@ char **create_environment(t_shell *s)
 	char	*path_var;
 
 	if (getcwd(path, sizeof(path)) == NULL)
-		error_message(GEN_ERROR, "pwd", NULL, s, errno);
+		error_message(GEN_ERROR, "pwd", NULL, s);
 	path_var = ft_strjoin("PWD=", path);
 	if (!path_var)
-		free_and_exit(MALLOC_ERROR, s, NULL, NULL, errno);
+		free_and_exit(MALLOC_ERROR, s, NULL, NULL);
 	env = (char **)malloc(sizeof(char *) * (4));
 	if (!env)
-		free_and_exit(MALLOC_ERROR, s, NULL, NULL, errno);
+		free_and_exit(MALLOC_ERROR, s, NULL, NULL);
 	env[0] = ft_strdup("OLDPWD");
 	if (!env[0])
 	{
 		free_2d_array((void **)env);
-		free_and_exit(MALLOC_ERROR, s, NULL, NULL, errno);
+		free_and_exit(MALLOC_ERROR, s, NULL, NULL);
 	}
 	env[1] = path_var;
 	env[2] = ft_strdup("_=/usr/bin/env");
 	if (!env[2])
 	{
 		free_2d_array((void **)env);
-		free_and_exit(MALLOC_ERROR, s, NULL, NULL, errno);
+		free_and_exit(MALLOC_ERROR, s, NULL, NULL);
 	}
 	env[3] = NULL;
 	return (env);
@@ -129,7 +129,7 @@ char	**dup_envp(char **envp, t_shell *s)
 			i++;
 		dup = (char **)malloc(sizeof(char *) * (i + 1));
 		if (!dup)
-			free_and_exit(MALLOC_ERROR, s, NULL, NULL, errno);
+			free_and_exit(MALLOC_ERROR, s, NULL, NULL);
 		i = 0;
 		while (envp[i])
 		{
@@ -137,7 +137,7 @@ char	**dup_envp(char **envp, t_shell *s)
 			if (!dup[i])
 			{
 				free_2d_array_i((void ***)&dup, i);
-				free_and_exit(MALLOC_ERROR, s, NULL, NULL, errno);
+				free_and_exit(MALLOC_ERROR, s, NULL, NULL);
 			}
 			i++;
 		}

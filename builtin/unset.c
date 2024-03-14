@@ -28,7 +28,7 @@ void	ft_unset_str(t_shell *s, char *str, int i)
 
 	tmp = (char **)malloc(sizeof(char *) * i);
 	if (!tmp)
-		free_and_exit(MALLOC_ERROR, s, NULL, NULL, errno);
+		free_and_exit(MALLOC_ERROR, s, NULL, NULL);
 	i = 0;
 	j = 0;
 	while (s->env[i + j])
@@ -63,7 +63,7 @@ int	ft_unset(t_shell *s, t_parsed *lst)
 		if (lst->arglst[k][0] == '-')
 		{
 			errno = 2;
-			return (error_message(IDENT_ERROR, "export", lst->arglst[i], s, errno), 0);
+			return (error_message(IDENT_ERROR, "export", lst->arglst[i], s), 0);
 		}
 		i = 0;
 		j = 0;

@@ -38,7 +38,7 @@ int	append_var(t_shell *s, char *str)
 					if (!tmp_join)
 					{
 						free(str);
-						free_and_exit(MALLOC_ERROR, s, NULL, NULL, errno);
+						free_and_exit(MALLOC_ERROR, s, NULL, NULL);
 					}
 					s->env[i] = tmp_join;
 					free(tmp);
@@ -54,14 +54,14 @@ int	append_var(t_shell *s, char *str)
 				if (!tmp_join)
 				{
 					free(str);
-					free_and_exit(MALLOC_ERROR, s, NULL, NULL, errno);
+					free_and_exit(MALLOC_ERROR, s, NULL, NULL);
 				}
 				s->env[i] = tmp_join;
 				tmp_join = ft_strjoin(s->env[i], str + len + 2);
 				if (!tmp_join)
 				{
 					free(str);
-					free_and_exit(MALLOC_ERROR, s, NULL, NULL, errno);
+					free_and_exit(MALLOC_ERROR, s, NULL, NULL);
 				}
 				s->env[i] = tmp_join;
 				free(tmp);
@@ -74,13 +74,13 @@ int	append_var(t_shell *s, char *str)
 		if (!split_str)
 		{
 			free(str);
-			free_and_exit(MALLOC_ERROR, s, NULL, NULL, errno);
+			free_and_exit(MALLOC_ERROR, s, NULL, NULL);
 		}
 		tmp = ft_strjoin(split_str[0], split_str[1]);
 		if (!tmp)
 		{
 			free(str);
-			free_and_exit(MALLOC_ERROR, s, NULL, NULL, errno);
+			free_and_exit(MALLOC_ERROR, s, NULL, NULL);
 		}
 		ft_setenv(s, tmp);
 		free_2d_array((void **)split_str);

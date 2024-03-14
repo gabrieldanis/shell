@@ -31,11 +31,11 @@ int	ft_export(t_shell *s, t_parsed *lst, int env)
 				errno = 2;
 			else
 				errno = 1;
-			return (error_message(IDENT_ERROR, "export", lst->arglst[i], s, errno), 1);
+			return (error_message(IDENT_ERROR, "export", lst->arglst[i], s), 1);
 		}
 		tmp = ft_strdup(lst->arglst[i]);
 		if (!tmp)
-			free_and_exit(MALLOC_ERROR, s, NULL, NULL, errno);
+			free_and_exit(MALLOC_ERROR, s, NULL, NULL);
 		if (ft_setenv(s, tmp))
 			return (1);
 		i++;

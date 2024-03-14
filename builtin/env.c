@@ -38,7 +38,7 @@ int	ft_env(t_shell *s, t_parsed *node)
 	if (node->arglst[1])
 	{
 		errno = 2;
-		return (error_message(ENV_ERROR, "env", node->arglst[1], s, errno));
+		return (error_message(ENV_ERROR, "env", node->arglst[1], s));
 	}
 	i = 0;
 	while (s->env[i])

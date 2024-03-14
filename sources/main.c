@@ -6,7 +6,7 @@
 /*   By: dberes <dberes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 16:48:10 by gdanis            #+#    #+#             */
-/*   Updated: 2024/03/13 13:36:40 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/03/14 15:24:35 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ int	main(int argc, char **argv, char **envp)
 		{
 			s->str = readline("💻 minishell > ");
 			if (!s->str)
-				free_and_exit(0, s, NULL, NULL, errno);
+				free_and_exit(0, s, NULL, NULL);
 		}
 		else
 		{
@@ -53,7 +53,7 @@ int	main(int argc, char **argv, char **envp)
 				//loop = 0;
 				if (line)
 					free (line);
-				free_and_exit(0, s, NULL, NULL, errno);
+				free_and_exit(0, s, NULL, NULL);
 			}
 			s->str = ft_strtrim(line, "\n");
 			free(line);
@@ -95,5 +95,5 @@ int	main(int argc, char **argv, char **envp)
 		if (loop)
 			free_s_str(s);
 	}
-	free_and_exit(0, s, NULL, NULL, errno);
+	free_and_exit(0, s, NULL, NULL);
 }

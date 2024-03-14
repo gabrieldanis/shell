@@ -53,7 +53,7 @@ void	pipe_array(t_shell *s)
 	{
 		s->pipes =(int **)malloc(sizeof(int *) * (s->cmds - 1));
 		if (!s->pipes)
-			free_and_exit(MALLOC_ERROR, s, NULL, NULL, errno);
+			free_and_exit(MALLOC_ERROR, s, NULL, NULL);
 	}
 	i = 0;
 	while (i < s->cmds - 1)
@@ -66,7 +66,7 @@ void	pipe_array(t_shell *s)
 	while (i < s->cmds - 1)
 	{
 		if (pipe(s->pipes[i]) == -1)
-			free_and_exit(PIPE_ERROR, s, NULL, NULL, errno);
+			free_and_exit(PIPE_ERROR, s, NULL, NULL);
 		i++;
 	}
 }
@@ -85,7 +85,7 @@ void	pipe_fork(t_parsed *lst, t_shell *s)
 		child_signal();
 		node->pid = fork();
 		if (node->pid == -1)
-			free_and_exit(PID_ERROR, s, NULL, NULL, errno);
+			free_and_exit(PID_ERROR, s, NULL, NULL);
 		if (node->pid == 0)
 			multi_child_process(lst, s, ind);
 		ind++;

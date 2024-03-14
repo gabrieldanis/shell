@@ -6,13 +6,13 @@
 /*   By: dberes <dberes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 13:17:49 by gdanis            #+#    #+#             */
-/*   Updated: 2024/03/13 18:53:31 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/03/14 15:17:05 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../header/minishell.h"
 
-void	free_and_exit(int n, t_shell *s, char *exe_name, char *str, int err)
+void	free_and_exit(int n, t_shell *s, char *exe_name, char *str)
 {
 	int	exitval;
 	//fd_closer(s);
@@ -21,7 +21,9 @@ void	free_and_exit(int n, t_shell *s, char *exe_name, char *str, int err)
 	if (s->var)
 		free(s->var);
 	if (n != 0)
-		s->rval = error_message(n, exe_name, str, s, err);
+	{
+		s->rval = error_message(n, exe_name, str, s);
+	}
 	if (s && s->env)
 		free_2d_array((void **)s->env);
 	free_lsts(s);
@@ -32,7 +34,7 @@ void	free_and_exit(int n, t_shell *s, char *exe_name, char *str, int err)
 	}
 	else
 		exitval = MALLOC_ERROR;
-	clear_history();
+	rl_clear_history();
 	exit (exitval);
 }
 
@@ -166,19 +168,22 @@ void	free_2d_array_i(void ***arr, int i)
 void	delete_files(t_shell *s)
 {
 	t_parsed	*node;
+	t_parsed	*parent_node;
 
-	if (s->lst && s->lst->lst)
+	parent_node = s->lst;
+	while (parent_node)
 	{
-		node = s->lst->lst;
+		node = parent_node->lst;
 		while(node)
 		{
 			if (node->type == HEREDOC && !access(node->filename, F_OK))
 			{
 				if (unlink(node->filename) == -1) 
-					free_and_exit(UNLINK_ERROR, s, NULL, NULL, errno);
+					free_and_exit(UNLINK_ERROR, s, NULL, NULL);
 			}
 			node = node->next;
 		}
+		parent_node = parent_node->next;
 	}
 }
 
