@@ -31,7 +31,7 @@ void	free_and_exit(int n, t_shell *s, char *exe_name, char *str)
 	}
 	else
 		exitval = MALLOC_ERROR;
-	clear_history();
+	rl_clear_history();
 	exit (exitval);
 }
 
