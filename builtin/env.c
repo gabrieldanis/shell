@@ -6,7 +6,7 @@
 /*   By: gdanis <gdanis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/15 10:14:54 by gdanis            #+#    #+#             */
-/*   Updated: 2024/03/12 11:01:51 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/03/14 15:32:17 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int	ft_env(t_shell *s, t_parsed *node)
 	if (!check_path(s))
 	{
 		errno = 2;
-		return (error_message(NOFILE_ERROR, "env", NULL, s, errno));
+		return (error_message(NOFILE_ERROR, "env", NULL, s));
 	}
 	if (node->arglst[1])
 	{
