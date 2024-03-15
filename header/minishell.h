@@ -12,6 +12,7 @@
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
+# define BUFFER_SIZE 1
 
 /*********************************
  * 	INCLUDES
