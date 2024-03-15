@@ -1,3 +1,0 @@
-export X="  A  B  "
-/bin/echo ?$X'2'
-
