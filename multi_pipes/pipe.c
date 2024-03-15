@@ -29,29 +29,28 @@ void	wait_for_child(t_shell *s)
 {
 	t_parsed	*node;
 	int			status;
-	
-	node = s->lst;
 
+	node = s->lst;
 	while (node->next != NULL)
 	{
 		waitpid(node->pid, &status, 0);
 		node = node->next;
 	}
 	waitpid(node->pid, &status, 0);
-	if ( WIFEXITED(status) )
-		s->rval = WEXITSTATUS(status);    
-	if (WIFSIGNALED(status)) 
-        s->rval = 128 + WTERMSIG(status);
+	if (WIFEXITED(status))
+		s->rval = WEXITSTATUS(status);
+	if (WIFSIGNALED(status))
+		s->rval = 128 + WTERMSIG(status);
 	ft_signal(s);
 }
 
 void	pipe_array(t_shell *s)
 {
 	int	i;
-	
+
 	if (s->cmds > 1)
 	{
-		s->pipes =(int **)malloc(sizeof(int *) * (s->cmds - 1));
+		s->pipes = (int **)malloc(sizeof(int *) * (s->cmds - 1));
 		if (!s->pipes)
 			free_and_exit(MALLOC_ERROR, s, NULL, NULL);
 	}
@@ -59,7 +58,6 @@ void	pipe_array(t_shell *s)
 	while (i < s->cmds - 1)
 	{
 		s->pipes[i] = (int *)malloc(sizeof(int) * 2);
-		// free here backwards aswell
 		i++;
 	}
 	i = 0;
@@ -70,8 +68,6 @@ void	pipe_array(t_shell *s)
 		i++;
 	}
 }
-
-
 
 void	pipe_fork(t_parsed *lst, t_shell *s)
 {
@@ -92,4 +88,3 @@ void	pipe_fork(t_parsed *lst, t_shell *s)
 		node = node->next;
 	}
 }
-

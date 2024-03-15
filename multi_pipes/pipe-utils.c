@@ -22,7 +22,7 @@ int	get_dir_multi(t_shell *s)
 	int			i;
 
 	dirs = NULL;
-	if(s->path)
+	if (s->path)
 	{
 		dirs = ft_split(s->path, 58);
 		if (!dirs)
@@ -44,7 +44,7 @@ int	get_dir_multi(t_shell *s)
 			i = 0;
 			if (ft_strchr(node->arglst[0], '/'))
 			{
-				if(access(node->arglst[0], F_OK) == 0)
+				if (access(node->arglst[0], F_OK) == 0)
 					node->cmd_found = 1;
 				node->cmd = ft_strdup(node->arglst[0]);
 				if (!node->cmd)
@@ -89,7 +89,7 @@ int	get_dir_multi(t_shell *s)
 		if (!node->cmd && node->arglst && node->arglst[0])
 		{
 			node->cmd_found = 0;
-			if(access(node->arglst[0], F_OK) == 0 && !s->path)
+			if (access(node->arglst[0], F_OK) == 0 && !s->path)
 				node->cmd_found = 1;
 			node->cmd = ft_strdup(node->arglst[0]);
 			if (!node->cmd)
@@ -118,14 +118,14 @@ char	*get_path(char **env)
 
 void	count_parsed_nodes(t_shell *s)
 {
-	t_parsed *node;
+	t_parsed	*node;
 
 	s->cmds = 0;
 	node = s->lst;
 	while (node)
 	{
 		s->cmds++;
-		node = node->next;	
+		node = node->next;
 	}
 }
 
@@ -134,7 +134,6 @@ t_parsed	*get_to_node(t_parsed *node, int ind)
 	int	i;
 
 	i = 0;
-	// should this - 1 still be here?
 	while (i < ind)
 	{
 		node = node->next;
