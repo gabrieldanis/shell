@@ -115,13 +115,16 @@ void	appln_chararr(t_parsed *lst, char *str, t_shell *s)
 	}
 	tmp[i] = ft_strdup(str);
 	if (!tmp[i])
-	{
-		free(tmp);
-		free_and_exit(MALLOC_ERROR, s, NULL, NULL);
-	}
+		free_tmp_exit(tmp, s);
 	i++;
 	tmp[i] = NULL;
 	if (lst->outfiles)
 		free(lst->outfiles);
 	lst->outfiles = tmp;
+}
+
+void	free_tmp_exit(char **tmp, t_shell *s)
+{
+	free(tmp);
+	free_and_exit(MALLOC_ERROR, s, NULL, NULL);
 }

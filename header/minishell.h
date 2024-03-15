@@ -253,6 +253,8 @@ int			arglst_size(t_parsed *lst);
 int			check_builtin(char *str);
 int			execute_builtin(t_shell *s, t_parsed *node);
 int			syntax_check(t_shell *s);
+int			check_eof(t_shell *s, t_token *node);
+int			check_pipe(t_shell *s, t_token *node);
 void		check_infiles(t_shell *s, t_parsed *lst);
 void		multi_child_process(t_parsed *lst, t_shell *s, int ind);
 //void		multi_parent_process(t_plist **lst, t_data *data, int ind);
@@ -277,11 +279,13 @@ void		dir_copy(t_shell *s, int *ex, int i);
 void		pipe_fork(t_parsed *lst, t_shell *s);
 void		close_all_pipes(t_shell *s);
 void		appln_chararr(t_parsed *lst, char *str, t_shell *s);
+void		free_tmp_exit(char **tmp, t_shell *s);
 void		count_parsed_nodes(t_shell *s);
 void		ft_write_to_file(t_shell *s, t_parsed *node);
 void		create_outfiles(t_shell *s);
 void		print_env(char **env);
 void		set_shell(t_shell *s);
+char		*copy_to_str(char *s1, char *s2, char *new_str);
 
 /*
 void		check_commands_bonus(t_data *data, int *ex);
