@@ -12,15 +12,15 @@
 
 #include "../header/minishell.h"
 
-
 int	syntax_check(t_shell *s)
 {
-	t_token *node;
+	t_token	*node;
 
 	node = s->tlst;
-	while(node)
+	while (node)
 	{
-		if (node->type == HEREDOC || node->type == RED_IN || node->type == RED_OUT || node->type == RED_APP)
+		if (node->type == HEREDOC || node->type == RED_IN
+			|| node->type == RED_OUT || node->type == RED_APP)
 		{
 			if (!node->next)
 			{
@@ -50,7 +50,7 @@ int	syntax_check(t_shell *s)
 				return (1);
 			}
 		}
-		node = node->next;	
+		node = node->next;
 	}
 	return (0);
 }

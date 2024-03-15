@@ -11,13 +11,13 @@
 /* ************************************************************************** */
 
 #include "../header/minishell.h"
-
+/*
 void	printlst(t_shell *s)
 {
 	t_parsed	*node;
 	t_parsed	*subnode;
-	int		i;
-	
+	int			i;
+
 	i = 0;
 	node = s->lst;
 	printf("\n\n");
@@ -26,10 +26,10 @@ void	printlst(t_shell *s)
 		printf("\t\tNODE %d\n", i);
 		printf("++++++++++++++++++++++++++++++++++\n");
 		subnode = node->lst;
-		while (subnode)	
+		while (subnode)
 		{
-			//printf("type: %s str: %s heredoc_q %d\n", token_type(s->lst->lst->type), s->lst->lst->str, s->lst->lst->heredoc_quote);
-			printf("type: %s str: %s\n", token_type(subnode->type), subnode->str);
+			printf("type: %s str: %s\n", token_type(subnode->type),
+				subnode->str);
 			subnode = subnode->next;
 		}
 		printf("++++++++++++++++++++++++++++++++++\n\n");
@@ -38,6 +38,7 @@ void	printlst(t_shell *s)
 	}
 	printf("\n");
 }
+*/
 
 char	*token_type(int i)
 {
