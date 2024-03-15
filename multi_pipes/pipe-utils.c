@@ -6,7 +6,7 @@
 /*   By: dberes <dberes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 18:01:22 by gdanis            #+#    #+#             */
-/*   Updated: 2024/03/09 11:19:21 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/03/15 11:37:34 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,10 @@ int	get_dir_multi(t_shell *s)
 			free_and_exit(MALLOC_ERROR, s, NULL, NULL);
 		tmp = ft_strdup(ft_strchr(dirs[0], '=') + 1);
 		if (!tmp)
+		{
+			free_2d_array((void **)dirs);
 			free_and_exit(MALLOC_ERROR, s, NULL, NULL);
+		}
 		free(dirs[0]);
 		dirs[0] = tmp;
 	}
@@ -45,18 +48,28 @@ int	get_dir_multi(t_shell *s)
 					node->cmd_found = 1;
 				node->cmd = ft_strdup(node->arglst[0]);
 				if (!node->cmd)
+				{
+					free_2d_array((void **)dirs);
 					free_and_exit(MALLOC_ERROR, s, NULL, NULL);
+				}
 			}
 			else if (node->arglst[0][0] != '\0')
 			{
 				cmd = ft_strjoin("/", node->arglst[0]);
 				if (!cmd)
+				{
+					free_2d_array((void **)dirs);
 					free_and_exit(MALLOC_ERROR, s, NULL, NULL);
+				}
 				while (dirs[i] != NULL)
 				{
 					dir = ft_strjoin(dirs[i], cmd);
 					if (!dir)
+					{
+						free(cmd);
+						free_2d_array((void **)dirs);
 						free_and_exit(MALLOC_ERROR, s, NULL, NULL);
+					}
 					if (access(dir, F_OK) == 0)
 					{
 						node->cmd = dir;
@@ -105,18 +118,16 @@ char	*get_path(char **env)
 
 void	count_parsed_nodes(t_shell *s)
 {
-	t_parsed *start;
+	t_parsed *node;
 
 	s->cmds = 0;
-	start = s->lst;
-	while (s->lst)
+	node = s->lst;
+	while (node)
 	{
 		s->cmds++;
-		s->lst = s->lst->next;	
+		node = node->next;	
 	}
-	s->lst = start;
 }
-
 
 t_parsed	*get_to_node(t_parsed *node, int ind)
 {

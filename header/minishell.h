@@ -6,7 +6,7 @@
 /*   By: dberes <dberes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 16:49:31 by gdanis            #+#    #+#             */
-/*   Updated: 2024/03/13 18:52:41 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/03/15 11:03:23 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,6 @@
 # include <sys/types.h> 
 # include <sys/ioctl.h>
 # include <errno.h>
-
 
 /*********************************
  * 	GLOBAL VARIABLE
@@ -136,12 +135,7 @@ typedef struct s_parsed
 typedef struct s_shell
 {
 	t_parsed	*lst;
-	t_parsed	*p_start;
-	t_parsed	*pp_start;
 	t_token		*tlst;
-	t_token		*t_start;
-	t_token		*sp_start;
-	t_token		*ex_start;
 	char		**argv;
 	char		**env;
 	char		*path;
@@ -211,7 +205,7 @@ void		no_pipe(t_shell *s);
 void		init_plst(t_shell *s);
 void		printlst(t_shell *s);
 void		parse_type(t_shell *s);
-void		parse_lstiter(t_shell *s, int (*f)(t_parsed *lst, t_shell *s));
+void		parse_lstiter(t_shell *s, int (*f)(t_parsed *node, t_parsed *subnode, t_shell *s));
 void		parse_subiter(t_shell *s, t_parsed *node, int (*f)(t_parsed *lst, t_shell *s));
 void		create_tmp_file(t_parsed *node, t_shell *s);
 void		delete_files(t_shell *s);
@@ -220,7 +214,7 @@ void		free_lsts(t_shell *s);
 void		ft_exit(t_shell *s, t_parsed *lst);
 void		free_2d_array_i(void ***arr, int i);
 void		free_s_str(t_shell *s);
-void		node_dup(t_parsed *lst, char *s2, t_shell *s);
+void		node_dup(t_parsed *node, t_token *t_node, char *s2, t_shell *s);
 char		*get_path(char **env);
 char		*get_dir(char *str, t_shell *s);
 char		**dup_envp(char **envp, t_shell *s);
@@ -236,8 +230,8 @@ int			append_var(t_shell *s, char *str);
 int			ft_echo(t_parsed *list);
 int			error_message(int n, char *exe_name, char *str, t_shell *s);
 int			isenvar(char *env, char *varname);
-int			parse_isfile(t_parsed *lst, t_shell *s);
-int			parse_heredoc(t_parsed *lst, t_shell *s);
+int			parse_isfile(t_parsed *node, t_parsed *subnode, t_shell *s);
+int			parse_heredoc(t_parsed *node, t_parsed *subnode, t_shell *s);
 int			clear_screen(void);
 int			ft_pwd(t_shell *s);
 int			ft_setenv(t_shell *s, char *str);
@@ -250,7 +244,7 @@ int			delimiter_char(char c);
 int			op_char(char c);
 int			check_is_var(char c);
 int			ft_unset(t_shell *s, t_parsed *lst);
-int			parse_cmdargs(t_parsed *lst, t_shell *s);
+int			parse_cmdargs(t_parsed *node, t_parsed *subnode, t_shell *s);
 int			is_delimiter(char c);
 int			is_operator(char c);
 int			arglst_size(t_parsed *lst);

@@ -6,107 +6,103 @@
 /*   By: gdanis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/29 10:00:53 by gdanis            #+#    #+#             */
-/*   Updated: 2024/03/13 18:23:39 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/03/14 20:12:50 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../header/minishell.h"
 
-void	create_nonvar_token(t_shell *s, int *i, int *flag)
+void	create_nonvar_token(t_shell *s, int *i, int *flag, t_token *node)
 {
 	static int		oldflag;
 
-	if (s->tlst && s->tlst->sp && s->tlst->sp->next == NULL)
-		s->sp_start = s->tlst->sp;
-	if (!s->tlst->sp || (s->tlst->sp && last_token(s->tlst->sp)->str))
-		token_addlstlast(&(s->tlst->sp), s);
-	while (s->tlst->str[*i] && s->tlst->str[*i] != '$')
+	if (!node->sp || (node->sp && last_token(node->sp)->str))
+		token_addlstlast(&(node->sp), s);
+	while (node->str[*i] && node->str[*i] != '$')
 	{
-		setqflag(flag, s->tlst->str[*i]);
+		setqflag(flag, node->str[*i]);
 		if (oldflag == *flag)
-			ft_charjoin(&(last_token(s->tlst->sp)->str), s->tlst->str[*i], s);
+			ft_charjoin(&(last_token(node->sp)->str), node->str[*i], s);
 		oldflag = *flag;
 		(*i)++;
 	}
-	if (!last_token(s->tlst->sp)->str)
+	if (!last_token(node->sp)->str)
 	{
-		last_token(s->tlst->sp)->str = ft_strdup("");
-		if (!last_token(s->tlst->sp)->str)
+		last_token(node->sp)->str = ft_strdup("");
+		if (!last_token(node->sp)->str)
 			free_and_exit(MALLOC_ERROR, s, NULL, NULL);
 	}
 }
 
-void	check_nonvarname_char(t_shell *s, int *i, int *non_varname_char)
+void	check_nonvarname_char(int *i, int *non_varname_char, t_token *node)
 {
-	if (!check_is_var(s->tlst->str[*i]) && s->tlst->str[*i] != '?'
-			&& s->tlst->str[*i] != '\0' && s->tlst->str[*i] != '"'
-			&& s->tlst->str[*i] != 39 && s->tlst->str[*i] != ' '
-			&& s->tlst->str[*i] != '=')
+	if (!check_is_var(node->str[*i]) && node->str[*i] != '?'
+			&& node->str[*i] != '\0' && node->str[*i] != '"'
+			&& node->str[*i] != 39 && node->str[*i] != ' '
+			&& node->str[*i] != '=')
 	{
 		*non_varname_char = 1;
-		last_token(s->tlst->sp)->expand = 0;
-		last_token(s->tlst->sp)->split = 0;
+		last_token(node->sp)->expand = 0;
+		last_token(node->sp)->split = 0;
 	}
 }
 
-void	create_var_token(t_shell *s, int *i, int flag)
+void	create_var_token(t_shell *s, int *i, int flag, t_token *node)
 {
 	int	non_varname_char;
 
-	if (s->tlst && s->tlst->sp && s->tlst->sp->next == NULL)
-		s->sp_start = s->tlst->sp;
 	non_varname_char = 0;
-	if (!s->tlst->sp || (s->tlst->sp && last_token(s->tlst->sp)->str))
-		token_addlstlast(&s->tlst->sp, s);
-	ft_charjoin(&(last_token(s->tlst->sp)->str), s->tlst->str[*i], s);
+	if (!node->sp || (node->sp && last_token(node->sp)->str))
+		token_addlstlast(&node->sp, s);
+	ft_charjoin(&(last_token(node->sp)->str), node->str[*i], s);
 	(*i)++;
-	if (!flag && s->tlst->type != HEREDOC_DEL)
-		last_token(s->tlst->sp)->split = 1;
-	if ((flag == 2 || flag == 0) && s->tlst->type != HEREDOC_DEL
-		&& (check_is_var(s->tlst->str[*i]) || s->tlst->str[*i] == '?'))
-		last_token(s->tlst->sp)->expand = 1;
-	if (flag == 0 && !check_is_var(s->tlst->str[*i]) && s->tlst->str[*i] != '\0')
-		last_token(s->tlst->sp)->expand = 1;
-	check_nonvarname_char(s, i, &non_varname_char);
-	while (check_is_var(s->tlst->str[*i]) || (s->tlst->str[*i] == '?'
-			&& s->tlst->str[(*i) - 1] == '$') || non_varname_char)
+	if (!flag && node->type != HEREDOC_DEL)
+		last_token(node->sp)->split = 1;
+	if ((flag == 2 || flag == 0) && node->type != HEREDOC_DEL
+		&& (check_is_var(node->str[*i]) || node->str[*i] == '?'))
+		last_token(node->sp)->expand = 1;
+	if (flag == 0 && !check_is_var(node->str[*i]) && node->str[*i] != '\0')
+		last_token(node->sp)->expand = 1;
+	check_nonvarname_char(i, &non_varname_char, node);
+	while (check_is_var(node->str[*i]) || (node->str[*i] == '?'
+			&& node->str[(*i) - 1] == '$') || non_varname_char)
 	{
-		ft_charjoin(&(last_token(s->tlst->sp)->str), s->tlst->str[*i], s);
+		ft_charjoin(&(last_token(node->sp)->str), node->str[*i], s);
 		(*i)++;
-		if ((s->tlst->str[(*i) - 1] == '?' && s->tlst->str[(*i) - 2] == '$') ||
-		(non_varname_char && (!s->tlst->str[*i] || is_delimiter(*i) || s->tlst->str[*i] == '$')))
+		if ((node->str[(*i) - 1] == '?' && node->str[(*i) - 2] == '$') ||
+		(non_varname_char && (!node->str[*i] || is_delimiter(*i) || node->str[*i] == '$')))
 			break ;
-		if ((s->tlst->str[*i] == '"' && flag == 2) || (s->tlst->str[*i] == 39 && flag == 1) ||
-				(flag == 0 && (s->tlst->str[*i] == '"' || s->tlst->str[*i] == 39)))
+		if ((node->str[*i] == '"' && flag == 2) || (node->str[*i] == 39 && flag == 1) ||
+				(flag == 0 && (node->str[*i] == '"' || node->str[*i] == 39)))
 			break;
 	}
 }
 
 void	split_token(t_shell *s)
 {
+	t_token	*node;
 	int		flag;
 	int		i;
 
 	flag = 0;
-	s->t_start = s->tlst;
-	while (s->tlst)
+	node = s->tlst;
+	while (node)
 	{
-		if (s->tlst->type == HEREDOC && s->tlst->next)
+		if (node->type == HEREDOC && node->next)
 		{
-			s->tlst->next->type = HEREDOC_DEL;
-			if (ft_strchr(s->tlst->next->str, '\'') ||
-				ft_strchr(s->tlst->next->str, 34))
-				s->tlst->next->heredoc_quote = 1;
+			node->next->type = HEREDOC_DEL;
+			if (ft_strchr(node->next->str, '\'') ||
+				ft_strchr(node->next->str, 34))
+				node->next->heredoc_quote = 1;
 		}
 		i = 0;
-		while (s->tlst->str[i])
+		while (node->str[i])
 		{
-			if (s->tlst->str[i] && s->tlst->str[i] != '$')
-				create_nonvar_token(s, &i, &flag);
-			if (s->tlst->str[i] == '$')
-				create_var_token(s, &i, flag);
+			if (node->str[i] && node->str[i] != '$')
+				create_nonvar_token(s, &i, &flag, node);
+			if (node->str[i] == '$')
+				create_var_token(s, &i, flag, node);
 		}
-		s->tlst = s->tlst->next;
+		node = node->next;
 	}
-	s->tlst = s->t_start;
 }

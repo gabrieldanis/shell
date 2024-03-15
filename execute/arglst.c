@@ -6,63 +6,61 @@
 /*   By: dberes <dberes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/14 14:56:02 by gdanis            #+#    #+#             */
-/*   Updated: 2024/02/08 19:45:11 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/03/15 08:34:32 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../header/minishell.h"
 
-void	fill_arglst(t_shell *s, int *i)
+void	fill_arglst(t_shell *s, t_parsed *node, int *i)
 {
-	if (s->lst->lst->type == CMD || s->lst->lst->type == ARG)
+	t_parsed	*subnode;
+
+	subnode = node->lst;
+	while (subnode)
 	{
-		s->lst->arglst[*i] = ft_strdup(s->lst->lst->str);
-		if (!s->lst->arglst[*i])
+		if (subnode->type == CMD || subnode->type == ARG)
 		{
-			s->lst->lst = s->pp_start;
-			s->lst = s->p_start;
-			free_and_exit(MALLOC_ERROR, s, NULL, NULL);
+			node->arglst[*i] = ft_strdup(subnode->str);
+			if (!node->arglst[*i])
+				free_and_exit(MALLOC_ERROR, s, NULL, NULL);
+			(*i)++;
 		}
-		(*i)++;
+		subnode = subnode->next;
 	}
-	s->lst->lst = s->lst->lst->next;
 }
 
 void	arg_list(t_shell *s)
 {
-	int		i;
+	t_parsed	*node;
+	int			i;
 
-	s->p_start = s->lst;
-	while (s->lst && s->lst->lst)
+	node = s->lst;
+	while (node)
 	{
-		s->lst->arglst = (char **)malloc
-			((arglst_size(s->lst) + 1) * sizeof(char *));
-		if (!s->lst->arglst)
+		node->arglst = (char **)malloc
+			((arglst_size(node) + 1) * sizeof(char *));
+		if (!node->arglst)
 			free_and_exit(MALLOC_ERROR, s, NULL, NULL);
-		s->pp_start = s->lst->lst;
 		i = 0;
-		while (s->lst->lst)
-			fill_arglst(s, &i);
-		s->lst->arglst[i] = NULL;
-		s->lst->lst = s->pp_start;
-		s->lst = s->lst->next;
+		fill_arglst(s, node, &i);
+		node->arglst[i] = NULL;
+		node = node->next;
 	}
-	s->lst = s->p_start;
 }
 
-int	arglst_size(t_parsed *lst)
+int	arglst_size(t_parsed *node)
 {
-	t_parsed	*sub_start;
+	t_parsed	*subnode;
 	int			i;
 
 	i = 0;
-	sub_start = lst->lst;
-	while (lst->lst)
+	subnode = node->lst;
+	while (subnode)
 	{
-		if (lst->lst->type == CMD || lst->lst->type == ARG)
+		if (subnode->type == CMD || subnode->type == ARG)
 			i++;
-		lst->lst = lst->lst->next;
+		subnode = subnode->next;
 	}
-	lst->lst = sub_start;
 	return (i);
 }

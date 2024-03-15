@@ -6,7 +6,7 @@
 /*   By: dberes <dberes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/01 13:47:54 by gdanis            #+#    #+#             */
-/*   Updated: 2024/03/04 11:06:34 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/03/15 11:39:02 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,32 +14,31 @@
 
 void	printlst(t_shell *s)
 {
-	t_parsed	*start;
-	t_parsed	*sub_start;
+	t_parsed	*node;
+	t_parsed	*subnode;
 	int		i;
 	
 	i = 0;
-	start = s->lst;
+	node = s->lst;
 	printf("\n\n");
-	while (s->lst)
+	while (node)
 	{
 		printf("\t\tNODE %d\n", i);
 		printf("++++++++++++++++++++++++++++++++++\n");
-		sub_start = s->lst->lst;
-		while (s->lst->lst)	
+		subnode = node->lst;
+		while (subnode)	
 		{
 			//printf("type: %s str: %s heredoc_q %d\n", token_type(s->lst->lst->type), s->lst->lst->str, s->lst->lst->heredoc_quote);
-			printf("type: %s str: %s\n", token_type(s->lst->lst->type), s->lst->lst->str);
-			s->lst->lst = s->lst->lst->next;
+			printf("type: %s str: %s\n", token_type(subnode->type), subnode->str);
+			subnode = subnode->next;
 		}
 		printf("++++++++++++++++++++++++++++++++++\n\n");
 		i++;
-		s->lst->lst = sub_start;
-		s->lst = s->lst->next;
+		node = node->next;
 	}
 	printf("\n");
-	s->lst = start;
 }
+
 char	*token_type(int i)
 {
 	if (i == RED_IN)
@@ -65,32 +64,26 @@ char	*token_type(int i)
 	return ("unknown       ");
 }
 
-void	parse_lstiter(t_shell *s, int (*f)(t_parsed *lst, t_shell *s))
+void	parse_lstiter(t_shell *s, int (*f)(t_parsed *node, t_parsed *subnode, t_shell *s))
 {
-	t_parsed	*start;
-	t_parsed	*sub_start;
+	t_parsed	*node;
+	t_parsed	*subnode;
 	
-	start = s->lst;
-	while (s->lst)
+	node = s->lst;
+	while (node)
 	{
-		sub_start = s->lst->lst;
-		while (s->lst->lst)	
+		subnode = node->lst;
+		while (subnode)	
 		{
-			if (!f(s->lst->lst, s))
-			{
-				s->lst->lst = sub_start;
-				s->lst = start;
+			if (!f(node, subnode, s))
 				return ;
-			}
-			s->lst->lst = s->lst->lst->next;
+			subnode = subnode->next;
 		}
-		s->lst->lst = sub_start;
-		s->lst = s->lst->next;
+		node = node->next;
 	}
-	s->lst = start;
 }
 
-void	parse_subiter(t_shell *s, t_parsed *node, int (*f)(t_parsed *lst, t_shell *s))
+void	parse_subiter(t_shell *s, t_parsed *node, int (*f)(t_parsed *subnode, t_shell *s))
 {
 	while (node->lst)	
 	{
@@ -99,7 +92,6 @@ void	parse_subiter(t_shell *s, t_parsed *node, int (*f)(t_parsed *lst, t_shell *
 		node->lst = node->lst->next;
 	}
 }
-
 
 void	appln_chararr(t_parsed *lst, char *str, t_shell *s)
 {
@@ -121,7 +113,10 @@ void	appln_chararr(t_parsed *lst, char *str, t_shell *s)
 	}
 	tmp[i] = ft_strdup(str);
 	if (!tmp[i])
+	{
+		free(tmp);
 		free_and_exit(MALLOC_ERROR, s, NULL, NULL);
+	}
 	i++;
 	tmp[i] = NULL;
 	if (lst->outfiles)

@@ -6,7 +6,7 @@
 /*   By: dberes <dberes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 16:48:10 by gdanis            #+#    #+#             */
-/*   Updated: 2024/03/14 15:24:35 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/03/15 12:48:54 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,8 +79,8 @@ int	main(int argc, char **argv, char **envp)
 					parse_lstiter(s, parse_isfile);
 					create_outfiles(s);
 					parse_lstiter(s, parse_cmdargs);
-					count_parsed_nodes(s);
 					//printlst(s);
+					count_parsed_nodes(s);
 					arg_list(s);
 					execute(s);
 				}

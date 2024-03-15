@@ -6,7 +6,7 @@
 /*   By: gdanis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/29 09:52:50 by gdanis            #+#    #+#             */
-/*   Updated: 2024/03/13 18:08:45 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/03/15 07:35:20 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,15 +38,7 @@ void	token_addlstlast(t_token **lst, t_shell *s)
 
 	tmp = (t_token *)malloc(sizeof(t_token));
 	if (!tmp)
-	{
-		if (s->ex_start && s->tlst->ex)
-			s->tlst->ex = s->ex_start;
-		if (s->sp_start && s->tlst->sp)
-			s->tlst->sp = s->sp_start;
-		if (s->t_start && s->tlst)
-			s->tlst = s->t_start;
 		free_and_exit(MALLOC_ERROR, s, NULL, NULL);
-	}
 	*tmp = (t_token){0};
 	if (!(*lst))
 		*lst = tmp;
@@ -56,53 +48,49 @@ void	token_addlstlast(t_token **lst, t_shell *s)
 
 void	print_token(t_shell *s)
 {
-	t_token	*start;
-	t_token	*sp_start;
-	t_token	*ex_start;
+	t_token	*node;
+	t_token	*sp_node;
+	t_token	*ex_node;
 
-	start = s->tlst;
-	while (s->tlst)
+	node = s->tlst;
+	while (node)
 	{
+		sp_node = node->sp;
+		ex_node = node->ex;
 		printf("===============================\n");
-		printf("type: %d:\t", s->tlst->type);
-		if (s->tlst->str)
-			printf("%s", s->tlst->str);
+		printf("type: %d:\t", node->type);
+		if (node->str)
+			printf("%s", node->str);
 		printf("\n");
-		if (s->tlst->sp)
+		if (sp_node)
 		{
 			printf("-------------------------------\n");
 			printf("split:");
-			sp_start = s->tlst->sp;
-			while (s->tlst->sp)
+			while (sp_node)
 			{
-				if (s->tlst->sp->str[0] == '\0')
+				if (sp_node->str[0] == '\0')
 					printf("\t\t\\0");
-				printf("\t\t%s\n", s->tlst->sp->str);
+				printf("\t\t%s\n", sp_node->str);
 				//printf(" split: %d expand %d",s->tlst->sp->split, s->tlst->sp->expand);
-				s->tlst->sp = s->tlst->sp->next;
+				sp_node = sp_node->next;
 			}
-			s->tlst->sp = sp_start;
 		}
-		if (s->tlst->ex)
+		if (ex_node)
 		{
 			printf("-------------------------------\n");
 			printf("exp:");
-			ex_start = s->tlst->ex;
-			while (s->tlst->ex)
+			while (ex_node)
 			{
-				if (s->tlst->ex->str && s->tlst->ex->str[0] == '\0')
+				if (ex_node->str && ex_node->str[0] == '\0')
 					printf("\t\t\\0");
-				printf("\t\t%s\n", s->tlst->ex->str);
+				printf("\t\t%s\n", ex_node->str);
 				//printf(" split: %d expand %d",s->tlst->ex->split, s->tlst->ex->expand);
-
-				s->tlst->ex = s->tlst->ex->next;
+				ex_node = ex_node->next;
 			}
-			s->tlst->ex = ex_start;
 		}
 		printf("\n");
-		s->tlst = s->tlst->next;
+		node = node->next;
 	}
-	s->tlst = start;
 }
 
 int	is_delimiter(char c)

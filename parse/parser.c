@@ -6,7 +6,7 @@
 /*   By: dberes <dberes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/31 08:44:00 by gdanis            #+#    #+#             */
-/*   Updated: 2024/03/13 18:28:06 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/03/15 12:49:01 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,13 +25,7 @@ void	addnewlstback(t_shell *s, t_parsed *lst)
 
 	tmp = (t_parsed *)malloc(sizeof(t_parsed));
 	if (!tmp)
-	{
-		if (s->ex_start && s->tlst->ex)
-			s->tlst->ex = s->ex_start;
-		if (s->t_start && s->tlst)
-			s->tlst = s->t_start;
 		free_and_exit(MALLOC_ERROR, s, NULL, NULL);
-	}
 	*tmp = (t_parsed){0};
 	if (!lst)
 	{
@@ -51,55 +45,49 @@ void	addnewlstback(t_shell *s, t_parsed *lst)
 
 void	init_plst(t_shell *s)
 {
-	s->t_start = s->tlst;
-	s->ex_start = NULL;
-	s->sp_start = NULL;
-	while (s->tlst)
+	t_token	*t_node;
+	t_token	*ex_node;
+
+	t_node = s->tlst;
+	while (t_node)
 	{
 		addnewlstback(s, NULL);
-		while (s->tlst && s->tlst->type != PIPE)
+		while (t_node && t_node->type != PIPE)
 		{
-			s->ex_start = s->tlst->ex;
-			while (s->tlst->ex)	
+			ex_node = t_node->ex;
+			while (ex_node)	
 			{
-				if (s->tlst->ex->str)
+				if (ex_node->str)
 				{
 					addnewlstback(s, lstlast(s->lst));
-					node_dup(lstlast(lstlast(s->lst)->lst), s->tlst->ex->str, s);
-					lstlast(lstlast(s->lst)->lst)->heredoc_quote = s->tlst->heredoc_quote;
+					node_dup(lstlast(lstlast(s->lst)->lst), t_node, ex_node->str, s);
+					lstlast(lstlast(s->lst)->lst)->heredoc_quote = t_node->heredoc_quote;
 				}
-				s->tlst->ex = s->tlst->ex->next;
+				ex_node = ex_node->next;
 			}
-			s->tlst->ex = s->ex_start;
-			s->tlst = s->tlst->next;
+			t_node = t_node->next;
 		}
-		if (s->tlst && s->tlst->type == PIPE)
+		if (t_node && t_node->type == PIPE)
 		{
 			addnewlstback(s, lstlast(s->lst));
-			node_dup(lstlast(lstlast(s->lst)->lst), s->tlst->str, s);
-			s->tlst = s->tlst->next;
+			node_dup(lstlast(lstlast(s->lst)->lst), t_node, t_node->str, s);
+			t_node = t_node->next;
 		}
 	}
-	s->tlst = s->t_start;
 }
 
-void	node_dup(t_parsed *lst, char *s2, t_shell *s)
+void	node_dup(t_parsed *node, t_token *t_node, char *s2, t_shell *s)
 {
-	lst->str = ft_strdup(s2);
-	if (!lst->str)
-	{
-		if (s->ex_start && s->tlst->ex)
-			s->tlst->ex = s->ex_start;
-		if (s->t_start && s->tlst)
-			s->tlst = s->t_start;
+	node->str = ft_strdup(s2);
+	if (!node->str)
 		free_and_exit(MALLOC_ERROR, s, NULL, NULL);
-	}
-	lst->type = s->tlst->type;
+	node->type = t_node->type;
 
 }
 
-int	parse_isfile(t_parsed *lst, t_shell *s)
+int	parse_isfile(t_parsed *node, t_parsed *subnode, t_shell *s)
 {
+	/*
 	if ((lst->type == RED_IN || lst->type == RED_OUT 
 		||lst->type == RED_APP) && lst->next)
 	{
@@ -109,60 +97,59 @@ int	parse_isfile(t_parsed *lst, t_shell *s)
 			return (0);
 		}
 	}
-	if (lst->type == RED_IN && lst->next && !lst->next->type)
+	*/
+	if (subnode->type == RED_IN && subnode->next && !subnode->next->type)
 	{
-		lst->next->type = INFILE;
-		s->lst->infile = lst->next->str;
+		subnode->next->type = INFILE;
+		node->infile = subnode->next->str;
 	}
-	if (lst->type == HEREDOC)
+	if (subnode->type == HEREDOC)
+		node->infile = subnode->filename;
+	if ((subnode->type == RED_OUT || subnode->type == RED_APP) && subnode->next
+			&& !subnode->next->type)
 	{
-		s->lst->infile = lst->filename;
-	}
-	if ((lst->type == RED_OUT || lst->type == RED_APP) && lst->next
-			&& !lst->next->type)
-	{
-		lst->next->type = OUTFILE;
-		appln_chararr(s->lst, lst->next->str, s);
-		if (lst->type == RED_OUT)
-			s->lst->append = 0;
+		subnode->next->type = OUTFILE;
+		appln_chararr(node, subnode->next->str, s);
+		if (subnode->type == RED_OUT)
+			node->append = 0;
 		else
-			s->lst->append = 1;
+			node->append = 1;
 	}
 	return (1);
 }
 
-int	parse_cmdargs(t_parsed *lst, t_shell *s)
+int	parse_cmdargs(t_parsed *node, t_parsed *subnode, t_shell *s)
 {
 	static int	cmd;
 
 	(void)s;
-	if (!lst->type && !cmd)
+	(void)node;
+	if (!subnode->type && !cmd)
 	{
-		lst->type = CMD;
+		subnode->type = CMD;
 		cmd = 1;
 	}
-	if (!lst->type && cmd)
-		lst->type = ARG;
-	if (!lst->next)
+	if (!subnode->type && cmd)
+		subnode->type = ARG;
+	if (!subnode->next)
 		cmd = 0;
 	return (1);
 }
 
-int	parse_heredoc(t_parsed *lst, t_shell *s)
+int	parse_heredoc(t_parsed *node, t_parsed *subnode, t_shell *s)
 {
 	char		*line;
 	char		*line_new;
-	t_parsed	*node;
 	
-	node = lst;
+	(void) node;
 	line = NULL;
 	line_new = NULL;
 	ft_signal_heredoc(s);
-	if (node->type == HEREDOC)
+	if (subnode->type == HEREDOC)
 	{
 		//node->infile = 1;
-		create_tmp_file(node, s);
-		s->heredocfd = open(node->filename, O_WRONLY | O_APPEND | O_CREAT, 0644);
+		create_tmp_file(subnode, s);
+		s->heredocfd = open(subnode->filename, O_WRONLY | O_APPEND | O_CREAT, 0644);
 		if (s->heredocfd == -1) 
 		{
     		perror("Error opening file");
@@ -180,17 +167,17 @@ int	parse_heredoc(t_parsed *lst, t_shell *s)
 			}
 			if(!line)
 			{
-				error_message(HEREDOC_EOF_ERROR, "warning", node->next->str, s);
+				error_message(HEREDOC_EOF_ERROR, "warning", subnode->next->str, s);
 				return (1);
 			}
-			if (!ft_strncmp(line, node->next->str, ft_strlen(line) + 1))
+			if (!ft_strncmp(line, subnode->next->str, ft_strlen(line) + 1))
 				break ;
 			if (g_var == 130)
 			{
 				s->rval = g_var;
 				break ;
 			}
-			if (ft_strchr(line, '$') && node->next->heredoc_quote == 0)
+			if (ft_strchr(line, '$') && subnode->next->heredoc_quote == 0)
 				line = heredoc_expand(line, s); 
 			line_new = ft_strjoin(line, "\n");
 			if(!line_new)
@@ -202,7 +189,7 @@ int	parse_heredoc(t_parsed *lst, t_shell *s)
 			line = NULL;
 			if(write(s->heredocfd, line_new, ft_strlen(line_new)) == -1)
 			{
-				//free(line_new);
+				free(line_new);
 				free_and_exit(WRITE_ERROR, s, NULL, NULL);
 			}
 			if (line_new)
@@ -212,8 +199,6 @@ int	parse_heredoc(t_parsed *lst, t_shell *s)
 			free(line);
 		close(s->heredocfd);
 	}
-	//node = node->next;
-	//}
 	return (1);
 }
 
@@ -257,6 +242,7 @@ char	*heredoc_expand(char *line, t_shell *s)
 				tmp = ft_strjoin(fstr, getenv(str));
 			if (!tmp)
 			{
+				free(line);
 				free(str);
 				free(fstr);
 				free_and_exit(MALLOC_ERROR, s, NULL, NULL);
