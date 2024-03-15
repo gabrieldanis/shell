@@ -65,16 +65,17 @@ char	*token_type(int i)
 	return ("unknown       ");
 }
 
-void	parse_lstiter(t_shell *s, int (*f)(t_parsed *node, t_parsed *subnode, t_shell *s))
+void	parse_lstiter(t_shell *s, int (*f)(t_parsed *node,
+	t_parsed *subnode, t_shell *s))
 {
 	t_parsed	*node;
 	t_parsed	*subnode;
-	
+
 	node = s->lst;
 	while (node)
 	{
 		subnode = node->lst;
-		while (subnode)	
+		while (subnode)
 		{
 			if (!f(node, subnode, s))
 				return ;
@@ -84,9 +85,10 @@ void	parse_lstiter(t_shell *s, int (*f)(t_parsed *node, t_parsed *subnode, t_she
 	}
 }
 
-void	parse_subiter(t_shell *s, t_parsed *node, int (*f)(t_parsed *subnode, t_shell *s))
+void	parse_subiter(t_shell *s, t_parsed *node,
+	int (*f)(t_parsed *subnode, t_shell *s))
 {
-	while (node->lst)	
+	while (node->lst)
 	{
 		if (!f(node->lst, s))
 			return ;
@@ -99,9 +101,8 @@ void	appln_chararr(t_parsed *lst, char *str, t_shell *s)
 	char	**tmp;
 	int		i;
 
-
 	i = 0;
-	while (lst->outfiles && lst->outfiles[i] != NULL)	
+	while (lst->outfiles && lst->outfiles[i] != NULL)
 		i++;
 	tmp = (char **)malloc(sizeof(char *) * (i + 2));
 	if (!tmp)
