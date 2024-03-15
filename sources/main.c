@@ -6,7 +6,7 @@
 /*   By: dberes <dberes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 16:48:10 by gdanis            #+#    #+#             */
-/*   Updated: 2024/03/15 12:48:54 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/03/15 17:18:58 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,16 +14,14 @@
 
 int	g_var;
 
-
 int	main(int argc, char **argv, char **envp)
 {
 	t_shell	*s;
-	int	loop;
-	int	loop_gn;
-	int	gn;
-	char *line;
+	char	*line;
+	int		loop;
+	int		loop_gn;
+	int		gn;
 
-	//print_env(envp);
 	loop = 1;
 	loop_gn = 1;
 	gn = 0;
@@ -31,14 +29,7 @@ int	main(int argc, char **argv, char **envp)
 	while (loop)
 	{
 		g_var = 0;
-		/*
-		if (argc >= 2)
-		{
-			loop = 0;
-			s->str = argv[1];
-		}
-		*/
-		if((isatty(fileno(stdin))))
+		if (isatty(fileno(stdin)))
 		{
 			s->str = readline("💻 minishell > ");
 			if (!s->str)
@@ -50,7 +41,6 @@ int	main(int argc, char **argv, char **envp)
 			line = get_next_line(fileno(stdin));
 			if (!line || !loop_gn)
 			{
-				//loop = 0;
 				if (line)
 					free (line);
 				free_and_exit(0, s, NULL, NULL);
@@ -72,14 +62,12 @@ int	main(int argc, char **argv, char **envp)
 				{
 					split_token(s);
 					expand_token(s);
-					//print_token(s);
 					init_plst(s);
 					parse_lstiter(s, parse_heredoc);
 					ft_signal(s);
 					parse_lstiter(s, parse_isfile);
 					create_outfiles(s);
 					parse_lstiter(s, parse_cmdargs);
-					//printlst(s);
 					count_parsed_nodes(s);
 					arg_list(s);
 					execute(s);

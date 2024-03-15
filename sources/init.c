@@ -6,7 +6,7 @@
 /*   By: gdanis <gdanis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/02 07:25:06 by gdanis            #+#    #+#             */
-/*   Updated: 2024/03/14 15:22:49 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/03/15 17:13:49 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,19 +16,15 @@ t_shell	*init_shell(int argc, char **argv, char **envp)
 {
 	t_shell	*s;
 
-	//print_env(envp);
 	(void)argc;
 	s = (t_shell *)malloc(sizeof(t_shell));
 	if (!s)
 		exit (error_message(MALLOC_ERROR, NULL, NULL, s));
 	*s = (t_shell){0};
 	s->env = dup_envp(envp, s);
-	//print_env(s->env);
 	s->argv = argv;
-	//set_shell(s); // not necessary
-	//print_env(s->env);
+	set_shell(s);
 	set_shlvl(s);
-	//print_env(s->env);
 	ft_signal(s);
 	s->str = NULL;
 	return (s);
@@ -61,17 +57,17 @@ void	set_shlvl(t_shell *s)
 	checker = 0;
 	while (s->env[i])
 	{
-		if (!strncmp(s->env[i], "SHLVL=", 6))	
+		if (!strncmp(s->env[i], "SHLVL=", 6))
 		{
-				num = ft_itoa(ft_atoi(ft_strchr(s->env[i], '=') + 1) + 1);
-				if (!num)
-					free_and_exit(MALLOC_ERROR, s, NULL, NULL);
-				tmp = ft_strjoin("SHLVL=", num);
-				free(num);
-				if (!tmp)
-					free_and_exit(MALLOC_ERROR, s, NULL, NULL);
-				ft_setenv(s, tmp);
-				checker = 1;
+			num = ft_itoa(ft_atoi(ft_strchr(s->env[i], '=') + 1) + 1);
+			if (!num)
+				free_and_exit(MALLOC_ERROR, s, NULL, NULL);
+			tmp = ft_strjoin("SHLVL=", num);
+			free(num);
+			if (!tmp)
+				free_and_exit(MALLOC_ERROR, s, NULL, NULL);
+			ft_setenv(s, tmp);
+			checker = 1;
 		}
 		i++;
 	}
@@ -84,9 +80,9 @@ void	set_shlvl(t_shell *s)
 	}
 }
 
-char **create_environment(t_shell *s)
+char	**create_environment(t_shell *s)
 {
-	char 	**env;
+	char	**env;
 	char	path[500];
 	char	*path_var;
 
@@ -118,7 +114,7 @@ char **create_environment(t_shell *s)
 char	**dup_envp(char **envp, t_shell *s)
 {
 	char	**dup;
-	int	i;
+	int		i;
 
 	i = 0;
 	if (!envp[0])

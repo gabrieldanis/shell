@@ -6,7 +6,7 @@
 /*   By: dberes <dberes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 16:49:31 by gdanis            #+#    #+#             */
-/*   Updated: 2024/03/15 11:03:23 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/03/15 16:58:30 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,6 @@ extern int	g_var;
 # define OUTFILE_ERROR			25
 # define NOCDFILE_ERROR			26
 # define NOHOME_ERROR			27
-
 
 /*********************************
  * 	PARSER CATEGORIES
@@ -152,7 +151,7 @@ typedef struct s_shell
  * 	FUNCTION PROTOTYPES
  *********************************/
 
-t_shell		*init_shell(int argc, char ** argv, char **envp);
+t_shell		*init_shell(int argc, char **argv, char **envp);
 t_parsed	*info_parsed_list(t_parsed *list);
 t_parsed	*type_parsed_list(t_parsed *list);
 t_parsed	*p_lstlast(t_parsed *list);
@@ -206,8 +205,10 @@ void		no_pipe(t_shell *s);
 void		init_plst(t_shell *s);
 void		printlst(t_shell *s);
 void		parse_type(t_shell *s);
-void		parse_lstiter(t_shell *s, int (*f)(t_parsed *node, t_parsed *subnode, t_shell *s));
-void		parse_subiter(t_shell *s, t_parsed *node, int (*f)(t_parsed *lst, t_shell *s));
+void		parse_lstiter(t_shell *s,
+				int (*f)(t_parsed *node, t_parsed *subnode, t_shell *s));
+void		parse_subiter(t_shell *s,
+				t_parsed *node, int (*f)(t_parsed *lst, t_shell *s));
 void		create_tmp_file(t_parsed *node, t_shell *s);
 void		delete_files(t_shell *s);
 void		ft_unset_str(t_shell *s, char *str, int i);

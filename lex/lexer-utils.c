@@ -6,7 +6,7 @@
 /*   By: gdanis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/29 09:52:50 by gdanis            #+#    #+#             */
-/*   Updated: 2024/03/15 07:35:20 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/03/15 17:00:33 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ void	token_addlstlast(t_token **lst, t_shell *s)
 		last_token(*lst)->next = tmp;
 }
 
+/*
 void	print_token(t_shell *s)
 {
 	t_token	*node;
@@ -71,7 +72,6 @@ void	print_token(t_shell *s)
 				if (sp_node->str[0] == '\0')
 					printf("\t\t\\0");
 				printf("\t\t%s\n", sp_node->str);
-				//printf(" split: %d expand %d",s->tlst->sp->split, s->tlst->sp->expand);
 				sp_node = sp_node->next;
 			}
 		}
@@ -84,7 +84,6 @@ void	print_token(t_shell *s)
 				if (ex_node->str && ex_node->str[0] == '\0')
 					printf("\t\t\\0");
 				printf("\t\t%s\n", ex_node->str);
-				//printf(" split: %d expand %d",s->tlst->ex->split, s->tlst->ex->expand);
 				ex_node = ex_node->next;
 			}
 		}
@@ -92,6 +91,7 @@ void	print_token(t_shell *s)
 		node = node->next;
 	}
 }
+*/
 
 int	is_delimiter(char c)
 {
