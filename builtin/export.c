@@ -6,7 +6,7 @@
 /*   By: gdanis <gdanis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/15 11:28:20 by gdanis            #+#    #+#             */
-/*   Updated: 2024/03/09 11:53:38 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/03/15 16:46:03 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ int	update_existing_var(t_shell *s, char *str)
 			tmp = s->env[i];
 			s->env[i] = str;
 			free(tmp);
- 			return (1);
+			return (1);
 		}
 		i++;
 	}

@@ -6,7 +6,7 @@
 /*   By: dberes <dberes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 13:17:49 by gdanis            #+#    #+#             */
-/*   Updated: 2024/03/15 11:03:55 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/03/15 17:07:04 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	free_and_exit(int n, t_shell *s, char *exe_name, char *str)
 {
 	int	exitval;
-	//fd_closer(s);
+
 	delete_files(s);
 	free_s_str(s);
 	if (s->var)
@@ -169,11 +169,11 @@ void	delete_files(t_shell *s)
 	while (parent_node)
 	{
 		node = parent_node->lst;
-		while(node)
+		while (node)
 		{
 			if (node->type == HEREDOC && !access(node->filename, F_OK))
 			{
-				if (unlink(node->filename) == -1) 
+				if (unlink(node->filename) == -1)
 					free_and_exit(UNLINK_ERROR, s, NULL, NULL);
 			}
 			node = node->next;
@@ -184,7 +184,7 @@ void	delete_files(t_shell *s)
 
 void	free_s_str(t_shell *s)
 {
-	if(s->str)
+	if (s->str)
 	{
 		free(s->str);
 		s->str = NULL;

@@ -6,7 +6,7 @@
 /*   By: gdanis <gdanis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/15 10:14:54 by gdanis            #+#    #+#             */
-/*   Updated: 2024/03/14 15:32:17 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/03/15 16:42:50 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	check_path(t_shell *s)
 	i = 0;
 	while (s->env[i])
 	{
-		if (!ft_strncmp(s->env[i], "PATH=", 5))	
+		if (!ft_strncmp(s->env[i], "PATH=", 5))
 			return (1);
 		i++;
 	}

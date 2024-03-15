@@ -6,7 +6,7 @@
 /*   By: dberes <dberes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/23 22:10:54 by gdanis            #+#    #+#             */
-/*   Updated: 2024/03/12 18:36:50 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/03/15 17:26:39 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,10 +34,10 @@ void	ft_signal_heredoc(t_shell *s)
 void	handle_sig1(int signal_num)
 {
 	(void)signal_num;
-	write(1, "\n", 1); // Move to a new line
-    rl_on_new_line(); // Regenerate the prompt on a newline
-   	rl_replace_line("", 0); // Clear the previous text
-    rl_redisplay();
+	write(1, "\n", 1);
+	rl_on_new_line();
+	rl_replace_line("", 0);
+	rl_redisplay();
 	g_var = 130;
 }
 
@@ -49,7 +49,7 @@ void	handle_sig2(int signal_num)
 void	handle_sig_child_1(int signal_num)
 {
 	(void)signal_num;
-	write(1, "\n", 1); // Move to a new line
+	write(1, "\n", 1);
 }
 
 void	handle_sig_child_2(int signal_num)
@@ -59,10 +59,10 @@ void	handle_sig_child_2(int signal_num)
 }
 
 void	handle_sig1_heredoc(int signal_num)
-{	
+{
 	(void)signal_num;
 	ioctl(STDIN_FILENO, TIOCSTI, "\n");
-	rl_replace_line("", 0); // Clear the previous text
-    rl_on_new_line(); // Regenerate the prompt on a newline
+	rl_replace_line("", 0);
+	rl_on_new_line();
 	g_var = 130;
 }

@@ -6,7 +6,7 @@
 /*   By: gdanis <gdanis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 08:19:56 by gdanis            #+#    #+#             */
-/*   Updated: 2024/03/05 12:08:50 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/03/15 16:44:24 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	nl_flagchecker(char *str)
 		return (1);
 	while (str[i])
 	{
-		if (str[i] != 'n')	
+		if (str[i] != 'n')
 			return (1);
 		i++;
 	}

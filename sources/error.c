@@ -6,7 +6,7 @@
 /*   By: dberes <dberes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 14:07:21 by gdanis            #+#    #+#             */
-/*   Updated: 2024/03/13 13:17:30 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/03/15 17:05:29 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,6 @@
 
 int	error_message(int n, char *exe_name, char *str, t_shell *s)
 {
-
-	//printf("err = %d, n = %d\n", err , n);
 	if (n != ENV_ERROR)
 		ft_putstr_fd("minishell: ", 2);
 	if (exe_name)
@@ -28,16 +26,16 @@ int	error_message(int n, char *exe_name, char *str, t_shell *s)
 		ft_putstr_fd(str, 2);
 		ft_putstr_fd(": ", 2);
 	}
-	if (n != CMD_ERROR && n != UNEX_TOKEN && n!= ARGNUM_ERROR
-			&& n != NUM_ERROR && n != ENV_ERROR && n != IDENT_ERROR 
-			&& n != MALLOC_ERROR && n != NOHOME_ERROR && n != HEREDOC_EOF_ERROR)
+	if (n != CMD_ERROR && n != UNEX_TOKEN && n != ARGNUM_ERROR
+		&& n != NUM_ERROR && n != ENV_ERROR && n != IDENT_ERROR
+		&& n != MALLOC_ERROR && n != NOHOME_ERROR && n != HEREDOC_EOF_ERROR)
 	{
 		if (n == NOFILE_ERROR)
 			s->rval = 127;
 		else if (n == ISDIR_ERROR || n == PERM_ERROR)
 			s->rval = 126;
 		else if (n == NOINFILE_ERROR || n == OUTFILE_ERROR
-				|| n == WRITE_ERROR || n == NOCDFILE_ERROR)
+			|| n == WRITE_ERROR || n == NOCDFILE_ERROR)
 			s->rval = 1;
 		else
 			s->rval = errno;
@@ -45,7 +43,8 @@ int	error_message(int n, char *exe_name, char *str, t_shell *s)
 	}
 	if (n == HEREDOC_EOF_ERROR)
 	{
-		ft_putstr_fd("warning: here-document delimited by end-of-file instead of delimiter\n", 2);
+		ft_putstr_fd
+			("warning: here-doc delimited by EOF instead of delimiter\n", 2);
 		s->rval = 0;
 	}
 	if (n == MALLOC_ERROR)
@@ -74,7 +73,7 @@ int	error_message(int n, char *exe_name, char *str, t_shell *s)
 			ft_putstr_fd(": ", 2);
 		}
 		s->rval = 127;
-		return(ft_putstr_fd("command not found\n", 2), 127);
+		return (ft_putstr_fd("command not found\n", 2), 127);
 	}
 	else if (n == UNEX_TOKEN)
 	{

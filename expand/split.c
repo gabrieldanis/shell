@@ -6,7 +6,7 @@
 /*   By: gdanis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/29 10:00:53 by gdanis            #+#    #+#             */
-/*   Updated: 2024/03/14 20:12:50 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/03/15 16:55:53 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,9 +37,9 @@ void	create_nonvar_token(t_shell *s, int *i, int *flag, t_token *node)
 void	check_nonvarname_char(int *i, int *non_varname_char, t_token *node)
 {
 	if (!check_is_var(node->str[*i]) && node->str[*i] != '?'
-			&& node->str[*i] != '\0' && node->str[*i] != '"'
-			&& node->str[*i] != 39 && node->str[*i] != ' '
-			&& node->str[*i] != '=')
+		&& node->str[*i] != '\0' && node->str[*i] != '"'
+		&& node->str[*i] != 39 && node->str[*i] != ' '
+		&& node->str[*i] != '=')
 	{
 		*non_varname_char = 1;
 		last_token(node->sp)->expand = 0;
@@ -69,12 +69,14 @@ void	create_var_token(t_shell *s, int *i, int flag, t_token *node)
 	{
 		ft_charjoin(&(last_token(node->sp)->str), node->str[*i], s);
 		(*i)++;
-		if ((node->str[(*i) - 1] == '?' && node->str[(*i) - 2] == '$') ||
-		(non_varname_char && (!node->str[*i] || is_delimiter(*i) || node->str[*i] == '$')))
+		if ((node->str[(*i) - 1] == '?' && node->str[(*i) - 2] == '$')
+			|| (non_varname_char && (!node->str[*i] || is_delimiter(*i)
+					|| node->str[*i] == '$')))
 			break ;
-		if ((node->str[*i] == '"' && flag == 2) || (node->str[*i] == 39 && flag == 1) ||
-				(flag == 0 && (node->str[*i] == '"' || node->str[*i] == 39)))
-			break;
+		if ((node->str[*i] == '"' && flag == 2) || (node->str[*i] == 39
+				&& flag == 1) || (flag == 0 && (node->str[*i] == '"'
+					|| node->str[*i] == 39)))
+			break ;
 	}
 }
 
@@ -91,8 +93,8 @@ void	split_token(t_shell *s)
 		if (node->type == HEREDOC && node->next)
 		{
 			node->next->type = HEREDOC_DEL;
-			if (ft_strchr(node->next->str, '\'') ||
-				ft_strchr(node->next->str, 34))
+			if (ft_strchr(node->next->str, '\'')
+				|| ft_strchr(node->next->str, 34))
 				node->next->heredoc_quote = 1;
 		}
 		i = 0;
