@@ -6,11 +6,23 @@
 /*   By: gdanis <gdanis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/04 14:23:00 by gdanis            #+#    #+#             */
-/*   Updated: 2024/03/15 16:43:46 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/03/16 09:37:39 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../header/minishell.h"
+
+int	exit_wrong_argnum(t_shell *s, t_parsed *node)
+{
+	if (node)
+	{
+		s->rval = 1;
+		free_s_str(s);
+		error_message(ARGNUM_ERROR, "exit", NULL, s);
+		return (1);
+	}
+	return (0);
+}
 
 void	ft_exit(t_shell *s, t_parsed *lst)
 {
@@ -33,16 +45,10 @@ void	ft_exit(t_shell *s, t_parsed *lst)
 			}
 			i++;
 		}
-		if (lst->lst->next->next)
-		{
-			s->rval = 1;
-			free_s_str(s);
-			error_message(ARGNUM_ERROR, "exit", NULL, s);
+		if (exit_wrong_argnum(s, lst->lst->next->next))
 			return ;
-		}
 		num = ft_atoi(lst->lst->next->str);
 		s->rval = num;
 	}
-	free_s_str(s);
 	free_and_exit(0, s, NULL, NULL);
 }

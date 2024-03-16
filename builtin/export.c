@@ -6,11 +6,20 @@
 /*   By: gdanis <gdanis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/15 11:28:20 by gdanis            #+#    #+#             */
-/*   Updated: 2024/03/15 16:46:03 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/03/16 09:24:01 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../header/minishell.h"
+
+int	export_without_argument(t_shell *s, t_parsed *lst, int env)
+{
+	if (env)
+		return (ft_env(s, lst), 1);
+	if (!lst->arglst[1])
+		return (ft_print_export(s->env, s), 1);
+	return (0);
+}
 
 int	ft_export(t_shell *s, t_parsed *lst, int env)
 {
@@ -18,10 +27,8 @@ int	ft_export(t_shell *s, t_parsed *lst, int env)
 	int		i;
 
 	i = 0;
-	if (env)
-		return (ft_env(s, lst), 127);
-	if (!lst->arglst[1])
-		return (ft_print_export(s->env, s), 0);
+	if (export_without_argument(s, lst, env))
+		return (0);
 	i++;
 	while (lst->arglst[i])
 	{
@@ -36,8 +43,7 @@ int	ft_export(t_shell *s, t_parsed *lst, int env)
 		tmp = ft_strdup(lst->arglst[i]);
 		if (!tmp)
 			free_and_exit(MALLOC_ERROR, s, NULL, NULL);
-		if (ft_setenv(s, tmp))
-			return (1);
+		ft_setenv(s, tmp);
 		i++;
 	}
 	return (0);

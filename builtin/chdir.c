@@ -6,7 +6,7 @@
 /*   By: gdanis <gdanis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/15 09:17:56 by gdanis            #+#    #+#             */
-/*   Updated: 2024/03/15 16:44:39 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/03/16 09:10:12 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,46 +28,63 @@ void	update_pwd(t_shell *s, char *pwd)
 	ft_setenv(s, tmp);
 }
 
-int	ft_chdir(t_shell *s, t_parsed *lst)
+void	chdir_with_argument(t_shell *s, t_parsed *lst)
+{
+	char	pwd[500];
+	int		n;
+
+	n = 0;
+	if (lst->arglst[2])
+	{
+		s->rval = 1;
+		error_message(ARGNUM_ERROR, "cd", NULL, s);
+		return ;
+	}
+	getcwd(pwd, sizeof(pwd));
+	n = chdir(lst->arglst[1]);
+	if (n == -1)
+	{
+		error_message(NOCDFILE_ERROR, "cd", lst->arglst[1], s);
+		return ;
+	}
+	else
+		s->rval = 0;
+	update_pwd(s, pwd);
+}
+
+int	chdir_no_argument(t_shell *s)
 {
 	char	pwd[500];
 	int		n;
 	int		i;
 
-	n = 0;
-	if (lst->arglst[1])
+	i = 0;
+	while (s->env[i] && ft_strncmp(s->env[i], "HOME=", 5))
+		i++;
+	if (!s->env[i])
 	{
-		if (lst->arglst[2])
-		{
-			s->rval = 1;
-			return (error_message(ARGNUM_ERROR, "cd", NULL, s));
-		}
-		getcwd(pwd, sizeof(pwd));
-		n = chdir(lst->arglst[1]);
-		if (n == -1)
-			return (error_message(NOCDFILE_ERROR, "cd", lst->arglst[1], s));
-		else
-			s->rval = 0;
-		update_pwd(s, pwd);
+		error_message(NOHOME_ERROR, "cd", NULL, s);
+		return (1);
+	}
+	getcwd(pwd, sizeof(pwd));
+	n = chdir(ft_strchr(s->env[i], '=') + 1);
+	if (n == -1)
+	{
+		s->rval = 1;
+		error_message(NOCDFILE_ERROR, "cd", ft_strchr(s->env[i], '=') + 1, s);
+		return (1);
 	}
 	else
-	{
-		i = 0;
-		while (s->env[i] && ft_strncmp(s->env[i], "HOME=", 5))
-			i++;
-		if (!s->env[i])
-			return (error_message(NOHOME_ERROR, "cd", NULL, s));
-		getcwd(pwd, sizeof(pwd));
-		n = chdir(ft_strchr(s->env[i], '=') + 1);
-		if (n == -1)
-		{
-			s->rval = 1;
-			return (error_message(NOCDFILE_ERROR, "cd",
-					ft_strchr(s->env[i], '=') + 1, s));
-		}
-		else
-			s->rval = 0;
-		update_pwd(s, pwd);
-	}
-	return (n);
+		s->rval = 0;
+	update_pwd(s, pwd);
+	return (0);
+}
+
+int	ft_chdir(t_shell *s, t_parsed *lst)
+{
+	if (lst->arglst[1])
+		chdir_with_argument(s, lst);
+	else
+		chdir_no_argument(s);
+	return (0);
 }
