@@ -6,7 +6,7 @@
 /*   By: gdanis <gdanis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/02 07:25:06 by gdanis            #+#    #+#             */
-/*   Updated: 2024/03/15 17:13:49 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/03/18 09:38:25 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,26 +71,15 @@ void	set_shlvl(t_shell *s)
 		}
 		i++;
 	}
-	if (!checker)
-	{
-		tmp = ft_strdup("SHLVL=1");
-		if (!tmp)
-			free_and_exit(MALLOC_ERROR, s, NULL, NULL);
-		ft_setenv(s, tmp);
-	}
+	shlvl_one(s, tmp, checker);
 }
 
 char	**create_environment(t_shell *s)
 {
 	char	**env;
-	char	path[500];
 	char	*path_var;
 
-	if (getcwd(path, sizeof(path)) == NULL)
-		error_message(GEN_ERROR, "pwd", NULL, s);
-	path_var = ft_strjoin("PWD=", path);
-	if (!path_var)
-		free_and_exit(MALLOC_ERROR, s, NULL, NULL);
+	ft_getcwd(s, &path_var);
 	env = (char **)malloc(sizeof(char *) * (4));
 	if (!env)
 		free_and_exit(MALLOC_ERROR, s, NULL, NULL);
@@ -121,11 +110,7 @@ char	**dup_envp(char **envp, t_shell *s)
 		dup = create_environment(s);
 	else
 	{
-		while (envp[i])
-			i++;
-		dup = (char **)malloc(sizeof(char *) * (i + 1));
-		if (!dup)
-			free_and_exit(MALLOC_ERROR, s, NULL, NULL);
+		malloc_dup(s, &dup, envp);
 		i = 0;
 		while (envp[i])
 		{

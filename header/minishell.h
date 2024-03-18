@@ -6,7 +6,7 @@
 /*   By: dberes <dberes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 16:49:31 by gdanis            #+#    #+#             */
-/*   Updated: 2024/03/15 16:58:30 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/03/18 09:38:42 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -282,6 +282,11 @@ void		ft_write_to_file(t_shell *s, t_parsed *node);
 void		create_outfiles(t_shell *s);
 void		print_env(char **env);
 void		set_shell(t_shell *s);
+t_parsed	*lstlast(t_parsed *lst);
+void		free_parsed_list_strings(t_parsed *tmp);
+void		shlvl_one(t_shell *s, char *tmp, int checker);
+void		ft_getcwd(t_shell *s, char **path_var);
+void		malloc_dup(t_shell *s, char ***dup, char **envp);
 
 /*
 void		check_commands_bonus(t_data *data, int *ex);

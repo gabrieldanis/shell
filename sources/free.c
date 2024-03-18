@@ -6,7 +6,7 @@
 /*   By: dberes <dberes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 13:17:49 by gdanis            #+#    #+#             */
-/*   Updated: 2024/03/15 17:07:04 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/03/18 09:13:24 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,7 @@ void	free_and_exit(int n, t_shell *s, char *exe_name, char *str)
 	if (s->var)
 		free(s->var);
 	if (n != 0)
-	{
 		s->rval = error_message(n, exe_name, str, s);
-	}
 	if (s && s->env)
 		free_2d_array((void **)s->env);
 	free_lsts(s);
@@ -104,15 +102,7 @@ void	free_parsed_list(t_parsed *lst)
 	{
 		tmp = lst;
 		lst = lst->next;
-		if (tmp->str)
-		{
-			free(tmp->str);
-			tmp->str = NULL;
-		}
-		if (tmp->filename)
-			free (tmp->filename);
-		if (tmp->cmd)
-			free (tmp->cmd);
+		free_parsed_list_strings(tmp);
 		if (tmp->outfiles)
 		{
 			free_2d_array((void **)tmp->outfiles);
@@ -129,64 +119,5 @@ void	free_parsed_list(t_parsed *lst)
 			tmp->lst = NULL;
 		}
 		free(tmp);
-	}
-}
-
-void	free_2d_array(void **ptr)
-{
-	int	i;
-
-	i = 0;
-	if (ptr)
-	{
-		while (ptr[i])
-		{
-			if (ptr[i])
-				free(ptr[i]);
-			i++;
-		}
-		free(ptr);
-	}
-}
-
-void	free_2d_array_i(void ***arr, int i)
-{
-	int	j;
-
-	j = 0;
-	while (j < i)
-		free((*arr)[j++]);
-	free(*arr);
-	*arr = NULL;
-}
-
-void	delete_files(t_shell *s)
-{
-	t_parsed	*node;
-	t_parsed	*parent_node;
-
-	parent_node = s->lst;
-	while (parent_node)
-	{
-		node = parent_node->lst;
-		while (node)
-		{
-			if (node->type == HEREDOC && !access(node->filename, F_OK))
-			{
-				if (unlink(node->filename) == -1)
-					free_and_exit(UNLINK_ERROR, s, NULL, NULL);
-			}
-			node = node->next;
-		}
-		parent_node = parent_node->next;
-	}
-}
-
-void	free_s_str(t_shell *s)
-{
-	if (s->str)
-	{
-		free(s->str);
-		s->str = NULL;
 	}
 }

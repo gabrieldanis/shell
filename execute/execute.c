@@ -6,11 +6,39 @@
 /*   By: dberes <dberes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 08:08:33 by gdanis            #+#    #+#             */
-/*   Updated: 2024/03/15 16:49:46 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/03/16 12:19:57 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../header/minishell.h"
+
+void	open_fds(t_shell *s, int *original_stdin, int *original_stdout)
+{
+	if (s->lst->infile)
+	{
+		*original_stdin = dup(0);
+		fd_opener(s->lst, s);
+	}
+	if (s->lst->outfiles)
+	{
+		*original_stdout = dup(1);
+		ft_write_to_file(s, s->lst);
+	}
+}
+
+void	close_fds(t_shell *s, int *original_stdin, int *original_stdout)
+{
+	if (s->lst->outfiles)
+	{
+		dup2(*original_stdout, 1);
+		close(*original_stdout);
+	}
+	if (s->lst->infile)
+	{
+		dup2(*original_stdin, 0);
+		close(*original_stdin);
+	}
+}
 
 void	execute(t_shell *s)
 {
@@ -20,28 +48,10 @@ void	execute(t_shell *s)
 	if (s->cmds == 1 && s->lst->arglst
 		&& s->lst->arglst[0] && check_builtin(s->lst->arglst[0]))
 	{
-		if (s->lst->infile)
-		{
-			original_stdin = dup(0);
-			fd_opener(s->lst, s);
-		}
-		if (s->lst->outfiles)
-		{
-			original_stdout = dup(1);
-			ft_write_to_file(s, s->lst);
-		}
+		open_fds(s, &original_stdin, &original_stdout);
 		if (execute_builtin(s, s->lst))
 		{
-			if (s->lst->outfiles)
-			{
-				dup2(original_stdout, 1);
-				close(original_stdout);
-			}
-			if (s->lst->infile)
-			{
-				dup2(original_stdin, 0);
-				close(original_stdin);
-			}
+			close_fds(s, &original_stdin, &original_stdout);
 			return ;
 		}
 	}

@@ -6,7 +6,7 @@
 /*   By: dberes <dberes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/01 13:47:54 by gdanis            #+#    #+#             */
-/*   Updated: 2024/03/15 11:39:02 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/03/16 14:38:46 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,13 @@ void	printlst(t_shell *s)
 	printf("\n");
 }
 */
+
+t_parsed	*lstlast(t_parsed *lst)
+{
+	while (lst && lst->next)
+		lst = lst->next;
+	return (lst);
+}
 
 char	*token_type(int i)
 {
@@ -114,12 +121,11 @@ void	appln_chararr(t_parsed *lst, char *str, t_shell *s)
 		i++;
 	}
 	tmp[i] = ft_strdup(str);
-	if (!tmp[i])
+	if (!tmp[i++])
 	{
 		free(tmp);
 		free_and_exit(MALLOC_ERROR, s, NULL, NULL);
 	}
-	i++;
 	tmp[i] = NULL;
 	if (lst->outfiles)
 		free(lst->outfiles);

@@ -6,7 +6,7 @@
 /*   By: gdanis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/29 10:00:53 by gdanis            #+#    #+#             */
-/*   Updated: 2024/03/15 16:55:53 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/03/16 14:14:07 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,17 @@ void	check_nonvarname_char(int *i, int *non_varname_char, t_token *node)
 	}
 }
 
+void	set_expand_and_split_values(t_token *node, int flag, int *i)
+{
+	if (!flag && node->type != HEREDOC_DEL)
+		last_token(node->sp)->split = 1;
+	if ((flag == 2 || flag == 0) && node->type != HEREDOC_DEL
+		&& (check_is_var(node->str[*i]) || node->str[*i] == '?'))
+		last_token(node->sp)->expand = 1;
+	if (flag == 0 && !check_is_var(node->str[*i]) && node->str[*i] != '\0')
+		last_token(node->sp)->expand = 1;
+}
+
 void	create_var_token(t_shell *s, int *i, int flag, t_token *node)
 {
 	int	non_varname_char;
@@ -56,13 +67,7 @@ void	create_var_token(t_shell *s, int *i, int flag, t_token *node)
 		token_addlstlast(&node->sp, s);
 	ft_charjoin(&(last_token(node->sp)->str), node->str[*i], s);
 	(*i)++;
-	if (!flag && node->type != HEREDOC_DEL)
-		last_token(node->sp)->split = 1;
-	if ((flag == 2 || flag == 0) && node->type != HEREDOC_DEL
-		&& (check_is_var(node->str[*i]) || node->str[*i] == '?'))
-		last_token(node->sp)->expand = 1;
-	if (flag == 0 && !check_is_var(node->str[*i]) && node->str[*i] != '\0')
-		last_token(node->sp)->expand = 1;
+	set_expand_and_split_values(node, flag, i);
 	check_nonvarname_char(i, &non_varname_char, node);
 	while (check_is_var(node->str[*i]) || (node->str[*i] == '?'
 			&& node->str[(*i) - 1] == '$') || non_varname_char)

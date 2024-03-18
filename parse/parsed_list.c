@@ -6,18 +6,11 @@
 /*   By: dberes <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/15 17:16:30 by dberes            #+#    #+#             */
-/*   Updated: 2024/03/15 17:16:37 by dberes           ###   ########.fr       */
+/*   Updated: 2024/03/16 14:34:03 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../header/minishell.h"
-
-t_parsed	*lstlast(t_parsed *lst)
-{
-	while (lst && lst->next)
-		lst = lst->next;
-	return (lst);
-}
 
 void	addnewlstback(t_shell *s, t_parsed *lst)
 {
@@ -43,6 +36,25 @@ void	addnewlstback(t_shell *s, t_parsed *lst)
 	}
 }
 
+void	add_pipe_node(t_shell *s, t_token **t_node)
+{
+	if (*t_node && (*t_node)->type == PIPE)
+	{
+		addnewlstback(s, lstlast(s->lst));
+		node_dup(lstlast(lstlast(s->lst)->lst), *t_node, (*t_node)->str, s);
+		*t_node = (*t_node)->next;
+	}
+}
+
+void	add_regular_node(t_shell *s, t_token *t_node, t_token *ex_node)
+{
+	addnewlstback(s, lstlast(s->lst));
+	node_dup(lstlast(lstlast(s->lst)->lst),
+		t_node, ex_node->str, s);
+	lstlast(lstlast(s->lst)->lst)->heredoc_quote
+	= t_node->heredoc_quote;
+}
+
 void	init_plst(t_shell *s)
 {
 	t_token	*t_node;
@@ -58,23 +70,12 @@ void	init_plst(t_shell *s)
 			while (ex_node)
 			{
 				if (ex_node->str)
-				{
-					addnewlstback(s, lstlast(s->lst));
-					node_dup(lstlast(lstlast(s->lst)->lst),
-						t_node, ex_node->str, s);
-					lstlast(lstlast(s->lst)->lst)->heredoc_quote
-					= t_node->heredoc_quote;
-				}
+					add_regular_node(s, t_node, ex_node);
 				ex_node = ex_node->next;
 			}
 			t_node = t_node->next;
 		}
-		if (t_node && t_node->type == PIPE)
-		{
-			addnewlstback(s, lstlast(s->lst));
-			node_dup(lstlast(lstlast(s->lst)->lst), t_node, t_node->str, s);
-			t_node = t_node->next;
-		}
+		add_pipe_node(s, &t_node);
 	}
 }
 
