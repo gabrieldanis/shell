@@ -6,7 +6,7 @@
 /*   By: dberes <dberes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 17:14:11 by gdanis            #+#    #+#             */
-/*   Updated: 2024/03/08 17:15:51 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/03/18 12:05:22 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ void	pipe_fork(t_parsed *lst, t_shell *s)
 	ind = 0;
 	while (node)
 	{
-		child_signal();
+		child_signal(s);
 		node->pid = fork();
 		if (node->pid == -1)
 			free_and_exit(PID_ERROR, s, NULL, NULL);
