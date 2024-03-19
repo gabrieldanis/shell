@@ -61,10 +61,10 @@ void	free_heredoc(t_shell *s, t_parsed *subnode, char *line)
 		free(line_new);
 }
 
-void open_heredoc_fd(t_shell *s, t_parsed *subnode)
+void	open_heredoc_fd(t_shell *s, t_parsed *subnode)
 {
 	s->heredocfd = open(subnode->filename, O_WRONLY | O_APPEND
-				| O_CREAT, 0644);
+			| O_CREAT, 0644);
 	if (s->heredocfd == -1)
 	{
 		perror("Error opening file");

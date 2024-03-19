@@ -42,10 +42,8 @@ int	parse_heredoc(t_parsed *node, t_parsed *subnode, t_shell *s)
 char	*heredoc_expand(char *line, t_shell *s)
 {
 	int		i;
-	int		j;
 	char	*str;
 	char	*fstr;
-	char	*tmp;
 
 	i = 0;
 	fstr = NULL;
@@ -58,36 +56,44 @@ char	*heredoc_expand(char *line, t_shell *s)
 			i++;
 		}
 		i++;
-		j = i;
-		while (line[i] && (check_is_var(line[i]) || line[j] == '?'))
+		s->j_value = i;
+		while (line[i] && (check_is_var(line[i]) || line[s->j_value] == '?'))
 		{
 			ft_charjoin(&str, line[i], s);
-			if (line[j] == '?')
+			if (line[s->j_value] == '?')
 			{
 				i++;
 				break ;
 			}
 			i++;
 		}
-		if (str)
-		{
-			if (line[j] == '?')
-				tmp = ft_strjoin(fstr, token_vardup(NULL, s, EXIT_VALUE));
-			else
-				tmp = ft_strjoin(fstr, getenv(str));
-			if (!tmp)
-			{
-				free(line);
-				free(str);
-				free(fstr);
-				free_and_exit(MALLOC_ERROR, s, NULL, NULL);
-			}
-			free(str);
-			free(fstr);
-			fstr = tmp;
-		}
+		fstr = create_fstr(s, fstr, str, line);
 	}
 	free(line);
+	return (fstr);
+}
+
+char	*create_fstr(t_shell *s, char *fstr, char *str, char *line)
+{
+	char	*tmp;
+
+	if (str)
+	{
+		if (line[s->j_value] == '?')
+			tmp = ft_strjoin(fstr, token_vardup(NULL, s, EXIT_VALUE));
+		else
+			tmp = ft_strjoin(fstr, getenv(str));
+		if (!tmp)
+		{
+			free(line);
+			free(str);
+			free(fstr);
+			free_and_exit(MALLOC_ERROR, s, NULL, NULL);
+		}
+		free(str);
+		free(fstr);
+		fstr = tmp;
+	}
 	return (fstr);
 }
 

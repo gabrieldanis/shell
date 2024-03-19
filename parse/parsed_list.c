@@ -55,18 +55,7 @@ void	init_plst(t_shell *s)
 		while (t_node && t_node->type != PIPE)
 		{
 			ex_node = t_node->ex;
-			while (ex_node)
-			{
-				if (ex_node->str)
-				{
-					addnewlstback(s, lstlast(s->lst));
-					node_dup(lstlast(lstlast(s->lst)->lst),
-						t_node, ex_node->str, s);
-					lstlast(lstlast(s->lst)->lst)->heredoc_quote
-					= t_node->heredoc_quote;
-				}
-				ex_node = ex_node->next;
-			}
+			ex_node_loop(s, ex_node, t_node);
 			t_node = t_node->next;
 		}
 		if (t_node && t_node->type == PIPE)
@@ -75,6 +64,22 @@ void	init_plst(t_shell *s)
 			node_dup(lstlast(lstlast(s->lst)->lst), t_node, t_node->str, s);
 			t_node = t_node->next;
 		}
+	}
+}
+
+void	ex_node_loop(t_shell *s, t_token *ex_node, t_token *t_node)
+{
+	while (ex_node)
+	{
+		if (ex_node->str)
+		{
+			addnewlstback(s, lstlast(s->lst));
+			node_dup(lstlast(lstlast(s->lst)->lst),
+				t_node, ex_node->str, s);
+			lstlast(lstlast(s->lst)->lst)->heredoc_quote
+			= t_node->heredoc_quote;
+		}
+		ex_node = ex_node->next;
 	}
 }
 
