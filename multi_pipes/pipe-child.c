@@ -33,66 +33,7 @@ void	multi_child_process(t_parsed *lst, t_shell *s, int ind)
 			free_and_exit(DUP_ERROR, s, NULL, NULL);
 	}
 	fd_closer(s);
-	if (!node->arglst || !node->arglst[0])
-		free_and_exit(0, s, NULL, NULL);
-	if (node->cmd[ft_strlen(node->cmd) - 1] == '/'
-		|| (ft_strchr(node->cmd, '/') && !node->cmd_found))
-	{
-		if (access(node->cmd, F_OK))
-			free_and_exit(NOFILE_ERROR, s, NULL, node->arglst[0]);
-		errno = 21;
-		free_and_exit(ISDIR_ERROR, s, NULL, node->arglst[0]);
-	}
-	if (execute_builtin(s, node))
-		free_and_exit(0, s, NULL, NULL);
-	if (s->path && !node->cmd_found)
-		free_and_exit(CMD_ERROR, s, NULL, node->arglst[0]);
-	if (!s->path && !node->cmd_found)
-		free_and_exit(NOFILE_ERROR, s, NULL, node->arglst[0]);
-	if ((node->cmd || !s->path) && access(node->cmd, X_OK) != 0)
-		free_and_exit(PERM_ERROR, s, NULL, node->arglst[0]);
-	if (execve(node->cmd, node->arglst, s->env) == -1)
-		free_and_exit(EXECVE_ERROR, s, NULL, node->arglst[0]);
-}
-
-void	ft_write_to_file(t_shell *s, t_parsed *node)
-{
-	int			file;
-	int			i;
-
-	i = 0;
-	while (node->outfiles && node->outfiles[i + 1])
-		i++;
-	if (node->outfiles && node->outfiles[i])
-	{
-		if (!node->append)
-			file = open(node->outfiles[i], O_WRONLY | O_TRUNC | O_CREAT, 0644);
-		if (node->append)
-			file = open(node->outfiles[i], O_WRONLY | O_APPEND | O_CREAT, 0644);
-		if (file == -1)
-			free_and_exit(0, s, NULL, NULL);
-		if (dup2(file, STDOUT_FILENO) == -1)
-		{
-			fd_closer(s);
-			free_and_exit(DUP_ERROR, s, NULL, NULL);
-		}
-		close(file);
-	}
-}
-
-void	check_infiles(t_shell *s, t_parsed *lst)
-{
-	t_parsed	*node;
-
-	node = lst->lst;
-	while (node)
-	{
-		if (node->type == INFILE && access(node->str, F_OK) != 0)
-			free_and_exit(NOINFILE_ERROR, s, NULL, node->str);
-		if (node->type == INFILE && access(node->str, R_OK) != 0)
-			free_and_exit(PERM_ERROR, s, NULL, node->str);
-		node = node->next;
-	}
+	child_process_error_check(s, node);
 }
 
 void	fd_opener(t_parsed *lst, t_shell *s)
