@@ -292,6 +292,11 @@ void		ft_write_to_file(t_shell *s, t_parsed *node);
 void		create_outfiles(t_shell *s);
 void		print_env(char **env);
 void		set_shell(t_shell *s);
+void		open_heredoc_fd(t_shell *s, t_parsed *subnode);
+void		free_heredoc(t_shell *s, t_parsed *subnode, char *line);
+char		*heredoc_read(char *line);
+int			heredoc_break(t_shell *s, t_parsed *subnode, char *line);
+int			check_eof_error(t_shell *s, t_parsed *subnode, char *line);
 char		*copy_to_str(char *s1, char *s2, char *new_str);
 
 /*

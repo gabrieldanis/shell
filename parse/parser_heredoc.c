@@ -15,63 +15,22 @@
 int	parse_heredoc(t_parsed *node, t_parsed *subnode, t_shell *s)
 {
 	char		*line;
-	char		*line_new;
 
 	(void) node;
 	line = NULL;
-	line_new = NULL;
 	ft_signal_heredoc(s);
 	if (subnode->type == HEREDOC)
 	{
 		create_tmp_file(subnode, s);
-		s->heredocfd = open(subnode->filename, O_WRONLY | O_APPEND
-				| O_CREAT, 0644);
-		if (s->heredocfd == -1)
-		{
-			perror("Error opening file");
-			free_and_exit(OPEN_ERROR, s, NULL, NULL);
-		}
+		open_heredoc_fd(s, subnode);
 		while (1)
 		{
-			if ((isatty(0)))
-				line = readline("> ");
-			else
-			{
-				line = get_next_line(0);
-				if (line && ft_strlen(line) > 0
-					&& line[(ft_strlen(line)) - 1] == '\n')
-					line[ft_strlen(line) - 1] = '\0';
-			}
-			if (!line)
-			{
-				error_message(HEREDOC_EOF_ERROR, "warning",
-					subnode->next->str, s);
+			line = heredoc_read(line);
+			if (check_eof_error(s, subnode, line) == 1)
 				return (1);
-			}
-			if (!ft_strncmp(line, subnode->next->str, ft_strlen(line) + 1))
+			if (heredoc_break(s, subnode, line) == 1)
 				break ;
-			if (g_var == 130)
-			{
-				s->rval = g_var;
-				break ;
-			}
-			if (ft_strchr(line, '$') && subnode->next->heredoc_quote == 0)
-				line = heredoc_expand(line, s);
-			line_new = ft_strjoin(line, "\n");
-			if (!line_new)
-			{
-				free(line);
-				free_and_exit(MALLOC_ERROR, s, NULL, NULL);
-			}
-			free(line);
-			line = NULL;
-			if (write(s->heredocfd, line_new, ft_strlen(line_new)) == -1)
-			{
-				free(line_new);
-				free_and_exit(WRITE_ERROR, s, NULL, NULL);
-			}
-			if (line_new)
-				free(line_new);
+			free_heredoc(s, subnode, line);
 		}
 		if (line)
 			free(line);
