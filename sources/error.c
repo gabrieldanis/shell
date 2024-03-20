@@ -6,7 +6,7 @@
 /*   By: dberes <dberes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 14:07:21 by gdanis            #+#    #+#             */
-/*   Updated: 2024/03/16 16:23:58 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/03/20 12:13:14 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int	perror_message(t_shell *s, char *str, int n)
 	return (0);
 }
 
-void	syntax_errors(t_shell *s, char *str, int n)
+void	syntax_errors(t_shell *s, char *str, int n, char *exe_name)
 {
 	if (n == UNEX_TOKEN)
 	{
@@ -44,6 +44,11 @@ void	syntax_errors(t_shell *s, char *str, int n)
 	}
 	if (n == NUM_ERROR)
 	{
+		(void)exe_name;
+		/*
+		if (!ft_strncmp(exe_name, "exit", 5))
+			printf("exit\n");
+		*/
 		ft_putstr_fd("numeric argument required\n", 2);
 		s->rval = 2;
 	}
@@ -84,7 +89,7 @@ void	builtin_error(t_shell *s, char *str, int n)
 	}
 }
 
-void	custom_message(t_shell *s, char *str, int n)
+void	custom_message(t_shell *s, char *str, int n, char *exe_name)
 {
 	if (n == NUM_ERROR)
 	{
@@ -106,7 +111,7 @@ void	custom_message(t_shell *s, char *str, int n)
 			exit (1);
 	}
 	builtin_error(s, str, n);
-	syntax_errors(s, str, n);
+	syntax_errors(s, str, n, exe_name);
 }
 
 int	error_message(int n, char *exe_name, char *str, t_shell *s)
@@ -121,6 +126,6 @@ int	error_message(int n, char *exe_name, char *str, t_shell *s)
 	if (perror_message(s, str, n))
 		return (s->rval);
 	else
-		custom_message(s, str, n);
+		custom_message(s, str, n, exe_name);
 	return (s->rval);
 }

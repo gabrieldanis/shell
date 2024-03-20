@@ -6,7 +6,7 @@
 /*   By: gdanis <gdanis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/04 14:23:00 by gdanis            #+#    #+#             */
-/*   Updated: 2024/03/16 09:37:39 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/03/20 12:12:37 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,19 +36,19 @@ void	ft_exit(t_shell *s, t_parsed *lst)
 			i++;
 		while (lst->lst->next->str[i] || lst->lst->next->str[0] == '\0')
 		{
-			if (!ft_isdigit(lst->lst->next->str[i])
+			if (!ft_isdigit(lst->lst->next->str[i++])
 				|| lst->lst->next->str[0] == '\0')
 			{
 				free_s_str(s);
 				errno = 2;
 				free_and_exit(NUM_ERROR, s, "exit", lst->lst->next->str);
 			}
-			i++;
 		}
 		if (exit_wrong_argnum(s, lst->lst->next->next))
 			return ;
 		num = ft_atoi(lst->lst->next->str);
 		s->rval = num;
 	}
+	//printf("exit\n");
 	free_and_exit(0, s, NULL, NULL);
 }
