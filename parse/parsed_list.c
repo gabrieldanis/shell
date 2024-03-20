@@ -6,7 +6,7 @@
 /*   By: dberes <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/15 17:16:30 by dberes            #+#    #+#             */
-/*   Updated: 2024/03/20 10:17:42 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/03/20 10:29:58 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,12 +93,4 @@ void	ex_node_loop(t_shell *s, t_token *ex_node, t_token *t_node)
 		}
 		ex_node = ex_node->next;
 	}
-}
-
-void	node_dup(t_parsed *node, t_token *t_node, char *s2, t_shell *s)
-{
-	node->str = ft_strdup(s2);
-	if (!node->str)
-		free_and_exit(MALLOC_ERROR, s, NULL, NULL);
-	node->type = t_node->type;
 }

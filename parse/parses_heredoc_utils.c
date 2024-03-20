@@ -6,7 +6,7 @@
 /*   By: dberes <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 09:51:10 by dberes            #+#    #+#             */
-/*   Updated: 2024/03/20 09:51:13 by dberes           ###   ########.fr       */
+/*   Updated: 2024/03/20 11:07:31 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ int	check_eof_error(t_shell *s, t_parsed *subnode, char *line)
 {
 	if (!line)
 	{
+		close(s->heredocfd);
 		error_message(HEREDOC_EOF_ERROR, "warning",
 			subnode->next->str, s);
 		return (1);
@@ -26,7 +27,9 @@ int	check_eof_error(t_shell *s, t_parsed *subnode, char *line)
 int	heredoc_break(t_shell *s, t_parsed *subnode, char *line)
 {
 	if (!ft_strncmp(line, subnode->next->str, ft_strlen(line) + 1))
+	{
 		return (1);
+	}
 	if (g_var == 130)
 	{
 		s->rval = g_var;

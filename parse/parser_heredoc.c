@@ -6,7 +6,7 @@
 /*   By: dberes <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/15 17:11:46 by dberes            #+#    #+#             */
-/*   Updated: 2024/03/20 10:19:08 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/03/20 11:18:44 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,14 +42,14 @@ int	parse_heredoc(t_parsed *node, t_parsed *subnode, t_shell *s)
 char	*heredoc_expand(char *line, t_shell *s)
 {
 	int		i;
-	char	*str;
+	char	*varname;
 	char	*fstr;
 
 	i = 0;
 	fstr = NULL;
 	while (line[i])
 	{
-		str = NULL;
+		varname = NULL;
 		while (line[i] && line[i] != '$')
 		{
 			ft_charjoin(&fstr, line[i], s);
@@ -57,18 +57,18 @@ char	*heredoc_expand(char *line, t_shell *s)
 		}
 		i++;
 		s->j_value = i;
-		create_var_name(s, line, str, &i);
-		fstr = create_fstr(s, fstr, str, line);
+		create_var_name(s, line, &varname, &i);
+		fstr = create_fstr(s, fstr, varname, line);
 	}
 	free(line);
 	return (fstr);
 }
 
-void	create_var_name(t_shell *s, char *line, char *str, int *i)
+void	create_var_name(t_shell *s, char *line, char **str, int *i)
 {
 	while (line[*i] && (check_is_var(line[*i]) || line[s->j_value] == '?'))
 	{
-		ft_charjoin(&str, line[*i], s);
+		ft_charjoin(str, line[*i], s);
 		if (line[s->j_value] == '?')
 		{
 			(*i)++;
