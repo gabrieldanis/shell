@@ -6,7 +6,7 @@
 /*   By: dberes <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/15 17:16:30 by dberes            #+#    #+#             */
-/*   Updated: 2024/03/16 14:34:03 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/03/20 10:17:42 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,22 @@ void	init_plst(t_shell *s)
 			t_node = t_node->next;
 		}
 		add_pipe_node(s, &t_node);
+	}
+}
+
+void	ex_node_loop(t_shell *s, t_token *ex_node, t_token *t_node)
+{
+	while (ex_node)
+	{
+		if (ex_node->str)
+		{
+			addnewlstback(s, lstlast(s->lst));
+			node_dup(lstlast(lstlast(s->lst)->lst),
+				t_node, ex_node->str, s);
+			lstlast(lstlast(s->lst)->lst)->heredoc_quote
+			= t_node->heredoc_quote;
+		}
+		ex_node = ex_node->next;
 	}
 }
 

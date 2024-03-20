@@ -15,77 +15,16 @@
 int	get_dir_multi(t_shell *s)
 {
 	t_parsed	*node;
-	char		**dirs;
-	char		*dir;
-	char		*cmd;
-	char		*tmp;		
-	int			i;
+	char		**dirs;	
 
 	dirs = NULL;
 	if (s->path)
-	{
-		dirs = ft_split(s->path, 58);
-		if (!dirs)
-			free_and_exit(MALLOC_ERROR, s, NULL, NULL);
-		tmp = ft_strdup(ft_strchr(dirs[0], '=') + 1);
-		if (!tmp)
-		{
-			free_2d_array((void **)dirs);
-			free_and_exit(MALLOC_ERROR, s, NULL, NULL);
-		}
-		free(dirs[0]);
-		dirs[0] = tmp;
-	}
+		dirs = get_dirs(s, dirs);
 	node = s->lst;
 	while (node)
 	{
 		if (node->arglst && node->arglst[0] && dirs)
-		{
-			i = 0;
-			if (ft_strchr(node->arglst[0], '/'))
-			{
-				if (access(node->arglst[0], F_OK) == 0)
-					node->cmd_found = 1;
-				node->cmd = ft_strdup(node->arglst[0]);
-				if (!node->cmd)
-				{
-					free_2d_array((void **)dirs);
-					free_and_exit(MALLOC_ERROR, s, NULL, NULL);
-				}
-			}
-			else if (node->arglst[0][0] != '\0')
-			{
-				cmd = ft_strjoin("/", node->arglst[0]);
-				if (!cmd)
-				{
-					free_2d_array((void **)dirs);
-					free_and_exit(MALLOC_ERROR, s, NULL, NULL);
-				}
-				while (dirs[i] != NULL)
-				{
-					dir = ft_strjoin(dirs[i], cmd);
-					if (!dir)
-					{
-						free(cmd);
-						free_2d_array((void **)dirs);
-						free_and_exit(MALLOC_ERROR, s, NULL, NULL);
-					}
-					if (access(dir, F_OK) == 0)
-					{
-						node->cmd = dir;
-						node->cmd_found = 1;
-						free(cmd);
-						cmd = NULL;
-						break ;
-					}
-					else
-						free (dir);
-					i++;
-				}
-				if (cmd)
-					free (cmd);
-			}
-		}
+			check_arglst(s, node, dirs);
 		if (!node->cmd && node->arglst && node->arglst[0])
 		{
 			node->cmd_found = 0;
@@ -114,32 +53,6 @@ char	*get_path(char **env)
 		i++;
 	}
 	return (NULL);
-}
-
-void	count_parsed_nodes(t_shell *s)
-{
-	t_parsed	*node;
-
-	s->cmds = 0;
-	node = s->lst;
-	while (node)
-	{
-		s->cmds++;
-		node = node->next;
-	}
-}
-
-t_parsed	*get_to_node(t_parsed *node, int ind)
-{
-	int	i;
-
-	i = 0;
-	while (i < ind)
-	{
-		node = node->next;
-		i++;
-	}
-	return (node);
 }
 
 char	*ft_strjoin3(char *str1, char *str2, char *str3)

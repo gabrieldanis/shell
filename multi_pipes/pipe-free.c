@@ -111,3 +111,10 @@ void	close_unused_pipes(int **pipes, int i, int cmds)
 		j++;
 	}
 }
+
+void	free_cmd_dirs(t_shell *s, char **dirs, char *cmd)
+{
+	free(cmd);
+	free_2d_array((void **)dirs);
+	free_and_exit(MALLOC_ERROR, s, NULL, NULL);
+}

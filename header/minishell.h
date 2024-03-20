@@ -6,7 +6,7 @@
 /*   By: dberes <dberes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 16:49:31 by gdanis            #+#    #+#             */
-/*   Updated: 2024/03/18 12:04:39 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/03/20 10:14:51 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,6 +146,7 @@ typedef struct s_shell
 	int			rval;
 	int			cmds;
 	int			heredocfd;
+	int			j_value;
 }	t_shell;
 
 /*********************************
@@ -204,6 +205,7 @@ void		exit_child(int n, t_shell *s);
 void		arg_list(t_shell *s);
 void		no_pipe(t_shell *s);
 void		init_plst(t_shell *s);
+void		ex_node_loop(t_shell *s, t_token *ex_node, t_token *t_node);
 void		printlst(t_shell *s);
 void		parse_type(t_shell *s);
 void		parse_lstiter(t_shell *s,
@@ -227,6 +229,8 @@ char		*get_str(t_parsed *list);
 char		*ft_getenv(char *str, t_shell *s);
 char		*token_vardup(char *s1, t_shell *s, int itoa);
 char		*heredoc_expand(char *line, t_shell *s);
+char		*create_fstr(t_shell *s, char *fstr,char *str, char *line);
+void		create_var_name(t_shell *s, char *line, char *str, int *i);
 char		*get_next_line(int fd);
 int			update_existing_var(t_shell *s, char *str);
 int			append_var(t_shell *s, char *str);
@@ -254,8 +258,11 @@ int			arglst_size(t_parsed *lst);
 int			check_builtin(char *str);
 int			execute_builtin(t_shell *s, t_parsed *node);
 int			syntax_check(t_shell *s);
+int			check_eof(t_shell *s, t_token *node);
+int			check_pipe(t_shell *s, t_token *node);
 void		check_infiles(t_shell *s, t_parsed *lst);
 void		multi_child_process(t_parsed *lst, t_shell *s, int ind);
+void		child_process_error_check(t_shell *s, t_parsed *node);
 //void		multi_parent_process(t_plist **lst, t_data *data, int ind);
 char		*get_path(char **env);
 void		free_array(char **arr);
@@ -267,6 +274,12 @@ void		child_processes(t_parsed *lst, t_shell *s, int ind);
 void		wait_for_child(t_shell *s);
 void		free_list(t_parsed *lst);
 int			get_dir_multi(t_shell *s);
+char		**get_dirs(t_shell *s, char **dirs);
+void		check_arglst(t_shell *s, t_parsed *node, char **dirs);
+void		free_cmd_dirs(t_shell *s, char **dirs, char *cmd);
+void		check_absolute_path(t_shell *s, t_parsed *node, char **dirs);
+char		*join_slash(t_shell *s, t_parsed *node, char **dirs, char *cmd);
+void		check_for_dir(t_shell *s, t_parsed *node, char **dirs, char *cmd);
 t_parsed	*get_to_node(t_parsed *node, int ind);
 //void		path_error(t_data *data);
 //void		check_args(t_data *data, int *ex);
@@ -278,6 +291,7 @@ void		dir_copy(t_shell *s, int *ex, int i);
 void		pipe_fork(t_parsed *lst, t_shell *s);
 void		close_all_pipes(t_shell *s);
 void		appln_chararr(t_parsed *lst, char *str, t_shell *s);
+void		free_tmp_exit(char **tmp, t_shell *s);
 void		count_parsed_nodes(t_shell *s);
 void		ft_write_to_file(t_shell *s, t_parsed *node);
 void		create_outfiles(t_shell *s);
@@ -288,6 +302,12 @@ void		free_parsed_list_strings(t_parsed *tmp);
 void		shlvl_one(t_shell *s, char *tmp, int checker);
 void		ft_getcwd(t_shell *s, char **path_var);
 void		malloc_dup(t_shell *s, char ***dup, char **envp);
+void		open_heredoc_fd(t_shell *s, t_parsed *subnode);
+void		free_heredoc(t_shell *s, t_parsed *subnode, char *line);
+char		*heredoc_read(char *line);
+int			heredoc_break(t_shell *s, t_parsed *subnode, char *line);
+int			check_eof_error(t_shell *s, t_parsed *subnode, char *line);
+char		*copy_to_str(char *s1, char *s2, char *new_str);
 
 /*
 void		check_commands_bonus(t_data *data, int *ex);

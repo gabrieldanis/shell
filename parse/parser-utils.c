@@ -6,7 +6,7 @@
 /*   By: dberes <dberes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/01 13:47:54 by gdanis            #+#    #+#             */
-/*   Updated: 2024/03/16 14:38:46 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/03/20 10:15:48 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,13 +121,17 @@ void	appln_chararr(t_parsed *lst, char *str, t_shell *s)
 		i++;
 	}
 	tmp[i] = ft_strdup(str);
-	if (!tmp[i++])
-	{
-		free(tmp);
-		free_and_exit(MALLOC_ERROR, s, NULL, NULL);
-	}
+	if (!tmp[i])
+		free_tmp_exit(tmp, s);
+	i++;
 	tmp[i] = NULL;
 	if (lst->outfiles)
 		free(lst->outfiles);
 	lst->outfiles = tmp;
+}
+
+void	free_tmp_exit(char **tmp, t_shell *s)
+{
+	free(tmp);
+	free_and_exit(MALLOC_ERROR, s, NULL, NULL);
 }

@@ -30,11 +30,7 @@ char	*gn_strjoin(char *s1, char *s2)
 {
 	char	*new_str;
 	int		len;
-	int		i;
-	int		j;
 
-	i = 0;
-	j = 0;
 	len = gn_strlen(s1) + gn_strlen(s2);
 	new_str = (char *)malloc(sizeof(char) * len + 1);
 	if (!new_str)
@@ -42,6 +38,19 @@ char	*gn_strjoin(char *s1, char *s2)
 		free(s1);
 		return (NULL);
 	}
+	new_str = copy_to_str(s1, s2, new_str);
+	new_str[len] = '\0';
+	free(s1);
+	return (new_str);
+}
+
+char	*copy_to_str(char *s1, char *s2, char *new_str)
+{
+	int		i;
+	int		j;
+
+	i = 0;
+	j = 0;
 	while (s1 && s1[i])
 	{
 		new_str[i] = s1[i];
@@ -55,8 +64,6 @@ char	*gn_strjoin(char *s1, char *s2)
 		i++;
 		j++;
 	}
-	new_str[len] = '\0';
-	free(s1);
 	return (new_str);
 }
 
