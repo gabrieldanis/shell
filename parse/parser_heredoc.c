@@ -57,20 +57,25 @@ char	*heredoc_expand(char *line, t_shell *s)
 		}
 		i++;
 		s->j_value = i;
-		while (line[i] && (check_is_var(line[i]) || line[s->j_value] == '?'))
-		{
-			ft_charjoin(&str, line[i], s);
-			if (line[s->j_value] == '?')
-			{
-				i++;
-				break ;
-			}
-			i++;
-		}
+		create_var_name(s, line, str, &i);
 		fstr = create_fstr(s, fstr, str, line);
 	}
 	free(line);
 	return (fstr);
+}
+
+void	create_var_name(t_shell *s, char *line, char *str, int *i)
+{
+	while (line[*i] && (check_is_var(line[*i]) || line[s->j_value] == '?'))
+	{
+		ft_charjoin(&str, line[*i], s);
+		if (line[s->j_value] == '?')
+		{
+			(*i)++;
+			break ;
+		}
+		(*i)++;
+	}
 }
 
 char	*create_fstr(t_shell *s, char *fstr, char *str, char *line)

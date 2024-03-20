@@ -229,6 +229,7 @@ char		*ft_getenv(char *str, t_shell *s);
 char		*token_vardup(char *s1, t_shell *s, int itoa);
 char		*heredoc_expand(char *line, t_shell *s);
 char		*create_fstr(t_shell *s, char *fstr,char *str, char *line);
+void		create_var_name(t_shell *s, char *line, char *str, int *i);
 char		*get_next_line(int fd);
 int			update_existing_var(t_shell *s, char *str);
 int			append_var(t_shell *s, char *str);
