@@ -6,7 +6,7 @@
 /*   By: dberes <dberes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 16:48:10 by gdanis            #+#    #+#             */
-/*   Updated: 2024/03/20 12:18:24 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/03/20 13:51:51 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ void	execute_tlst(t_shell *s)
 void	execute_line(t_shell *s, int loop, int gn, int *loop_gn)
 {
 	if (g_var)
-		s->rval = g_var;
+		s->rval = 130;
 	if (loop && !gn)
 		add_history(s->str);
 	str_to_token(s);

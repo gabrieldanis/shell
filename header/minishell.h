@@ -6,7 +6,7 @@
 /*   By: dberes <dberes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 16:49:31 by gdanis            #+#    #+#             */
-/*   Updated: 2024/03/20 11:20:08 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/03/20 14:40:39 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,7 @@ extern int	g_var;
 # define NOCDFILE_ERROR			26
 # define NOHOME_ERROR			27
 # define SIG_ERROR				28
+# define WAITPID_ERROR			29
 
 /*********************************
  * 	PARSER CATEGORIES
@@ -263,7 +264,6 @@ int			check_pipe(t_shell *s, t_token *node);
 void		check_infiles(t_shell *s, t_parsed *lst);
 void		multi_child_process(t_parsed *lst, t_shell *s, int ind);
 void		child_process_error_check(t_shell *s, t_parsed *node);
-//void		multi_parent_process(t_plist **lst, t_data *data, int ind);
 char		*get_path(char **env);
 void		free_array(char **arr);
 int			multi_pipe(t_shell *s);
@@ -281,10 +281,6 @@ void		check_absolute_path(t_shell *s, t_parsed *node, char **dirs);
 char		*join_slash(t_shell *s, t_parsed *node, char **dirs, char *cmd);
 void		check_for_dir(t_shell *s, t_parsed *node, char **dirs, char *cmd);
 t_parsed	*get_to_node(t_parsed *node, int ind);
-//void		path_error(t_data *data);
-//void		check_args(t_data *data, int *ex);
-//void		set_data_bonus(t_data *data, int pipes, char **argv, char **env);
-//void		file_create(t_data *data);
 void		pipe_array(t_shell *s);
 char		*ft_strjoin3(char *str1, char *str2, char *str3);
 void		dir_copy(t_shell *s, int *ex, int i);
@@ -308,12 +304,11 @@ char		*heredoc_read(char *line);
 int			heredoc_break(t_shell *s, t_parsed *subnode, char *line);
 int			check_eof_error(t_shell *s, t_parsed *subnode, char *line);
 char		*copy_to_str(char *s1, char *s2, char *new_str);
+char		*get_next_line(int fd);
+char		*set_zero(char *str, size_t rread, int *i, char **nullme);
+char		*malloc_size_i(int i);
+char		*conc(char *mem, char *str, int *i, int len);
+int			len(char *str, int rread, int i, int checker);
+int			check_str_nl(char *str, unsigned long rread);
 
-/*
-void		check_commands_bonus(t_data *data, int *ex);
-void		free_exit(char **args, t_data *data, char **dirs, int ex_code);
-void		dup_fail(char **args, t_data *data, int fd, t_plist **lst);
-void		fd_fail(char **args, t_data *data, int fd, t_plist **lst);
-void		print_fd_error(t_data *data);
-*/
 #endif

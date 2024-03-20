@@ -6,7 +6,7 @@
 /*   By: gdanis <gdanis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/16 16:03:37 by gdanis            #+#    #+#             */
-/*   Updated: 2024/03/18 11:41:40 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/03/20 13:52:20 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,11 @@
 
 void	handle_sig1(int signal_num)
 {
-	(void)signal_num;
 	write(1, "\n", 1);
 	rl_on_new_line();
 	rl_replace_line("", 0);
 	rl_redisplay();
-	g_var = 130;
+	g_var = signal_num;
 }
 
 void	handle_sig2(int signal_num)
@@ -29,7 +28,7 @@ void	handle_sig2(int signal_num)
 
 void	handle_sig_child_1(int signal_num)
 {
-	(void)signal_num;
+	g_var = signal_num;
 	write(1, "\n", 1);
 }
 

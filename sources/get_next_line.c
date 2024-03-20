@@ -3,113 +3,39 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gdanis <gdanis@student.42.fr>              +#+  +:+       +#+        */
+/*   By: gdanis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/14 20:41:54 by gdanis            #+#    #+#             */
-/*   Updated: 2024/03/14 20:41:56 by gdanis           ###   ########.fr       */
+/*   Created: 2024/03/20 13:13:27 by gdanis            #+#    #+#             */
+/*   Updated: 2024/03/20 13:22:24 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../header/minishell.h"
 
-int	gn_strlen(char *str)
-{
-	int	i;
-
-	i = 0;
-	if (!str)
-		return (0);
-	while (str[i] != '\0' && str[i] != '\n')
-		i++;
-	if (str[i] == '\n')
-		i++;
-	return (i);
-}
-
-char	*gn_strjoin(char *s1, char *s2)
-{
-	char	*new_str;
-	int		len;
-
-	len = gn_strlen(s1) + gn_strlen(s2);
-	new_str = (char *)malloc(sizeof(char) * len + 1);
-	if (!new_str)
-	{
-		free(s1);
-		return (NULL);
-	}
-	new_str = copy_to_str(s1, s2, new_str);
-	new_str[len] = '\0';
-	free(s1);
-	return (new_str);
-}
-
-char	*copy_to_str(char *s1, char *s2, char *new_str)
-{
-	int		i;
-	int		j;
-
-	i = 0;
-	j = 0;
-	while (s1 && s1[i])
-	{
-		new_str[i] = s1[i];
-		i++;
-	}
-	while (s2 && s2[j])
-	{
-		new_str[i] = s2[j];
-		if (new_str[i] == '\n')
-			break ;
-		i++;
-		j++;
-	}
-	return (new_str);
-}
-
-int	update_buffer(char *buff)
-{
-	int	i;
-	int	j;
-	int	flag;
-
-	flag = 0;
-	i = 0;
-	j = 0;
-	while (buff[i])
-	{
-		if (flag)
-			buff[j++] = buff[i];
-		if (buff[i] == '\n')
-			flag = 1;
-		buff[i++] = '\0';
-	}
-	return (flag);
-}
-
 char	*get_next_line(int fd)
 {
-	static char	buffer[BUFFER_SIZE + 1];
-	char		*line;
-	int			bytes;
+	static char	str[BUFFER_SIZE];
+	static int	i;
+	static int	rread;
+	static char	*mem;
 
-	if (fd < 0 || BUFFER_SIZE <= 0)
-		return (NULL);
-	line = NULL;
-	bytes = read(fd, buffer, BUFFER_SIZE);
-	while (buffer[0] || (bytes) > 0)
+	set_zero(NULL, 0, NULL, &mem);
+	while (1)
 	{
-		line = gn_strjoin(line, buffer);
-		if (!line)
+		if (!i)
+		{
+			rread = read(fd, str, BUFFER_SIZE);
+			if (rread == -1)
+				return (free(mem), NULL);
+			if (rread == 0)
+				return (set_zero(str, 0, &i, NULL), mem);
+		}
+		mem = conc(mem, str, &i, len(str, rread, i, 1) + len(mem, 0, 0, 0));
+		if (!mem)
 			return (NULL);
-		if (update_buffer(buffer))
-			break ;
-		bytes = read(fd, buffer, BUFFER_SIZE);
+		if (check_str_nl(mem, len(mem, 0, 0, 0)))
+			return (set_zero(NULL, rread, &i, NULL), mem);
+		if (i == rread)
+			set_zero(str, 0, &i, NULL);
 	}
-	if (line && bytes < 0)
-	{
-		free(line);
-		line = NULL;
-	}
-	return (line);
 }

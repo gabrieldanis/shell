@@ -6,7 +6,7 @@
 /*   By: dberes <dberes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 18:01:22 by gdanis            #+#    #+#             */
-/*   Updated: 2024/03/15 11:37:34 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/03/20 14:24:31 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,10 @@ int	get_dir_multi(t_shell *s)
 				node->cmd_found = 1;
 			node->cmd = ft_strdup(node->arglst[0]);
 			if (!node->cmd)
+			{
+				free_2d_array((void **)dirs);
 				free_and_exit(MALLOC_ERROR, s, NULL, NULL);
+			}
 		}
 		node = node->next;
 	}

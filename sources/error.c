@@ -6,7 +6,7 @@
 /*   By: dberes <dberes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 14:07:21 by gdanis            #+#    #+#             */
-/*   Updated: 2024/03/20 12:13:14 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/03/20 14:10:21 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ void	syntax_errors(t_shell *s, char *str, int n, char *exe_name)
 		/*
 		if (!ft_strncmp(exe_name, "exit", 5))
 			printf("exit\n");
-		*/
+			*/
 		ft_putstr_fd("numeric argument required\n", 2);
 		s->rval = 2;
 	}
@@ -85,7 +85,6 @@ void	builtin_error(t_shell *s, char *str, int n)
 		}
 		s->rval = 127;
 		ft_putstr_fd("command not found\n", 2);
-		exit (127);
 	}
 }
 
