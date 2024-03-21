@@ -6,7 +6,7 @@
 /*   By: dberes <dberes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 16:48:10 by gdanis            #+#    #+#             */
-/*   Updated: 2024/03/21 12:43:42 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/03/21 15:10:19 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,17 @@ int	g_var;
 
 void	ft_readline(t_shell *s, char *line, int *gn, int loop_gn)
 {
+	(void)line;
+	(void)gn;
+	(void)loop_gn;
+	/* 
 	if (isatty(fileno(stdin)))
 	{
+	*/
 		s->str = readline("💻 minishell > ");
 		if (!s->str)
 			free_and_exit(0, s, NULL, NULL);
+		/*
 	}
 	else
 	{
@@ -36,6 +42,7 @@ void	ft_readline(t_shell *s, char *line, int *gn, int loop_gn)
 		free(line);
 		line = NULL;
 	}
+	*/
 }
 
 void	execute_tlst(t_shell *s)
