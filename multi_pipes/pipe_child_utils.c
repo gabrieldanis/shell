@@ -6,7 +6,7 @@
 /*   By: dberes <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 09:50:37 by dberes            #+#    #+#             */
-/*   Updated: 2024/03/21 13:45:30 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/03/21 17:35:03 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,9 +50,9 @@ void	ft_write_to_file(t_shell *s, t_parsed *node)
 	if (node->outfiles && node->outfiles[i])
 	{
 		if (!node->append)
-			file = open(node->outfiles[i], O_WRONLY | O_TRUNC | O_CREAT, 0644);
+			file = open(node->outfiles[i], O_WRONLY | O_TRUNC | O_CREAT, 0664);
 		if (node->append)
-			file = open(node->outfiles[i], O_WRONLY | O_APPEND | O_CREAT, 0644);
+			file = open(node->outfiles[i], O_WRONLY | O_APPEND | O_CREAT, 0664);
 		if (file == -1)
 			free_and_exit(0, s, NULL, NULL);
 		if (dup2(file, STDOUT_FILENO) == -1)

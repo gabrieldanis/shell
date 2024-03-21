@@ -6,7 +6,7 @@
 /*   By: gdanis <gdanis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 15:29:32 by gdanis            #+#    #+#             */
-/*   Updated: 2024/03/16 11:10:50 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/03/21 17:08:23 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ int	ft_unset(t_shell *s, t_parsed *lst)
 	{
 		if (lst->arglst[k][0] == '-')
 			return (errno = 2,
-				error_message(IDENT_ERROR, "export", lst->arglst[i], s), 0);
+				error_message(IDENT_ERROR, "unset", lst->arglst[k], s), 0);
 		i = 0;
 		j = 0;
 		while (s->env[i])
