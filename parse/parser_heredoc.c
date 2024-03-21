@@ -6,7 +6,7 @@
 /*   By: dberes <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/15 17:11:46 by dberes            #+#    #+#             */
-/*   Updated: 2024/03/20 11:18:44 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/03/21 16:43:15 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,8 @@ char	*heredoc_expand(char *line, t_shell *s)
 		{
 			ft_charjoin(&fstr, line[i], s);
 			i++;
+			if (!line[i])
+				return (fstr);
 		}
 		i++;
 		s->j_value = i;
