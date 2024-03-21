@@ -6,7 +6,7 @@
 /*   By: dberes <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 09:51:10 by dberes            #+#    #+#             */
-/*   Updated: 2024/03/21 15:15:50 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/03/21 21:45:26 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ void	free_heredoc(t_shell *s, t_parsed *subnode, char *line)
 void	open_heredoc_fd(t_shell *s, t_parsed *subnode)
 {
 	s->heredocfd = open(subnode->filename, O_WRONLY | O_APPEND
-			| O_CREAT, 0644);
+			| O_CREAT, 0664);
 	if (s->heredocfd == -1)
 	{
 		perror("Error opening file");

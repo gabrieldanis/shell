@@ -6,7 +6,7 @@
 /*   By: dberes <dberes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 18:08:13 by gdanis            #+#    #+#             */
-/*   Updated: 2024/02/05 11:31:01 by dberes           ###   ########.fr       */
+/*   Updated: 2024/03/21 21:56:51 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ void	create_outfiles(t_shell *s)
 				old = open(node->outfiles[i], O_WRONLY | O_TRUNC
 						| O_CREAT, 0644);
 			else
-				old = open(node->outfiles[i], O_WRONLY | O_CREAT, 0644);
+				old = open(node->outfiles[i], O_WRONLY | O_CREAT, 0664);
 			if (old == -1)
 				error_message(WRITE_ERROR, NULL, node->outfiles[i], s);
 			close(old);
