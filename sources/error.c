@@ -102,12 +102,6 @@ void	custom_message(t_shell *s, char *str, int n, char *exe_name)
 			("warning: here-doc delimited by EOF instead of delimiter\n", 2);
 		s->rval = 0;
 	}
-	if (n == QUOTE_ERROR)
-	{
-		ft_putstr_fd
-			("error: unclosed quote\n", 2);
-		s->rval = 1;
-	}
 	if (n == MALLOC_ERROR)
 	{
 		ft_putstr_fd("malloc error\n", 2);
@@ -116,6 +110,7 @@ void	custom_message(t_shell *s, char *str, int n, char *exe_name)
 		else
 			exit (1);
 	}
+	custom_message_quote_error(s, n);
 	builtin_error(s, str, n);
 	syntax_errors(s, str, n, exe_name);
 }

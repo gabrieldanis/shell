@@ -31,17 +31,22 @@ int	get_dir_multi(t_shell *s)
 			if (access(node->arglst[0], F_OK) == 0 && !s->path)
 				node->cmd_found = 1;
 			node->cmd = ft_strdup(node->arglst[0]);
-			if (!node->cmd)
-			{
-				free_2d_array((void **)dirs);
-				free_and_exit(MALLOC_ERROR, s, NULL, NULL);
-			}
+			check_cmd(s, dirs, node);
 		}
 		node = node->next;
 	}
 	if (dirs)
 		free_2d_array((void **)dirs);
 	return (0);
+}
+
+void	check_cmd(t_shell *s, char **dirs, t_parsed *node)
+{
+	if (!node->cmd)
+	{
+		free_2d_array((void **)dirs);
+		free_and_exit(MALLOC_ERROR, s, NULL, NULL);
+	}
 }
 
 char	*get_path(char **env)

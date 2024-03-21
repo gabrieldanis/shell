@@ -310,5 +310,7 @@ char		*malloc_size_i(int i);
 char		*conc(char *mem, char *str, int *i, int len);
 int			len(char *str, int rread, int i, int checker);
 int			check_str_nl(char *str, unsigned long rread);
+void		custom_message_quote_error(t_shell *s, int n);
+void		check_cmd(t_shell *s, char **dirs, t_parsed *node);
 
 #endif

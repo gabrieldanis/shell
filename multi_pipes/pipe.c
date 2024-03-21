@@ -33,7 +33,7 @@ void	wait_for_child(t_shell *s)
 	node = s->lst;
 	while (node)
 	{
-		if(waitpid(node->pid, &status, 0) == -1)
+		if (waitpid(node->pid, &status, 0) == -1)
 			free_and_exit(WAITPID_ERROR, s, NULL, NULL);
 		node = node->next;
 	}
@@ -65,7 +65,7 @@ void	pipe_array(t_shell *s)
 		s->pipes[i] = (int *)malloc(sizeof(int) * 2);
 		if (!s->pipes[i])
 		{
-			free_2d_array_i((void ***)&(s->pipes), i);		
+			free_2d_array_i((void ***)&(s->pipes), i);
 			free_and_exit(MALLOC_ERROR, s, NULL, NULL);
 		}
 		i++;
@@ -73,9 +73,8 @@ void	pipe_array(t_shell *s)
 	i = 0;
 	while (i < s->cmds - 1)
 	{
-		if (pipe(s->pipes[i]) == -1)
+		if (pipe(s->pipes[i++]) == -1)
 			free_and_exit(PIPE_ERROR, s, NULL, NULL);
-		i++;
 	}
 }
 

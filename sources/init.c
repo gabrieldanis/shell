@@ -57,7 +57,7 @@ void	set_shlvl(t_shell *s)
 	checker = 0;
 	while (s->env[i])
 	{
-		if (!strncmp(s->env[i], "SHLVL=", 6))
+		if (!ft_strncmp(s->env[i], "SHLVL=", 6))
 		{
 			num = ft_itoa(ft_atoi(ft_strchr(s->env[i], '=') + 1) + 1);
 			if (!num)

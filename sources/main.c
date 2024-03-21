@@ -59,7 +59,6 @@ void	execute_line(t_shell *s, int loop, int gn, int *loop_gn)
 		s->rval = 130;
 	if (loop && !gn)
 		add_history(s->str);
-
 	if (!str_to_token(s))
 	{
 		if (s->tlst)
