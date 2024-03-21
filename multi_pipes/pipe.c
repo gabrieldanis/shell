@@ -6,7 +6,7 @@
 /*   By: dberes <dberes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 17:14:11 by gdanis            #+#    #+#             */
-/*   Updated: 2024/03/20 15:27:19 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/03/21 13:31:14 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,16 +31,12 @@ void	wait_for_child(t_shell *s)
 	int			status;
 
 	node = s->lst;
-	while (node->next != NULL)
+	while (node)
 	{
 		if(waitpid(node->pid, &status, 0) == -1)
 			free_and_exit(WAITPID_ERROR, s, NULL, NULL);
-		free_and_exit(WAITPID_ERROR, s, NULL, NULL);
 		node = node->next;
 	}
-	if (waitpid(node->pid, &status, 0) == -1)
-		free_and_exit(WAITPID_ERROR, s, NULL, NULL);
-	free_and_exit(WAITPID_ERROR, s, NULL, NULL);
 	if (WIFEXITED(status))
 		s->rval = WEXITSTATUS(status);
 	if (WIFSIGNALED(status))
@@ -67,6 +63,11 @@ void	pipe_array(t_shell *s)
 	while (i < s->cmds - 1)
 	{
 		s->pipes[i] = (int *)malloc(sizeof(int) * 2);
+		if (!s->pipes[i])
+		{
+			free_2d_array_i((void ***)&(s->pipes), i);		
+			free_and_exit(MALLOC_ERROR, s, NULL, NULL);
+		}
 		i++;
 	}
 	i = 0;

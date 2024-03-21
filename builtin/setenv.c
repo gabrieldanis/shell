@@ -6,7 +6,7 @@
 /*   By: gdanis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 08:47:24 by gdanis            #+#    #+#             */
-/*   Updated: 2024/03/16 12:12:47 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/03/21 11:09:57 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	malloc_new_env(t_shell *s, char ***tmp, char *str)
 	if (!s->env)
 	{
 		free(str);
-		free_2d_array((void **)tmp);
+		free_2d_array((void **)*tmp);
 		free_and_exit(MALLOC_ERROR, s, NULL, NULL);
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: dberes <dberes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 14:07:21 by gdanis            #+#    #+#             */
-/*   Updated: 2024/03/20 14:10:21 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/03/21 13:47:29 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,11 @@ int	perror_message(t_shell *s, char *str, int n)
 {
 	if (n != CMD_ERROR && n != UNEX_TOKEN && n != ARGNUM_ERROR
 		&& n != NUM_ERROR && n != ENV_ERROR && n != IDENT_ERROR
-		&& n != MALLOC_ERROR && n != NOHOME_ERROR && n != HEREDOC_EOF_ERROR)
+		&& n != MALLOC_ERROR && n != NOHOME_ERROR && n != HEREDOC_EOF_ERROR
+		&& n != QUOTE_ERROR)
 	{
 		if (n == NOFILE_ERROR)
-			return (s->rval = 127, 1);
+			s->rval = 127;
 		else if (n == ISDIR_ERROR || n == PERM_ERROR)
 			return (s->rval = 126, 1);
 		else if (n == NOINFILE_ERROR || n == OUTFILE_ERROR
@@ -100,6 +101,12 @@ void	custom_message(t_shell *s, char *str, int n, char *exe_name)
 		ft_putstr_fd
 			("warning: here-doc delimited by EOF instead of delimiter\n", 2);
 		s->rval = 0;
+	}
+	if (n == QUOTE_ERROR)
+	{
+		ft_putstr_fd
+			("error: unclosed quote\n", 2);
+		s->rval = 1;
 	}
 	if (n == MALLOC_ERROR)
 	{

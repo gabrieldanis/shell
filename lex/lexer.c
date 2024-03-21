@@ -6,7 +6,7 @@
 /*   By: gdanis <gdanis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/28 22:27:36 by gdanis            #+#    #+#             */
-/*   Updated: 2024/03/15 11:05:00 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/03/21 11:56:24 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ void	non_operator_token(t_shell *s, int *i, int *flag)
 	}
 }
 
-void	str_to_token(t_shell *s)
+int	str_to_token(t_shell *s)
 {
 	int	flag;
 	int	i;
@@ -94,5 +94,9 @@ void	str_to_token(t_shell *s)
 			non_operator_token(s, &i, &flag);
 	}
 	if (flag)
+	{
 		error_message(QUOTE_ERROR, NULL, NULL, s);
+		return (1);
+	}
+	return (0);
 }

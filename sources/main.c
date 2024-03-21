@@ -6,7 +6,7 @@
 /*   By: dberes <dberes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 16:48:10 by gdanis            #+#    #+#             */
-/*   Updated: 2024/03/20 13:51:51 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/03/21 12:43:42 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,13 +59,22 @@ void	execute_line(t_shell *s, int loop, int gn, int *loop_gn)
 		s->rval = 130;
 	if (loop && !gn)
 		add_history(s->str);
-	str_to_token(s);
-	if (s->tlst)
+
+	if (!str_to_token(s))
 	{
-		if (!syntax_check(s))
-			execute_tlst(s);
-		else
-			*loop_gn = 0;
+		if (s->tlst)
+		{
+			if (!syntax_check(s))
+				execute_tlst(s);
+			else
+				*loop_gn = 0;
+			delete_files(s);
+			free_lsts(s);
+		}
+	}
+	else
+	{
+		*loop_gn = 0;
 		delete_files(s);
 		free_lsts(s);
 	}

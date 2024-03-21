@@ -6,7 +6,7 @@
 /*   By: dberes <dberes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 16:49:31 by gdanis            #+#    #+#             */
-/*   Updated: 2024/03/20 14:40:39 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/03/21 13:31:48 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -198,7 +198,7 @@ void		ft_signal(t_shell *s);
 void		handle_sig_child_1(int signal_num);
 void		handle_sig_child_2(int signal_num);
 void		child_signal(t_shell *s);
-void		str_to_token(t_shell *s);
+int			str_to_token(t_shell *s);
 void		setqflag(int *flag, char c);
 void		split_token(t_shell *s);
 void		expand_token(t_shell *s);
