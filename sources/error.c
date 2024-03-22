@@ -25,7 +25,11 @@ int	perror_message(t_shell *s, char *str, int n)
 			return (s->rval = 126, 1);
 		else if (n == NOINFILE_ERROR || n == OUTFILE_ERROR
 			|| n == WRITE_ERROR || n == NOCDFILE_ERROR)
+		{
+			if (n == NOCDFILE_ERROR)
+				perror(str);
 			return (s->rval = 1, 1);
+		}
 		else
 			s->rval = errno;
 		perror(str);
