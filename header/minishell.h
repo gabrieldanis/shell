@@ -312,5 +312,6 @@ int			len(char *str, int rread, int i, int checker);
 int			check_str_nl(char *str, unsigned long rread);
 void		custom_message_quote_error(t_shell *s, int n);
 void		check_cmd(t_shell *s, char **dirs, t_parsed *node);
+void		check_outfile_access(char *str, char *str2, t_shell *s);
 
 #endif

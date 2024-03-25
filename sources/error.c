@@ -22,11 +22,11 @@ int	perror_message(t_shell *s, char *str, int n)
 		if (n == NOFILE_ERROR)
 			s->rval = 127;
 		else if (n == ISDIR_ERROR || n == PERM_ERROR)
-			return (s->rval = 126, 1);
+			s->rval = 126;
 		else if (n == NOINFILE_ERROR || n == OUTFILE_ERROR
 			|| n == WRITE_ERROR || n == NOCDFILE_ERROR)
 		{
-			if (n == NOCDFILE_ERROR)
+			if (n == NOCDFILE_ERROR || n == OUTFILE_ERROR)
 				perror(str);
 			return (s->rval = 1, 1);
 		}

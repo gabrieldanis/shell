@@ -1,4 +1,0 @@
-cd whaaat
-cd asdf asdf
-cd $a
-cd "whaaat"

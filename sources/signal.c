@@ -35,7 +35,9 @@ void	child_signal(t_shell *s)
 	sig_child_1 = (struct sigaction){0};
 	sig_child_2 = (struct sigaction){0};
 	sig_child_1.sa_handler = &handle_sig_child_1;
+	sig_child_1.sa_flags = SA_RESTART;
 	sig_child_2.sa_handler = &handle_sig_child_2;
+	sig_child_2.sa_flags = SA_RESTART;
 	if (sigaction(SIGINT, &sig_child_1, NULL) == -1)
 		free_and_exit(SIG_ERROR, s, NULL, NULL);
 	if (sigaction(SIGQUIT, &sig_child_2, NULL) == -1)

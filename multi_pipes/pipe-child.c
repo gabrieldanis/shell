@@ -59,3 +59,18 @@ void	fd_closer(t_shell *s)
 		i++;
 	}
 }
+
+void	close_unused_pipes(int **pipes, int i, int cmds)
+{
+	int	j;
+
+	j = 0;
+	while (j < (cmds - 1))
+	{
+		if (j != (i - 1))
+			close(pipes[j][0]);
+		if (j != i)
+			close(pipes[j][1]);
+		j++;
+	}
+}

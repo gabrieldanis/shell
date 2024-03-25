@@ -24,35 +24,6 @@ void	free_array(char **arr)
 	}
 	free(arr);
 }
-/*
-void	free_exit(char **args, t_data *data, char **dirs, int ex_code)
-{
-	if (ex_code == 1)
-	{
-		free_array(data->dirs);
-		free_array(args);
-		perror("Could not execve");
-		exit(EXIT_FAILURE);
-	}
-	else if (ex_code == 2)
-	{
-		if (data && data->dirs)
-			free_array(data->dirs);
-		free_array(args);
-		exit(EXIT_FAILURE);
-	}
-	else if (ex_code == 4)
-	{
-		if (dirs)
-			free_array(dirs);
-		if (data && data->dirs)
-			free_array(data->dirs);
-		if (args)
-			free_array(args);
-		printf("malloc failed");
-		exit(EXIT_FAILURE);
-	}
-}*/
 
 void	free_list(t_parsed *lst)
 {
@@ -71,7 +42,6 @@ void	free_list(t_parsed *lst)
 void	create_outfiles(t_shell *s)
 {
 	t_parsed	*node;
-	int			old;
 	int			i;
 
 	node = s->lst;
@@ -80,36 +50,37 @@ void	create_outfiles(t_shell *s)
 		i = 0;
 		while (node->outfiles && node->outfiles[i])
 		{
-			if (access(node->outfiles[i], F_OK) == 0
-				&& access(node->outfiles[i], W_OK) != 0)
-				error_message(OUTFILE_ERROR, NULL, node->outfiles[i], s);
-			if (node->outfiles[i + 1])
-				old = open(node->outfiles[i], O_WRONLY | O_TRUNC
-						| O_CREAT, 0644);
-			else
-				old = open(node->outfiles[i], O_WRONLY | O_CREAT, 0664);
-			if (old == -1)
-				error_message(WRITE_ERROR, NULL, node->outfiles[i], s);
-			close(old);
+			check_outfile_access(node->outfiles[i], node->outfiles[i + 1], s);
 			i++;
 		}
 		node = node->next;
 	}
 }
 
-void	close_unused_pipes(int **pipes, int i, int cmds)
+void	check_outfile_access(char *str, char *str2, t_shell *s)
 {
-	int	j;
+	int	old;
 
-	j = 0;
-	while (j < (cmds - 1))
+	if (access(str, F_OK) == 0
+		&& access(str, W_OK) != 0
+		&& str2)
+		error_message(OUTFILE_ERROR, NULL, str, s);
+	if (str2)
 	{
-		if (j != (i - 1))
-			close(pipes[j][0]);
-		if (j != i)
-			close(pipes[j][1]);
-		j++;
+		old = open(str, O_WRONLY | O_TRUNC
+				| O_CREAT, 0644);
+		if (old == -1 && (!(access(str, F_OK) == 0
+					&& access(str, W_OK) != 0
+					&& str2)))
+			error_message(OUTFILE_ERROR, NULL, str, s);
 	}
+	else
+	{
+		old = open(str, O_WRONLY | O_CREAT, 0664);
+		if (old == -1)
+			error_message(OUTFILE_ERROR, NULL, str, s);
+	}
+	close(old);
 }
 
 void	free_cmd_dirs(t_shell *s, char **dirs, char *cmd)
