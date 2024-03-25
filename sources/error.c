@@ -50,10 +50,8 @@ void	syntax_errors(t_shell *s, char *str, int n, char *exe_name)
 	if (n == NUM_ERROR)
 	{
 		(void)exe_name;
-		/*
 		if (!ft_strncmp(exe_name, "exit", 5))
 			printf("exit\n");
-			*/
 		ft_putstr_fd("numeric argument required\n", 2);
 		s->rval = 2;
 	}

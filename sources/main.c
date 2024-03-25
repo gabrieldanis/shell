@@ -19,30 +19,9 @@ void	ft_readline(t_shell *s, char *line, int *gn, int loop_gn)
 	(void)line;
 	(void)gn;
 	(void)loop_gn;
-	/*
-	if (isatty(fileno(stdin)))
-	{
-	*/
-		s->str = readline("💻 minishell > ");
-		if (!s->str)
-			free_and_exit(0, s, NULL, NULL);
-		/*
-	}
-	else
-	{
-		*gn = 1;
-		line = get_next_line(fileno(stdin));
-		if (!line || !loop_gn)
-		{
-			if (line)
-				free (line);
-			free_and_exit(0, s, NULL, NULL);
-		}
-		s->str = ft_strtrim(line, "\n");
-		free(line);
-		line = NULL;
-	}
-	*/
+	s->str = readline("💻 minishell > ");
+	if (!s->str)
+		free_and_exit(0, s, NULL, NULL);
 }
 
 void	execute_tlst(t_shell *s)
