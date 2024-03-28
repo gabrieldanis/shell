@@ -6,7 +6,7 @@
 /*   By: dberes <dberes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 14:07:21 by gdanis            #+#    #+#             */
-/*   Updated: 2024/03/21 13:47:29 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/03/28 07:11:20 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,14 +19,15 @@ int	perror_message(t_shell *s, char *str, int n)
 		&& n != MALLOC_ERROR && n != NOHOME_ERROR && n != HEREDOC_EOF_ERROR
 		&& n != QUOTE_ERROR)
 	{
-		if (n == NOFILE_ERROR)
+		if (n == NOFILE_ERROR && errno != 13)
 			s->rval = 127;
-		else if (n == ISDIR_ERROR || n == PERM_ERROR)
+		else if (n == ISDIR_ERROR || n == PERM_ERROR
+				|| (n == NOFILE_ERROR && errno == 13))
 			s->rval = 126;
 		else if (n == NOINFILE_ERROR || n == OUTFILE_ERROR
 			|| n == WRITE_ERROR || n == NOCDFILE_ERROR)
 		{
-			if (n == NOCDFILE_ERROR || n == OUTFILE_ERROR)
+			if (n != WRITE_ERROR)
 				perror(str);
 			return (s->rval = 1, 1);
 		}
@@ -49,7 +50,6 @@ void	syntax_errors(t_shell *s, char *str, int n, char *exe_name)
 	}
 	if (n == NUM_ERROR)
 	{
-		(void)exe_name;
 		if (!ft_strncmp(exe_name, "exit", 5))
 			printf("exit\n");
 		ft_putstr_fd("numeric argument required\n", 2);
