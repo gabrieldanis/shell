@@ -6,7 +6,7 @@
 /*   By: gdanis <gdanis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/04 14:23:00 by gdanis            #+#    #+#             */
-/*   Updated: 2024/03/28 07:11:32 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/03/28 14:57:51 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ int	exit_wrong_argnum(t_shell *s, t_parsed *node)
 	if (node)
 	{
 		s->rval = 1;
-		free_s_str(s);
 		error_message(ARGNUM_ERROR, "exit", NULL, s);
 		return (1);
 	}

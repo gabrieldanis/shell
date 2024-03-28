@@ -6,7 +6,7 @@
 /*   By: dberes <dberes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 14:07:21 by gdanis            #+#    #+#             */
-/*   Updated: 2024/03/28 07:11:20 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/03/28 15:10:46 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ int	perror_message(t_shell *s, char *str, int n)
 
 void	syntax_errors(t_shell *s, char *str, int n, char *exe_name)
 {
+	(void)exe_name;
 	if (n == UNEX_TOKEN)
 	{
 		ft_putstr_fd("syntax error near unexpected token: `", 2);
@@ -51,8 +52,6 @@ void	syntax_errors(t_shell *s, char *str, int n, char *exe_name)
 	}
 	if (n == NUM_ERROR)
 	{
-		if (!ft_strncmp(exe_name, "exit", 5))
-			printf("exit\n");
 		ft_putstr_fd("numeric argument required\n", 2);
 		s->rval = 2;
 	}
@@ -121,6 +120,8 @@ void	custom_message(t_shell *s, char *str, int n, char *exe_name)
 int	error_message(int n, char *exe_name, char *str, t_shell *s)
 {
 	s->error = 1;
+	if (exe_name && !ft_strncmp(exe_name, "exit", 5))
+		printf("exit\n");
 	if (n != ENV_ERROR)
 		ft_putstr_fd("minishell: ", 2);
 	if (exe_name)
