@@ -12,8 +12,10 @@
 
 #include "../header/minishell.h"
 
-void	open_fds(t_shell *s, int *original_stdin, int *original_stdout)
+int	open_fds(t_shell *s, int *original_stdin, int *original_stdout)
 {
+	if (s->error != 1)
+		s->error = 0;
 	if (s->lst->infile)
 	{
 		*original_stdin = dup(0);
@@ -24,6 +26,9 @@ void	open_fds(t_shell *s, int *original_stdin, int *original_stdout)
 		*original_stdout = dup(1);
 		ft_write_to_file(s, s->lst);
 	}
+	if (s->error)
+		return (1);
+	return (0);
 }
 
 void	close_fds(t_shell *s, int *original_stdin, int *original_stdout)
@@ -45,10 +50,16 @@ void	execute(t_shell *s)
 	int	original_stdout;
 	int	original_stdin;
 
+	s->builtin = 0;
 	if (s->cmds == 1 && s->lst->arglst
 		&& s->lst->arglst[0] && check_builtin(s->lst->arglst[0]))
 	{
-		open_fds(s, &original_stdin, &original_stdout);
+		s->builtin = 1;
+		if (open_fds(s, &original_stdin, &original_stdout) != 0)
+		{
+			close_fds(s, &original_stdin, &original_stdout);
+			return ;
+		}
 		if (execute_builtin(s, s->lst))
 		{
 			close_fds(s, &original_stdin, &original_stdout);

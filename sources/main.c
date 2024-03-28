@@ -88,6 +88,7 @@ int	main(int argc, char **argv, char **envp)
 			ft_exit(s, NULL);
 		if (loop)
 			free_s_str(s);
+		s->error = 0;
 	}
 	free_and_exit(0, s, NULL, NULL);
 }

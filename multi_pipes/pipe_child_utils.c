@@ -53,9 +53,9 @@ void	ft_write_to_file(t_shell *s, t_parsed *node)
 			file = open(node->outfiles[i], O_WRONLY | O_TRUNC | O_CREAT, 0664);
 		if (node->append)
 			file = open(node->outfiles[i], O_WRONLY | O_APPEND | O_CREAT, 0664);
-		if (file == -1)
+		if (file == -1 && !s->builtin)
 			free_and_exit(0, s, NULL, NULL);
-		if (dup2(file, STDOUT_FILENO) == -1)
+		if (dup2(file, STDOUT_FILENO) == -1 && !s->builtin)
 		{
 			fd_closer(s);
 			free_and_exit(DUP_ERROR, s, NULL, NULL);
@@ -64,7 +64,7 @@ void	ft_write_to_file(t_shell *s, t_parsed *node)
 	}
 }
 
-void	check_infiles(t_shell *s, t_parsed *lst)
+int	check_infiles(t_shell *s, t_parsed *lst)
 {
 	t_parsed	*node;
 
@@ -72,11 +72,22 @@ void	check_infiles(t_shell *s, t_parsed *lst)
 	while (node)
 	{
 		if (node->type == INFILE && access(node->str, F_OK) != 0)
-			free_and_exit(NOINFILE_ERROR, s, NULL, node->str);
-		if (node->type == INFILE && access(node->str, R_OK) != 0)
-			free_and_exit(PERM_ERROR, s, NULL, node->str);
+		{
+			if (s->builtin != 0)
+				return (error_message(NOINFILE_ERROR, NULL, node->str, s), 1);
+			else
+				free_and_exit(NOINFILE_ERROR, s, NULL, node->str);
+		}
+		else if (node->type == INFILE && access(node->str, R_OK) != 0)
+		{
+			if (s->builtin != 0)
+				return (error_message(PERM_ERROR, NULL, node->str, s), 1);
+			else
+				free_and_exit(PERM_ERROR, s, NULL, node->str);
+		}
 		node = node->next;
 	}
+	return (0);
 }
 
 void	count_parsed_nodes(t_shell *s)

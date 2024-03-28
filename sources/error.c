@@ -21,12 +21,13 @@ int	perror_message(t_shell *s, char *str, int n)
 	{
 		if (n == NOFILE_ERROR && errno != 13)
 			s->rval = 127;
-		else if (n == ISDIR_ERROR || n == PERM_ERROR
-				|| (n == NOFILE_ERROR && errno == 13))
+		else if (n == ISDIR_ERROR
+			|| (n == NOFILE_ERROR && errno == 13))
 			s->rval = 126;
 		else if (n == NOINFILE_ERROR || n == OUTFILE_ERROR
-			|| n == WRITE_ERROR || n == NOCDFILE_ERROR)
+			|| n == WRITE_ERROR || n == NOCDFILE_ERROR || n == PERM_ERROR)
 		{
+			s->error = 1;
 			if (n != WRITE_ERROR)
 				perror(str);
 			return (s->rval = 1, 1);
@@ -119,6 +120,7 @@ void	custom_message(t_shell *s, char *str, int n, char *exe_name)
 
 int	error_message(int n, char *exe_name, char *str, t_shell *s)
 {
+	s->error = 1;
 	if (n != ENV_ERROR)
 		ft_putstr_fd("minishell: ", 2);
 	if (exe_name)

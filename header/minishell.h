@@ -148,6 +148,8 @@ typedef struct s_shell
 	int			cmds;
 	int			heredocfd;
 	int			j_value;
+	int			builtin;
+	int			error;
 }	t_shell;
 
 /*********************************
@@ -261,7 +263,7 @@ int			execute_builtin(t_shell *s, t_parsed *node);
 int			syntax_check(t_shell *s);
 int			check_eof(t_shell *s, t_token *node);
 int			check_pipe(t_shell *s, t_token *node);
-void		check_infiles(t_shell *s, t_parsed *lst);
+int			check_infiles(t_shell *s, t_parsed *lst);
 void		multi_child_process(t_parsed *lst, t_shell *s, int ind);
 void		child_process_error_check(t_shell *s, t_parsed *node);
 char		*get_path(char **env);
