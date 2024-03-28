@@ -65,7 +65,7 @@ int	update_existing_var(t_shell *s, char *str)
 			&& (s->env[i][len] == '=' || s->env[i][len] == '\0'))
 		{
 			if (str[len] == '\0')
-				return (1);
+				return (free(str), 1);
 			tmp = s->env[i];
 			s->env[i] = str;
 			free(tmp);

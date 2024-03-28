@@ -84,7 +84,28 @@ int	main(int argc, char **argv, char **envp)
 	while (loop)
 	{
 		g_var = 0;
-		ft_readline(s, line, &gn, loop_gn);
+		if((isatty(fileno(stdin))))
+		{
+			s->str = readline("💻 minishell > ");
+			if (!s->str)
+				free_and_exit(0, s, NULL, NULL);
+		}
+		else
+		{
+			gn = 1;
+			line = get_next_line(fileno(stdin));
+			if (!line || !loop_gn)
+			{
+				//loop = 0;
+				if (line)
+					free (line);
+				free_and_exit(0, s, NULL, NULL);
+			}
+			s->str = ft_strtrim(line, "\n");
+			free(line);
+			line = NULL;
+		}
+		//ft_readline(s, line, &gn, loop_gn);
 		if (s->str && s->str[0] != '\0')
 			execute_line(s, loop, gn, &loop_gn);
 		if (!s->str)
