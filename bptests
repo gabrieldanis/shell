@@ -1,0 +1,31 @@
+echo hi | - leaks - should print some syntax error
+
+> echo hi | < nonexist - sigpip - error
+
+ls | < nonexist - open filedescriptors 2x
+
+minishell in minishell: signal in main process have to be ignored
+
+exit | exit | exit - shouldn't print anything - 2 error message and 1 exit
+
+
+mkdir a
+cd a
+mkdir b
+cd b
+rm -rf ../../a
+Conditional jump or move depends on uninitialised value(s)
+
+
+ < non echo hi - Warning: invalid file descriptor -1 in syscall close()
+
+
+
+cat << ""eo
+==70786== Warning: noted but unhandled ioctl 0x5412 with no size/direction hints.
+==70786==    This could cause spurious value errors to appear.
+==70786==    See README_MISSING_SYSCALL_OR_IOCTL for guidance on writing a proper wrapper.
+
+<< 1 | << 2 | << 3 cat
+open file descriptors
+control c should close all heredocs at once (no matter if with pipes or not)
