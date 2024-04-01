@@ -6,7 +6,7 @@
 /*   By: dberes <dberes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 16:48:10 by gdanis            #+#    #+#             */
-/*   Updated: 2024/03/28 15:22:04 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/04/01 11:15:19 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,11 +35,13 @@ void	execute_tlst(t_shell *s)
 	parse_lstiter(s, parse_heredoc);
 	ft_signal(s);
 	parse_lstiter(s, parse_isfile);
-	create_outfiles(s);
-	parse_lstiter(s, parse_cmdargs);
-	count_parsed_nodes(s);
-	arg_list(s);
-	execute(s);
+	if (create_outfiles(s))
+	{
+		parse_lstiter(s, parse_cmdargs);
+		count_parsed_nodes(s);
+		arg_list(s);
+		execute(s);
+	}
 }
 
 void	execute_line(t_shell *s, int loop, int gn, int *loop_gn)

@@ -6,7 +6,7 @@
 /*   By: dberes <dberes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 18:08:13 by gdanis            #+#    #+#             */
-/*   Updated: 2024/03/21 21:56:51 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/04/01 11:14:24 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void	free_list(t_parsed *lst)
 	}
 }
 
-void	create_outfiles(t_shell *s)
+int	create_outfiles(t_shell *s)
 {
 	t_parsed	*node;
 	int			i;
@@ -50,21 +50,24 @@ void	create_outfiles(t_shell *s)
 		i = 0;
 		while (node->outfiles && node->outfiles[i])
 		{
-			check_outfile_access(node->outfiles[i], node->outfiles[i + 1], s);
+			if (!check_outfile_access(node->outfiles[i],
+					node->outfiles[i + 1], s))
+				return (0);
 			i++;
 		}
 		node = node->next;
 	}
+	return (1);
 }
 
-void	check_outfile_access(char *str, char *str2, t_shell *s)
+int	check_outfile_access(char *str, char *str2, t_shell *s)
 {
 	int	old;
 
 	if (access(str, F_OK) == 0
 		&& access(str, W_OK) != 0
 		&& str2)
-		error_message(OUTFILE_ERROR, NULL, str, s);
+		return (error_message(OUTFILE_ERROR, NULL, str, s), 0);
 	if (str2)
 	{
 		old = open(str, O_WRONLY | O_TRUNC
@@ -72,15 +75,16 @@ void	check_outfile_access(char *str, char *str2, t_shell *s)
 		if (old == -1 && (!(access(str, F_OK) == 0
 					&& access(str, W_OK) != 0
 					&& str2)))
-			error_message(OUTFILE_ERROR, NULL, str, s);
+			return (error_message(OUTFILE_ERROR, NULL, str, s), 0);
 	}
 	else
 	{
 		old = open(str, O_WRONLY | O_CREAT, 0664);
 		if (old == -1)
-			error_message(OUTFILE_ERROR, NULL, str, s);
+			return (error_message(OUTFILE_ERROR, NULL, str, s), 0);
 	}
 	close(old);
+	return (1);
 }
 
 void	free_cmd_dirs(t_shell *s, char **dirs, char *cmd)

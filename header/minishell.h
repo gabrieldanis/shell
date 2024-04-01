@@ -6,7 +6,7 @@
 /*   By: dberes <dberes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 16:49:31 by gdanis            #+#    #+#             */
-/*   Updated: 2024/03/21 13:31:48 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/04/01 10:41:04 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -292,7 +292,7 @@ void		appln_chararr(t_parsed *lst, char *str, t_shell *s);
 void		free_tmp_exit(char **tmp, t_shell *s);
 void		count_parsed_nodes(t_shell *s);
 void		ft_write_to_file(t_shell *s, t_parsed *node);
-void		create_outfiles(t_shell *s);
+int			create_outfiles(t_shell *s);
 void		print_env(char **env);
 void		set_shell(t_shell *s);
 t_parsed	*lstlast(t_parsed *lst);
@@ -314,6 +314,6 @@ int			len(char *str, int rread, int i, int checker);
 int			check_str_nl(char *str, unsigned long rread);
 void		custom_message_quote_error(t_shell *s, int n);
 void		check_cmd(t_shell *s, char **dirs, t_parsed *node);
-void		check_outfile_access(char *str, char *str2, t_shell *s);
+int			check_outfile_access(char *str, char *str2, t_shell *s);
 
 #endif
