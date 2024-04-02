@@ -48,6 +48,6 @@ void	ft_exit(t_shell *s, t_parsed *lst)
 		num = ft_atoi(lst->lst->next->str);
 		s->rval = num;
 	}
-	printf("exit\n");
+	//printf("exit\n");
 	free_and_exit(0, s, NULL, NULL);
 }

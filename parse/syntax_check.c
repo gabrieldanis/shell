@@ -77,9 +77,8 @@ int	check_pipe(t_shell *s, t_token *node)
 	}
 	if (node->type == PIPE)
 	{
-		if (node->next->type == PIPE || !node->next)
+		if ((node->next && node->next->type == PIPE) || !node->next)
 		{
-			free_s_str(s);
 			error_message(UNEX_TOKEN, NULL, "|", s);
 			return (1);
 		}

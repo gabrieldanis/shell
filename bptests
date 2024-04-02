@@ -1,6 +1,6 @@
 echo hi | - leaks - should print some syntax error
 
-> echo hi | < nonexist - sigpip - error
+echo hi | < nonexist - sigpip - error
 
 ls | < nonexist - open filedescriptors 2x
 
@@ -29,3 +29,5 @@ cat << ""eo
 << 1 | << 2 | << 3 cat
 open file descriptors
 control c should close all heredocs at once (no matter if with pipes or not)
+
+github.com/poechlauerbe/42_tests

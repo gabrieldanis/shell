@@ -121,7 +121,7 @@ int	error_message(int n, char *exe_name, char *str, t_shell *s)
 {
 	s->error = 1;
 	if (exe_name && !ft_strncmp(exe_name, "exit", 5))
-		printf("exit\n");
+		//printf("exit\n");
 	if (n != ENV_ERROR)
 		ft_putstr_fd("minishell: ", 2);
 	if (exe_name)

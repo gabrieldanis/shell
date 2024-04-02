@@ -1,3 +1,3 @@
 #!/bin/bash
 
-valgrind --track-fds=yes --trace-children=yes --leak-check=full --show-leak-kinds=all --track-origins=yes --suppressions=/home/gdanis/shell/tester/valgrind_ignore_leaks.txt -s ./minishell 
+valgrind --suppressions=tester/valgrind_ignore_leaks.txt --leak-check=full --show-leak-kinds=all --track-origins=yes --show-mismatched-frees=yes	--track-fds=yes ./minishell

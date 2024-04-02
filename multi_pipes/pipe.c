@@ -85,14 +85,17 @@ void	pipe_fork(t_parsed *lst, t_shell *s)
 
 	node = lst;
 	ind = 0;
+	signal(SIGINT, SIG_IGN);
 	while (node)
 	{
-		child_signal(s);
 		node->pid = fork();
 		if (node->pid == -1)
 			free_and_exit(PID_ERROR, s, NULL, NULL);
 		if (node->pid == 0)
+		{
+			child_signal(s);
 			multi_child_process(lst, s, ind);
+		}
 		ind++;
 		node = node->next;
 	}

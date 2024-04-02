@@ -24,6 +24,8 @@ void	child_process_error_check(t_shell *s, t_parsed *node)
 		errno = 21;
 		free_and_exit(ISDIR_ERROR, s, NULL, node->arglst[0]);
 	}
+	if (!ft_strncmp(node->arglst[0], "exit\0", 5))
+		free_and_exit(0, s, NULL, NULL);
 	if (execute_builtin(s, node))
 		free_and_exit(0, s, NULL, NULL);
 	if (s->path && !node->cmd_found)

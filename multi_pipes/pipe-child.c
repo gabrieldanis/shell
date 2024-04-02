@@ -23,7 +23,9 @@ void	multi_child_process(t_parsed *lst, t_shell *s, int ind)
 	else if (ind > 0)
 	{
 		if (dup2(s->pipes[ind -1][0], STDIN_FILENO) == -1)
+		{
 			free_and_exit(DUP_ERROR, s, NULL, NULL);
+		}
 	}
 	if (node->outfiles)
 		ft_write_to_file(s, node);
@@ -34,10 +36,12 @@ void	multi_child_process(t_parsed *lst, t_shell *s, int ind)
 	}
 	fd_closer(s);
 	child_process_error_check(s, node);
+
 }
 
 void	fd_opener(t_parsed *lst, t_shell *s)
 {
+	fd_closer(s);
 	check_infiles(s, lst);
 	lst->fd_inf = open(lst->infile, O_RDONLY);
 	if (lst->fd_inf == -1 && s->builtin == 0)
@@ -57,20 +61,5 @@ void	fd_closer(t_shell *s)
 		close(s->pipes[i][0]);
 		close(s->pipes[i][1]);
 		i++;
-	}
-}
-
-void	close_unused_pipes(int **pipes, int i, int cmds)
-{
-	int	j;
-
-	j = 0;
-	while (j < (cmds - 1))
-	{
-		if (j != (i - 1))
-			close(pipes[j][0]);
-		if (j != i)
-			close(pipes[j][1]);
-		j++;
 	}
 }

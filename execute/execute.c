@@ -89,8 +89,8 @@ int	check_builtin(char *str)
 }
 
 int	execute_builtin(t_shell *s, t_parsed *node)
-
 {
+	signal(SIGPIPE, SIG_IGN);
 	if (!ft_strncmp(node->arglst[0], "echo\0", 5))
 		return (s->rval = ft_echo(node), 1);
 	if (!ft_strncmp(node->arglst[0], "exit\0", 5))
@@ -105,5 +105,6 @@ int	execute_builtin(t_shell *s, t_parsed *node)
 		return (ft_export(s, node, 0), 1);
 	if (!ft_strncmp(node->arglst[0], "unset\0", 6))
 		return (ft_unset(s, node), 1);
+	signal(SIGPIPE, SIG_DFL);
 	return (0);
 }
