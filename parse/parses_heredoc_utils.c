@@ -6,7 +6,7 @@
 /*   By: dberes <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 09:51:10 by dberes            #+#    #+#             */
-/*   Updated: 2024/03/21 21:45:26 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/04/05 10:12:32 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,9 @@ int	heredoc_break(t_shell *s, t_parsed *subnode, char *line)
 	{
 		return (1);
 	}
-	if (g_var == 130)
+	if (g_var == 2)
 	{
-		s->rval = g_var;
+		s->rval = 130;
 		return (1);
 	}
 	return (0);

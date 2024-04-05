@@ -6,7 +6,7 @@
 /*   By: gdanis <gdanis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/15 09:17:56 by gdanis            #+#    #+#             */
-/*   Updated: 2024/03/16 09:10:12 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/04/05 10:57:35 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,14 @@ void	chdir_with_argument(t_shell *s, t_parsed *lst)
 		error_message(ARGNUM_ERROR, "cd", NULL, s);
 		return ;
 	}
+	ft_memset(pwd, 0, 500);
 	getcwd(pwd, sizeof(pwd));
+	if (!pwd[0])
+	{
+		error_message(NOCDFILE_ERROR, "cd", NULL, s);
+		n = chdir(lst->arglst[1]);
+		return ;
+	}
 	n = chdir(lst->arglst[1]);
 	if (n == -1)
 	{
