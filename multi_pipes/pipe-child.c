@@ -43,7 +43,8 @@ void	fd_opener(t_parsed *lst, t_shell *s)
 {
 	fd_closer(s);
 	check_infiles(s, lst);
-	lst->fd_inf = open(lst->infile, O_RDONLY);
+	if (s->error == 0)
+		lst->fd_inf = open(lst->infile, O_RDONLY);
 	if (lst->fd_inf == -1 && s->builtin == 0)
 		free_and_exit(NOFILE_ERROR, s, NULL, lst->infile);
 	if (dup2(lst->fd_inf, STDIN_FILENO) == -1 && s->builtin == 0)

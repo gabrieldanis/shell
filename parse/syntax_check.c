@@ -54,13 +54,11 @@ int	check_eof(t_shell *s, t_token *node)
 {
 	if (!node->next)
 	{
-		free_s_str(s);
 		error_message(UNEX_TOKEN, NULL, "newline", s);
 		return (1);
 	}
 	if (node->next->type)
 	{
-		free_s_str(s);
 		error_message(UNEX_TOKEN, NULL, node->next->str, s);
 		return (1);
 	}
@@ -71,7 +69,6 @@ int	check_pipe(t_shell *s, t_token *node)
 {
 	if (s->tlst->type == PIPE)
 	{
-		free_s_str(s);
 		error_message(UNEX_TOKEN, NULL, "|", s);
 		return (1);
 	}

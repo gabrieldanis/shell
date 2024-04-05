@@ -304,7 +304,7 @@ void		open_heredoc_fd(t_shell *s, t_parsed *subnode);
 void		free_heredoc(t_shell *s, t_parsed *subnode, char *line);
 char		*heredoc_read(char *line);
 int			heredoc_break(t_shell *s, t_parsed *subnode, char *line);
-int			check_eof_error(t_shell *s, t_parsed *subnode, char *line);
+int			_error(t_shell *s, t_parsed *subnode, char *line);
 char		*copy_to_str(char *s1, char *s2, char *new_str);
 char		*get_next_line(int fd);
 char		*set_zero(char *str, size_t rread, int *i, char **nullme);
@@ -315,5 +315,6 @@ int			check_str_nl(char *str, unsigned long rread);
 void		custom_message_quote_error(t_shell *s, int n);
 void		check_cmd(t_shell *s, char **dirs, t_parsed *node);
 int			check_outfile_access(char *str, char *str2, t_shell *s);
+int			check_eof_error(t_shell *s, t_parsed *subnode, char *line);
 
 #endif
