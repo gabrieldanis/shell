@@ -52,12 +52,30 @@ int	create_outfiles(t_shell *s)
 		{
 			if (!check_outfile_access(node->outfiles[i],
 					node->outfiles[i + 1], s))
-				return (0);
+				return (s->outfile_error = 1, 0);
 			i++;
 		}
 		node = node->next;
 	}
 	return (1);
+}
+
+int	create_node_outfiles(t_shell *s, t_parsed *lst)
+{
+	t_parsed	*node;
+	int			i;
+
+	node = lst;
+	i = 0;
+	while (node->outfiles && node->outfiles[i])
+	{
+		if (!check_outfile_access(node->outfiles[i],
+				node->outfiles[i + 1], s))
+			return (1);
+		i++;
+	}
+	node = node->next;
+	return (0);
 }
 
 int	check_outfile_access(char *str, char *str2, t_shell *s)

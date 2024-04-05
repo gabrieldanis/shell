@@ -150,6 +150,7 @@ typedef struct s_shell
 	int			j_value;
 	int			builtin;
 	int			error;
+	int			outfile_error;
 }	t_shell;
 
 /*********************************
@@ -316,5 +317,6 @@ void		custom_message_quote_error(t_shell *s, int n);
 void		check_cmd(t_shell *s, char **dirs, t_parsed *node);
 int			check_outfile_access(char *str, char *str2, t_shell *s);
 int			check_eof_error(t_shell *s, t_parsed *subnode, char *line);
+int			create_node_outfiles(t_shell *s, t_parsed *lst);
 
 #endif

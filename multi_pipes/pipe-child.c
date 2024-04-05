@@ -18,6 +18,11 @@ void	multi_child_process(t_parsed *lst, t_shell *s, int ind)
 
 	node = lst;
 	node = get_to_node(node, ind);
+	if (create_node_outfiles(s, node))
+	{
+		fd_closer(s);
+		free_and_exit(0, s, NULL, NULL);
+	}
 	if (node->infile)
 		fd_opener(node, s);
 	else if (ind > 0)
@@ -36,7 +41,6 @@ void	multi_child_process(t_parsed *lst, t_shell *s, int ind)
 	}
 	fd_closer(s);
 	child_process_error_check(s, node);
-
 }
 
 void	fd_opener(t_parsed *lst, t_shell *s)

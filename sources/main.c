@@ -39,13 +39,16 @@ void	execute_tlst(t_shell *s)
 	}
 	ft_signal(s);
 	parse_lstiter(s, parse_isfile);
-	if (create_outfiles(s))
+	parse_lstiter(s, parse_cmdargs);
+	count_parsed_nodes(s);
+	if (s->cmds == 1)
+		create_outfiles(s);
+	if (!s->outfile_error)
 	{
-		parse_lstiter(s, parse_cmdargs);
-		count_parsed_nodes(s);
 		arg_list(s);
 		execute(s);
 	}
+	s->outfile_error = 0;
 }
 
 void	execute_line(t_shell *s, int loop, int gn, int *loop_gn)
@@ -90,7 +93,28 @@ int	main(int argc, char **argv, char **envp)
 	while (loop)
 	{
 		g_var = 0;
-		ft_readline(s, line, &gn, loop_gn);
+		//ft_readline(s, line, &gn, loop_gn);
+		if((isatty(fileno(stdin))))
+		{
+			s->str = readline("💻 minishell > ");
+			if (!s->str)
+				free_and_exit(0, s, NULL, NULL);
+		}
+		else
+		{
+			gn = 1;
+			line = get_next_line(fileno(stdin));
+			if (!line || !loop_gn)
+			{
+				//loop = 0;
+				if (line)
+					free (line);
+				free_and_exit(0, s, NULL, NULL);
+			}
+			s->str = ft_strtrim(line, "\n");
+			free(line);
+			line = NULL;
+		}
 		if (s->str && s->str[0] != '\0')
 			execute_line(s, loop, gn, &loop_gn);
 		if (!s->str)
