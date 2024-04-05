@@ -6,7 +6,7 @@
 /*   By: gdanis <gdanis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 09:12:03 by gdanis            #+#    #+#             */
-/*   Updated: 2024/03/18 09:13:45 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/04/05 10:39:42 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,8 @@ void	delete_files(t_shell *s)
 		node = parent_node->lst;
 		while (node)
 		{
-			if (node->type == HEREDOC && !access(node->filename, F_OK))
+			if (node->type == HEREDOC && node->filename
+					&& !access(node->filename, F_OK))
 			{
 				if (unlink(node->filename) == -1)
 					free_and_exit(UNLINK_ERROR, s, NULL, NULL);

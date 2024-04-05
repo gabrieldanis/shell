@@ -6,7 +6,7 @@
 /*   By: dberes <dberes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 16:48:10 by gdanis            #+#    #+#             */
-/*   Updated: 2024/04/01 11:15:19 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/04/05 10:40:22 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,11 @@ void	execute_tlst(t_shell *s)
 	split_token(s);
 	expand_token(s);
 	init_plst(s);
-	parse_lstiter(s, parse_heredoc);
+	if (parse_lstiter(s, parse_heredoc))
+	{
+		ft_signal(s);
+		return ;
+	}
 	ft_signal(s);
 	parse_lstiter(s, parse_isfile);
 	if (create_outfiles(s))

@@ -6,7 +6,7 @@
 /*   By: dberes <dberes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 16:49:31 by gdanis            #+#    #+#             */
-/*   Updated: 2024/04/01 10:41:04 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/04/05 10:21:36 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -211,7 +211,7 @@ void		init_plst(t_shell *s);
 void		ex_node_loop(t_shell *s, t_token *ex_node, t_token *t_node);
 void		printlst(t_shell *s);
 void		parse_type(t_shell *s);
-void		parse_lstiter(t_shell *s,
+int			parse_lstiter(t_shell *s,
 				int (*f)(t_parsed *node, t_parsed *subnode, t_shell *s));
 void		parse_subiter(t_shell *s,
 				t_parsed *node, int (*f)(t_parsed *lst, t_shell *s));

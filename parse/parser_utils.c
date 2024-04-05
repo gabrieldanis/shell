@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parser-utils.c                                     :+:      :+:    :+:   */
+/*   parser_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dberes <dberes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/01 13:47:54 by gdanis            #+#    #+#             */
-/*   Updated: 2024/03/20 10:26:47 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/04/05 10:29:08 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ char	*token_type(int i)
 	return ("unknown       ");
 }
 
-void	parse_lstiter(t_shell *s, int (*f)(t_parsed *node,
+int	parse_lstiter(t_shell *s, int (*f)(t_parsed *node,
 	t_parsed *subnode, t_shell *s))
 {
 	t_parsed	*node;
@@ -85,11 +85,12 @@ void	parse_lstiter(t_shell *s, int (*f)(t_parsed *node,
 		while (subnode)
 		{
 			if (!f(node, subnode, s))
-				return ;
+				return (1);
 			subnode = subnode->next;
 		}
 		node = node->next;
 	}
+	return (0);
 }
 
 void	appln_chararr(t_parsed *lst, char *str, t_shell *s)
