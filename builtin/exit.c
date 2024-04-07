@@ -6,11 +6,39 @@
 /*   By: gdanis <gdanis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/04 14:23:00 by gdanis            #+#    #+#             */
-/*   Updated: 2024/03/28 14:57:51 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/04/07 15:53:46 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../header/minishell.h"
+
+int	max_num_checker(const char *nptr)
+{
+	long long	number;
+	int			minus;
+	long long	max;
+
+	max = 9223372036854775807;
+	minus = 0;
+	number = 0;
+	if (*nptr == '-')
+		minus++;
+	if (*nptr == '-' || *nptr == '+')
+		nptr++;
+	while (*nptr >= '0' && *nptr <= '9')
+	{
+		if (number - minus <= max  / 10)
+			number = number * 10;
+		else
+			return (1);
+		if (number - minus <= max - (*nptr - '0'))
+			number = number + (*nptr - '0');
+		else
+			return (1);
+		nptr++;
+	}
+	return (0);
+}
 
 int	exit_wrong_argnum(t_shell *s, t_parsed *node)
 {
@@ -36,7 +64,7 @@ void	ft_exit(t_shell *s, t_parsed *lst)
 		while (lst->lst->next->str[i] || lst->lst->next->str[0] == '\0')
 		{
 			if (!ft_isdigit(lst->lst->next->str[i++])
-				|| lst->lst->next->str[0] == '\0')
+				|| lst->lst->next->str[0] == '\0' || max_num_checker(lst->lst->next->str))
 			{
 				free_s_str(s);
 				errno = 2;

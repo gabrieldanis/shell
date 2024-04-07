@@ -6,7 +6,7 @@
 /*   By: dberes <dberes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 14:07:21 by gdanis            #+#    #+#             */
-/*   Updated: 2024/04/07 12:38:48 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/04/07 17:28:21 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@ void	custom_message(t_shell *s, char *str, int n, char *exe_name)
 	if (n == HEREDOC_EOF_ERROR)
 	{
 		ft_putstr_fd
-			("warning: here-doc delimited by EOF instead of delimiter\n", 2);
+			("here-doc delimited by EOF instead of delimiter\n", 2);
 		s->rval = 0;
 	}
 	if (n == MALLOC_ERROR)
