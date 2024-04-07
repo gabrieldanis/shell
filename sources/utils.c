@@ -6,7 +6,7 @@
 /*   By: gdanis <gdanis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/17 08:49:36 by gdanis            #+#    #+#             */
-/*   Updated: 2024/03/16 16:02:25 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/04/07 20:10:08 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,19 +25,16 @@ void	print_env(char **env)
 	if (!env[i])
 		printf("(null)\n\n");
 }
-/*
-int	delimiter_char(char c)
-{
-	if (c == ' ' || c == '\0' || c == '|' || c == '<' 
-		|| c == '>')
-		return (1);
-	return (0);
-}
 
-int	op_char(char c)
+void	free_array(char **arr)
 {
-	if (c == '|' || c == '<' || c == '>')
-		return (1);
-	return (0);
+	int	i;
+
+	i = 0;
+	while (arr[i] != NULL)
+	{
+		free(arr[i]);
+		i++;
+	}
+	free(arr);
 }
-*/

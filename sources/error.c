@@ -6,7 +6,7 @@
 /*   By: dberes <dberes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 14:07:21 by gdanis            #+#    #+#             */
-/*   Updated: 2024/04/07 17:28:21 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/04/07 20:26:07 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,10 +121,8 @@ int	error_message(int n, char *exe_name, char *str, t_shell *s)
 {
 	if (n != HEREDOC_EOF_ERROR)
 		s->error = 1;
-	/*
 	if (exe_name && !ft_strncmp(exe_name, "exit", 5))
 		printf("exit\n");
-		*/
 	if (n != ENV_ERROR)
 		ft_putstr_fd("minishell: ", 2);
 	if (exe_name)

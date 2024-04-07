@@ -6,7 +6,7 @@
 /*   By: dberes <dberes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/01 10:51:32 by dberes            #+#    #+#             */
-/*   Updated: 2024/04/05 21:37:21 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/04/07 20:10:51 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,7 @@ void	multi_child_process(t_parsed *lst, t_shell *s, int ind)
 	else if (ind > 0)
 	{
 		if (dup2(s->pipes[ind -1][0], STDIN_FILENO) == -1)
-		{
 			free_and_exit(DUP_ERROR, s, NULL, NULL);
-		}
 	}
 	if (node->outfiles)
 		ft_write_to_file(s, node);

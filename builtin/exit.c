@@ -6,13 +6,13 @@
 /*   By: gdanis <gdanis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/04 14:23:00 by gdanis            #+#    #+#             */
-/*   Updated: 2024/04/07 15:53:46 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/04/07 20:25:50 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../header/minishell.h"
 
-int	max_num_checker(const char *nptr)
+int	mnc(const char *nptr)
 {
 	long long	number;
 	int			minus;
@@ -27,7 +27,7 @@ int	max_num_checker(const char *nptr)
 		nptr++;
 	while (*nptr >= '0' && *nptr <= '9')
 	{
-		if (number - minus <= max  / 10)
+		if (number - minus <= max / 10)
 			number = number * 10;
 		else
 			return (1);
@@ -64,7 +64,7 @@ void	ft_exit(t_shell *s, t_parsed *lst)
 		while (lst->lst->next->str[i] || lst->lst->next->str[0] == '\0')
 		{
 			if (!ft_isdigit(lst->lst->next->str[i++])
-				|| lst->lst->next->str[0] == '\0' || max_num_checker(lst->lst->next->str))
+				|| lst->lst->next->str[0] == '\0' || mnc(lst->lst->next->str))
 			{
 				free_s_str(s);
 				errno = 2;
@@ -76,6 +76,6 @@ void	ft_exit(t_shell *s, t_parsed *lst)
 		num = ft_atoi(lst->lst->next->str);
 		s->rval = num;
 	}
-	//printf("exit\n");
+	printf("exit\n");
 	free_and_exit(0, s, NULL, NULL);
 }

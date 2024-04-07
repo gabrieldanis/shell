@@ -6,7 +6,7 @@
 /*   By: dberes <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/15 17:11:46 by dberes            #+#    #+#             */
-/*   Updated: 2024/04/06 12:36:30 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/04/07 20:07:51 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ int	parse_heredoc(t_parsed *node, t_parsed *subnode, t_shell *s)
 			line = heredoc_read(line);
 			if (check_eof_error(s, subnode, line) == 1)
 				break ;
-				//return (1);
 			if (heredoc_break(s, subnode, line) == 1)
 				break ;
 			free_heredoc(s, subnode, line);

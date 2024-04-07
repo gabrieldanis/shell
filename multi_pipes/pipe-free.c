@@ -6,24 +6,11 @@
 /*   By: dberes <dberes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 18:08:13 by gdanis            #+#    #+#             */
-/*   Updated: 2024/04/01 11:14:24 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/04/07 20:08:58 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../header/minishell.h"
-
-void	free_array(char **arr)
-{
-	int	i;
-
-	i = 0;
-	while (arr[i] != NULL)
-	{
-		free(arr[i]);
-		i++;
-	}
-	free(arr);
-}
 
 void	free_list(t_parsed *lst)
 {

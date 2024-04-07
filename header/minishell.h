@@ -6,7 +6,7 @@
 /*   By: dberes <dberes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 16:49:31 by gdanis            #+#    #+#             */
-/*   Updated: 2024/04/07 15:38:54 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/04/07 20:06:28 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -320,5 +320,6 @@ void		check_cmd(t_shell *s, char **dirs, t_parsed *node);
 int			check_outfile_access(char *str, char *str2, t_shell *s);
 int			check_eof_error(t_shell *s, t_parsed *subnode, char *line);
 int			create_node_outfiles(t_shell *s, t_parsed *lst);
+char		*create_broken_pwd(t_shell *s, char *str);
 
 #endif
