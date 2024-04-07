@@ -6,7 +6,7 @@
 /*   By: gdanis <gdanis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/02 07:25:06 by gdanis            #+#    #+#             */
-/*   Updated: 2024/03/18 11:38:47 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/04/07 11:31:26 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,10 @@ t_shell	*init_shell(int argc, char **argv, char **envp)
 	(void)argc;
 	s = (t_shell *)malloc(sizeof(t_shell));
 	if (!s)
-		exit (error_message(MALLOC_ERROR, NULL, NULL, s));
+	{
+		ft_putstr_fd("minishell: malloc error", 2);
+		exit (1);
+	}
 	*s = (t_shell){0};
 	s->env = dup_envp(envp, s);
 	s->argv = argv;
@@ -27,6 +30,9 @@ t_shell	*init_shell(int argc, char **argv, char **envp)
 	set_shlvl(s);
 	ft_signal(s);
 	s->str = NULL;
+	s->cwd = ft_strdup(ft_getenv("PWD", s));
+	if (!s->cwd)
+		free_and_exit(MALLOC_ERROR, s, NULL, NULL);
 	return (s);
 }
 

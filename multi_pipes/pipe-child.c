@@ -6,7 +6,7 @@
 /*   By: dberes <dberes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/01 10:51:32 by dberes            #+#    #+#             */
-/*   Updated: 2024/03/13 11:54:15 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/04/05 21:37:21 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,14 +45,16 @@ void	multi_child_process(t_parsed *lst, t_shell *s, int ind)
 
 void	fd_opener(t_parsed *lst, t_shell *s)
 {
-	fd_closer(s);
 	check_infiles(s, lst);
 	if (s->error == 0)
 		lst->fd_inf = open(lst->infile, O_RDONLY);
 	if (lst->fd_inf == -1 && s->builtin == 0)
 		free_and_exit(NOFILE_ERROR, s, NULL, lst->infile);
 	if (dup2(lst->fd_inf, STDIN_FILENO) == -1 && s->builtin == 0)
+	{
+		close(lst->fd_inf);
 		free_and_exit(DUP_ERROR, s, NULL, NULL);
+	}
 	close(lst->fd_inf);
 }
 
@@ -61,6 +63,8 @@ void	fd_closer(t_shell *s)
 	int	i;
 
 	i = 0;
+	if (!s->pipes)
+		return ;
 	while (i < s->cmds - 1)
 	{
 		close(s->pipes[i][0]);

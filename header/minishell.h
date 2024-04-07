@@ -6,7 +6,7 @@
 /*   By: dberes <dberes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 16:49:31 by gdanis            #+#    #+#             */
-/*   Updated: 2024/04/05 10:21:36 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/04/07 12:26:45 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,7 @@ extern int	g_var;
 # define NOHOME_ERROR			27
 # define SIG_ERROR				28
 # define WAITPID_ERROR			29
+# define OPTION_ERROR			30
 
 /*********************************
  * 	PARSER CATEGORIES
@@ -143,6 +144,7 @@ typedef struct s_shell
 	char		*path;
 	char		*str;
 	char		*var;
+	char		*cwd;
 	int			**pipes;
 	int			rval;
 	int			cmds;

@@ -6,7 +6,7 @@
 /*   By: dberes <dberes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 14:07:21 by gdanis            #+#    #+#             */
-/*   Updated: 2024/03/28 15:10:46 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/04/07 12:38:48 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,9 +119,12 @@ void	custom_message(t_shell *s, char *str, int n, char *exe_name)
 
 int	error_message(int n, char *exe_name, char *str, t_shell *s)
 {
-	s->error = 1;
+	if (n != HEREDOC_EOF_ERROR)
+		s->error = 1;
+	/*
 	if (exe_name && !ft_strncmp(exe_name, "exit", 5))
-		//printf("exit\n");
+		printf("exit\n");
+		*/
 	if (n != ENV_ERROR)
 		ft_putstr_fd("minishell: ", 2);
 	if (exe_name)
