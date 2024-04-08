@@ -46,8 +46,8 @@ void	wait_for_child(t_shell *s)
 				s->rval = 130;
 			else
 				s->rval = 128 + WTERMSIG(status);
-			if (nodes == 1)
-				write(1, "\n", 2);
+			if (nodes == 1 && (s->rval == 130 || s->rval == 131))
+				write(1, "\n", 1);
 		}
 		node = node->next;
 	}

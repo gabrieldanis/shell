@@ -24,17 +24,3 @@ void	*ft_memset(void *s, int c, size_t n)
 	}
 	return (s);
 }
-/*
-int	main(void)
-{
-	char start [50] = "whaat the fuck is your problem?";
-	char start2 [50] = "whaat the fuck is your problem?";
-
-	printf("before my function: %s\n", start);
-	printf("return value ft_memset: %s\n", 
-	(char *)ft_memset(&start[10], '*', sizeof(char)*4));
-	printf("after  ft_memset: %s\n", start);
-	memset(&start2[10], '*', sizeof(char)*4);
-	printf("after  memset: %s\n", start2);
-}
-*/
