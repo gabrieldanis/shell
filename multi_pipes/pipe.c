@@ -6,7 +6,7 @@
 /*   By: dberes <dberes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 17:14:11 by gdanis            #+#    #+#             */
-/*   Updated: 2024/04/08 12:30:06 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/04/08 13:53:23 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,25 +29,27 @@ void	wait_for_child(t_shell *s)
 {
 	t_parsed	*node;
 	int			status;
+	int			nodes;
 
 	node = s->lst;
+	nodes = 0;
 	while (node)
 	{
 		if (waitpid(node->pid, &status, 0) == -1)
 			free_and_exit(WAITPID_ERROR, s, NULL, NULL);
-		node = node->next;
-	}
-	if (WIFEXITED(status))
-		s->rval = WEXITSTATUS(status);
-	if (WIFSIGNALED(status))
-	{
-		if (g_var)
+		nodes++;
+		if (WIFEXITED(status))
+			s->rval = WEXITSTATUS(status);
+		if (WIFSIGNALED(status))
 		{
-			s->rval = 130;
+			if (g_var)
+				s->rval = 130;
+			else
+				s->rval = 128 + WTERMSIG(status);
+			if (nodes == 1)
+				write(1, "\n", 2);
 		}
-		else
-			s->rval = 128 + WTERMSIG(status);
-		write(1, "\n", 1);
+		node = node->next;
 	}
 	signal_handler(SIG_MAIN);
 }
