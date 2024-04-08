@@ -6,7 +6,7 @@
 /*   By: dberes <dberes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 16:49:31 by gdanis            #+#    #+#             */
-/*   Updated: 2024/04/07 20:06:28 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/04/08 11:38:29 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,6 +139,8 @@ typedef struct s_shell
 {
 	t_parsed	*lst;
 	t_token		*tlst;
+	struct sigaction	sig1;
+	struct sigaction	sig2;
 	char		**argv;
 	char		**env;
 	char		*path;
@@ -153,6 +155,7 @@ typedef struct s_shell
 	int			builtin;
 	int			error;
 	int			outfile_error;
+	int			running_child;
 }	t_shell;
 
 /*********************************
@@ -321,5 +324,8 @@ int			check_outfile_access(char *str, char *str2, t_shell *s);
 int			check_eof_error(t_shell *s, t_parsed *subnode, char *line);
 int			create_node_outfiles(t_shell *s, t_parsed *lst);
 char		*create_broken_pwd(t_shell *s, char *str);
+void		signal_while_child(t_shell *s);
+int			is_running_child(int num);
+void		signal_handler(int num);
 
 #endif

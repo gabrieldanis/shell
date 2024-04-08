@@ -6,7 +6,7 @@
 /*   By: dberes <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 09:50:37 by dberes            #+#    #+#             */
-/*   Updated: 2024/04/01 11:12:57 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/04/08 11:45:29 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ void	child_process_error_check(t_shell *s, t_parsed *node)
 	}
 	if ((node->cmd || !s->path) && access(node->cmd, X_OK) != 0)
 		free_and_exit(PERM_ERROR, s, NULL, node->arglst[0]);
+	signal_handler(2);
 	if (execve(node->cmd, node->arglst, s->env) == -1)
 		free_and_exit(EXECVE_ERROR, s, NULL, node->arglst[0]);
 }

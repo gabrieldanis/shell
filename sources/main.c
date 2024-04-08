@@ -6,7 +6,7 @@
 /*   By: dberes <dberes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 16:48:10 by gdanis            #+#    #+#             */
-/*   Updated: 2024/04/07 20:25:35 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/04/08 11:41:56 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ int	g_var;
 
 void	ft_readline(t_shell *s, char *line, int *gn, int loop_gn)
 {
+	signal_handler(0);
 	(void)line;
 	(void)gn;
 	(void)loop_gn;
@@ -25,6 +26,7 @@ void	ft_readline(t_shell *s, char *line, int *gn, int loop_gn)
 		printf("exit\n");
 		free_and_exit(0, s, NULL, NULL);
 	}
+	signal_handler(1);
 }
 
 void	execute_tlst(t_shell *s)

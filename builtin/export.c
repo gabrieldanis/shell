@@ -6,7 +6,7 @@
 /*   By: gdanis <gdanis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/15 11:28:20 by gdanis            #+#    #+#             */
-/*   Updated: 2024/03/16 09:24:01 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/04/08 09:38:36 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,12 +38,15 @@ int	ft_export(t_shell *s, t_parsed *lst, int env)
 				errno = 2;
 			else
 				errno = 1;
-			return (error_message(IDENT_ERROR, "export", lst->arglst[i], s), 1);
+			error_message(IDENT_ERROR, "export", lst->arglst[i], s);
 		}
-		tmp = ft_strdup(lst->arglst[i]);
-		if (!tmp)
-			free_and_exit(MALLOC_ERROR, s, NULL, NULL);
-		ft_setenv(s, tmp);
+		else
+		{
+			tmp = ft_strdup(lst->arglst[i]);
+			if (!tmp)
+				free_and_exit(MALLOC_ERROR, s, NULL, NULL);
+			ft_setenv(s, tmp);
+		}
 		i++;
 	}
 	return (0);
