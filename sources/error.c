@@ -6,7 +6,7 @@
 /*   By: dberes <dberes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 14:07:21 by gdanis            #+#    #+#             */
-/*   Updated: 2024/04/07 20:26:07 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/04/08 12:48:19 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,13 +58,7 @@ void	syntax_errors(t_shell *s, char *str, int n, char *exe_name)
 	if (n == ARGNUM_ERROR)
 		ft_putstr_fd("too many arguments\n", 2);
 	if (n == IDENT_ERROR)
-	{
-		if (errno == 2)
-			ft_putstr_fd("invalid option\n", 2);
-		else
-			ft_putstr_fd("invalid idenftifier\n", 2);
-		s->rval = errno;
-	}
+		ident_error_check(s, str);
 }
 
 void	builtin_error(t_shell *s, char *str, int n)

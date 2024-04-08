@@ -6,7 +6,7 @@
 /*   By: gdanis <gdanis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/16 16:03:37 by gdanis            #+#    #+#             */
-/*   Updated: 2024/04/08 11:06:35 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/04/08 12:31:38 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,34 +19,6 @@ void	handle_sig1(int signal_num)
 	rl_on_new_line();
 	rl_redisplay();
 	g_var = signal_num;
-}
-
-void	handle_sig2(int signal_num)
-{
-	(void)signal_num;
-}
-
-int	is_running_child(int num)
-{
-	static int	child;
-
-	if (num == -1)
-		return (child);
-	child = num;
-	return (child);
-}
-
-void	handle_sig_child_1(int signal_num)
-{
-	g_var = signal_num;
-	write(1, "\n", 1);
-
-}
-
-void	handle_sig_child_2(int signal_num)
-{
-	write(1, "Quit\n", 5);
-	(void)signal_num;
 }
 
 void	handle_sig1_heredoc(int signal_num)

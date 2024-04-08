@@ -6,7 +6,7 @@
 /*   By: gdanis <gdanis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/15 11:28:20 by gdanis            #+#    #+#             */
-/*   Updated: 2024/04/08 09:38:36 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/04/08 12:43:49 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,15 @@ int	export_without_argument(t_shell *s, t_parsed *lst, int env)
 	return (0);
 }
 
+void	varname_check(t_parsed *lst, t_shell *s, int i)
+{
+	if (lst->arglst[i][0] == '-')
+		errno = 2;
+	else
+		errno = 1;
+	error_message(IDENT_ERROR, "export", lst->arglst[i], s);
+}
+
 int	ft_export(t_shell *s, t_parsed *lst, int env)
 {
 	char	*tmp;
@@ -33,13 +42,7 @@ int	ft_export(t_shell *s, t_parsed *lst, int env)
 	while (lst->arglst[i])
 	{
 		if (!is_varname(lst->arglst[i]))
-		{
-			if (lst->arglst[i][0] == '-')
-				errno = 2;
-			else
-				errno = 1;
-			error_message(IDENT_ERROR, "export", lst->arglst[i], s);
-		}
+			varname_check(lst, s, i);
 		else
 		{
 			tmp = ft_strdup(lst->arglst[i]);

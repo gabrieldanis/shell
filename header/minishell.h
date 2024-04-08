@@ -6,7 +6,7 @@
 /*   By: dberes <dberes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 16:49:31 by gdanis            #+#    #+#             */
-/*   Updated: 2024/04/08 11:38:29 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/04/08 12:52:11 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,15 @@ extern int	g_var;
 # define OUTFILE		12
 
 /*********************************
+ * 	SIGNAL NUMS
+ *********************************/
+
+# define SIG_RL			0
+# define SIG_MAIN		1
+# define SIG_CHILD		2
+# define SIG_HEREDOC	3
+
+/*********************************
  * 	STRUCTS
  *********************************/
 
@@ -139,8 +148,6 @@ typedef struct s_shell
 {
 	t_parsed	*lst;
 	t_token		*tlst;
-	struct sigaction	sig1;
-	struct sigaction	sig2;
 	char		**argv;
 	char		**env;
 	char		*path;
@@ -327,5 +334,7 @@ char		*create_broken_pwd(t_shell *s, char *str);
 void		signal_while_child(t_shell *s);
 int			is_running_child(int num);
 void		signal_handler(int num);
+void		ident_error_check(t_shell *s, char *str);
+void		call_execve(t_shell *s, t_parsed *node);
 
 #endif

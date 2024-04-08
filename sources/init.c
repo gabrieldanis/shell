@@ -6,7 +6,7 @@
 /*   By: gdanis <gdanis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/02 07:25:06 by gdanis            #+#    #+#             */
-/*   Updated: 2024/04/08 11:40:41 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/04/08 12:33:13 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,7 @@ t_shell	*init_shell(int argc, char **argv, char **envp)
 	s->argv = argv;
 	set_shell(s);
 	set_shlvl(s);
-	signal_handler(1);
-	//ft_signal(s);
+	signal_handler(SIG_MAIN);
 	s->str = NULL;
 	s->cwd = ft_strdup(ft_getenv("PWD", s));
 	if (!s->cwd)

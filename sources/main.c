@@ -6,7 +6,7 @@
 /*   By: dberes <dberes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 16:48:10 by gdanis            #+#    #+#             */
-/*   Updated: 2024/04/08 11:41:56 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/04/08 12:31:22 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ int	g_var;
 
 void	ft_readline(t_shell *s, char *line, int *gn, int loop_gn)
 {
-	signal_handler(0);
+	signal_handler(SIG_RL);
 	(void)line;
 	(void)gn;
 	(void)loop_gn;
@@ -26,7 +26,7 @@ void	ft_readline(t_shell *s, char *line, int *gn, int loop_gn)
 		printf("exit\n");
 		free_and_exit(0, s, NULL, NULL);
 	}
-	signal_handler(1);
+	signal_handler(SIG_MAIN);
 }
 
 void	execute_tlst(t_shell *s)
@@ -36,10 +36,10 @@ void	execute_tlst(t_shell *s)
 	init_plst(s);
 	if (parse_lstiter(s, parse_heredoc))
 	{
-		ft_signal(s);
+		signal_handler(SIG_MAIN);
 		return ;
 	}
-	ft_signal(s);
+	signal_handler(SIG_MAIN);
 	parse_lstiter(s, parse_isfile);
 	parse_lstiter(s, parse_cmdargs);
 	count_parsed_nodes(s);

@@ -6,7 +6,7 @@
 /*   By: dberes <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/15 17:11:46 by dberes            #+#    #+#             */
-/*   Updated: 2024/04/07 20:07:51 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/04/08 12:30:33 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int	parse_heredoc(t_parsed *node, t_parsed *subnode, t_shell *s)
 
 	(void) node;
 	line = NULL;
-	ft_signal_heredoc(s);
+	signal_handler(SIG_HEREDOC);
 	if (subnode->type == HEREDOC && g_var != 2)
 	{
 		create_tmp_file(subnode, s);

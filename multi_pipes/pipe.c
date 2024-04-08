@@ -6,7 +6,7 @@
 /*   By: dberes <dberes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 17:14:11 by gdanis            #+#    #+#             */
-/*   Updated: 2024/04/08 11:42:10 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/04/08 12:30:06 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,12 +42,14 @@ void	wait_for_child(t_shell *s)
 	if (WIFSIGNALED(status))
 	{
 		if (g_var)
+		{
 			s->rval = 130;
+		}
 		else
 			s->rval = 128 + WTERMSIG(status);
 		write(1, "\n", 1);
 	}
-	//ft_signal(s);
+	signal_handler(SIG_MAIN);
 }
 
 void	pipe_array(t_shell *s)
@@ -86,19 +88,14 @@ void	pipe_fork(t_parsed *lst, t_shell *s)
 
 	node = lst;
 	ind = 0;
-	//signal_while_child(s);
-	signal(SIGINT, SIG_IGN);
-	//signal(SIGINT, &handle_sig_child_1);
+	signal_handler(SIG_MAIN);
 	while (node)
 	{
 		node->pid = fork();
 		if (node->pid == -1)
 			free_and_exit(PID_ERROR, s, NULL, NULL);
 		if (node->pid == 0)
-		{
-			//child_signal(s);
 			multi_child_process(lst, s, ind);
-		}
 		ind++;
 		node = node->next;
 	}

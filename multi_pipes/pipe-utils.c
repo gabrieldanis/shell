@@ -6,7 +6,7 @@
 /*   By: dberes <dberes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 18:01:22 by gdanis            #+#    #+#             */
-/*   Updated: 2024/03/20 14:24:31 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/04/08 12:52:46 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,4 +80,11 @@ char	*ft_strjoin3(char *str1, char *str2, char *str3)
 	result = ft_strjoin(tmp, str3);
 	free(tmp);
 	return (result);
+}
+
+void	call_execve(t_shell *s, t_parsed *node)
+{
+	signal_handler(SIG_CHILD);
+	if (execve(node->cmd, node->arglst, s->env) == -1)
+		free_and_exit(EXECVE_ERROR, s, NULL, node->arglst[0]);
 }
