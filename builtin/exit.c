@@ -6,7 +6,7 @@
 /*   By: gdanis <gdanis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/04 14:23:00 by gdanis            #+#    #+#             */
-/*   Updated: 2024/04/07 20:25:50 by gdanis           ###   ########.fr       */
+/*   Updated: 2024/04/08 14:10:45 by gdanis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,13 @@ int	exit_wrong_argnum(t_shell *s, t_parsed *node)
 	return (0);
 }
 
+void	exit_num_error(t_shell *s, t_parsed *lst)
+{
+	free_s_str(s);
+	errno = 2;
+	free_and_exit(NUM_ERROR, s, "exit", lst->lst->next->str);
+}
+
 void	ft_exit(t_shell *s, t_parsed *lst)
 {
 	unsigned char	num;
@@ -61,15 +68,13 @@ void	ft_exit(t_shell *s, t_parsed *lst)
 		i = 0;
 		if (lst->lst->next->str[0] == '+' || lst->lst->next->str[0] == '-')
 			i++;
+		if (!lst->lst->next->str[i])
+			exit_num_error(s, lst);
 		while (lst->lst->next->str[i] || lst->lst->next->str[0] == '\0')
 		{
 			if (!ft_isdigit(lst->lst->next->str[i++])
 				|| lst->lst->next->str[0] == '\0' || mnc(lst->lst->next->str))
-			{
-				free_s_str(s);
-				errno = 2;
-				free_and_exit(NUM_ERROR, s, "exit", lst->lst->next->str);
-			}
+				exit_num_error(s, lst);
 		}
 		if (exit_wrong_argnum(s, lst->lst->next->next))
 			return ;
